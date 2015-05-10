@@ -1,0 +1,18 @@
+{% extends 'base.twig' %}
+
+{% block title %} {{ 'Add'|trans }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        h1 { color: red; }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>
+        {{ 'Add'|trans }}
+    </h1>
+    <p>
+        Dodawanie ogłoszeń.
+    </p>
+{% endblock %}

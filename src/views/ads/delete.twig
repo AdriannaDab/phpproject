@@ -1,0 +1,18 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ 'Delete'|trans }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        h1 { color: red; }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>
+        {{ 'Delete'|trans }}
+    </h1>
+    <p>
+        Usuwanie {{ id }} ogłoszenia.
+    </p>
+{% endblock %}
