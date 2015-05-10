@@ -10,9 +10,20 @@ namespace Controller;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Model\AdsModel;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class AdsController implements ControllerProviderInterface
 {
+    /**
+     * Data for view.
+     *
+     * @access protected
+     * @var array $_view
+     */
+    protected $_view = array();
+
     /**
      * Routing settings.
      *
@@ -39,8 +50,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $view = array();
-        return $app['twig']->render('ads/index.twig', $view);
+        return $app['twig']->render('ads/index.twig', $this->_view);
     }
     /**
      * Add action.
@@ -52,8 +62,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        $view = array();
-        return $app['twig']->render('ads/add.twig', $view);
+        return $app['twig']->render('ads/add.twig', $this->_view);
     }
     /**
      * Edit action.
@@ -65,9 +74,8 @@ class AdsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        $view = array();
-      	$view['id'] = $request->get('id', '');
-      	return $app['twig']->render('ads/edit.twig', $view);
+        $this->_view['id'] = $request->get('id', '');
+      	return $app['twig']->render('ads/edit.twig', $this->_view);
     }
     /**
      * Delete action.
@@ -79,9 +87,8 @@ class AdsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $view = array();
-      	$view['id'] = $request->get('id', '');
-        return $app['twig']->render('ads/delete.twig', $view);
+        $this->_view['id'] = $request->get('id', '');
+        return $app['twig']->render('ads/delete.twig', $this->_view);
     }
     /**
      * View action.
@@ -93,8 +100,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        $view = array();
-      	$view['id'] = $request->get('id', '');
-        return $app['twig']->render('ads/view.twig', $view);
+        $this->_view['id'] = $request->get('id', '');
+        return $app['twig']->render('ads/view.twig', $this->_view);
     }
 }

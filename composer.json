@@ -7,7 +7,7 @@
     "symfony/yaml": "~2.3",
     "symfony/form": "~2.3",
     "doctrine/dbal": "2.2.*",
-    "symfony/security": "~2.3",
+    "symfony/security-csrf": "~2.3",
     "symfony/locale": "~2.3",
     "symfony/validator": "~2.3"
   },
