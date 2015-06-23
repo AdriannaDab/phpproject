@@ -1,18 +1,24 @@
+{# Edit action template for Ads controller #}
 {% extends 'base.twig' %}
 
-{% block title %}{{ 'Edit'|trans }} {% endblock %}
+{% block title %}{{  'Edit ad'|trans }}{% endblock %}
 
-{% block head %}
-    {{ parent() }}
-    <style type="text/css">
-        h1 { color: red; }
-    </style>
-{% endblock %}
 {% block content %}
-    <h1>
-       {{ 'Edit'|trans }}
+
+    <h1 class="text-center">
+        {{ 'Edit ad'|trans }}
     </h1>
-    <p>
-        Edycja {{ id }} ogłoszenia.
-    </p>
+
+
+
+     <form role="form" action="{{ url ('ads_edit', {'id': id}  )  }}" method="post">
+        {{ form_widget(form) }}                                
+    
+
+    <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+    </form>
+
+
+
 {% endblock %}
+

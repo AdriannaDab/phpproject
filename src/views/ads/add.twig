@@ -1,18 +1,20 @@
+{# Add action template for Ads controller #}
 {% extends 'base.twig' %}
 
-{% block title %} {{ 'Add'|trans }}{% endblock %}
+{% block title %}{{  'Add ad'|trans }}{% endblock %}
 
-{% block head %}
-    {{ parent() }}
-    <style type="text/css">
-        h1 { color: red; }
-    </style>
-{% endblock %}
 {% block content %}
-    <h1>
-        {{ 'Add'|trans }}
-    </h1>
-    <p>
-        Dodawanie ogłoszeń.
-    </p>
+    <h2 class="text-center">
+        {{ 'Add ad'|trans }}
+    </h2>
+
+
+
+
+
+    <form  action="{{ url('ads_add') }}" method="post" class="form-inline"  >
+       {{ form_widget(form ) }}
+        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+    </form>
 {% endblock %}
+

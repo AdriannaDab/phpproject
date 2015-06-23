@@ -1,7 +1,35 @@
-Edit: Edycja
-Add: Umieszczenie nowego
-Delete: Usuwanie
+Ads list: Lista ogłoszeń
+
+Next page: Następna strona
+Previous page: Poprzednia strona
+Id: Numer
+
+Save: Zapisz
+save: Zapisz
+Edit: Edytuj
+edit: Edytuj
+Add: Dodaj
+add: Dodaj
+Delete: Usuń
+delete: Usuń
+Do you really want to delete this: Czy na pewno chcesz usunąć?
 Index: Lista
-View: Wyświetlanie
-ad: ogłoszenie
-ads: ogłoszenia
+View: Wyświetl
+view: Wyświetl
+Ad: Ogłoszenie
+ad: Ogłoszenie
+Ads: Ogłoszenia
+ads: Ogłoszenia
+title: Tytuł
+Title: Tytuł
+content: Treść
+Content: Treść
+date: Data i godzina publikacji
+Date: Data i godzina publikacji
+Add ad: Dodaj ogłoszenie
+View ad: Zobacz ogłoszenie
+Edit ad: Edytuj ogłoszenie
+Delete ad: Usuń ogłoszenie
+Ad deleted.: Usunięto ogłoszenie.
+New ad added.: Dodano ogłoszenie.
+Ad edited.: Zmieniono ogłoszenie.

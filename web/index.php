@@ -37,10 +37,43 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 // Session
 $app->register(new Silex\Provider\SessionServiceProvider());
 
+// Doctride
+$app->register(
+    new Silex\Provider\DoctrineServiceProvider(),
+    array(
+        'db.options' => array(
+            'driver'    => 'pdo_mysql',
+            'host'      => 'localhost',
+            'dbname'    => 'baza',
+            'user'      => 'login',
+            'password'  => 'haslo!',
+            'charset'   => 'utf8',
+        ),
+    )
+);
 
 
-
+//Url Generator
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+
+//Security - rozszerze potem
+$app->register(
+    new Silex\Provider\SecurityServiceProvider(), array(
+        'security.firewalls' => array(
+            'unsecured' => array(
+                'anonymous' => true,
+            ),
+        ),
+    )
+);
+
+
+$app->get('/', function () use ($app) {
+    return $app->redirect($app["url_generator"]->generate("/ads/"));
+})->bind('/');
+
+date_default_timezone_set('Europe/Warsaw');
 
 $app->mount('/ads/', new Controller\AdsController());
 
