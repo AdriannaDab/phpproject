@@ -52,7 +52,6 @@ class AdForm extends AbstractType
             'hidden',
             array(
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Type(array('type' => 'digit'))
                 )
             )

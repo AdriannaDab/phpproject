@@ -27,13 +27,6 @@
 </div>
 
 
-    <div>
-        {% for flashMessage in app.session.getFlashBag.get('message') %}
-            <div class="alert alert-{{ flashMessage.type }}">
-                {{ flashMessage.content }}
-            </div>
-        {% endfor %}
-    </div>
 
             <div id="content">{% block content %}{% endblock %}</div>
             {% block categories %}{% endblock %}
@@ -50,7 +43,16 @@
 
     </div>
 
+
 </footer>
+
+    <div>
+        {% for flashMessage in app.session.getFlashBag.get('message') %}
+            <div class="alert alert-{{ flashMessage.type }}">
+                {{ flashMessage.content }}
+            </div>
+        {% endfor %}
+    </div>
 </div>
 </body>
 </html>

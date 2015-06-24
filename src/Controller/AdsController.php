@@ -266,14 +266,14 @@ class AdsController implements ControllerProviderInterface
             if ($form->isValid()) {
                 $data = $form->getData();
                 $adsModel = new AdsModel($app);
-                $adsModel->deleteAd($data['id']);
+                $adsModel->deleteAd($data['idad']);
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'danger', 'content' => $app['translator']->trans('Ad deleted.')
                     )
                 );
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_index'), 301
+                    $app['url_generator']->generate('/ads/'), 301
                 );
             }
 
