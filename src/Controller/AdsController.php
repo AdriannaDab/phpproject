@@ -103,7 +103,7 @@ class AdsController implements ControllerProviderInterface
         $adsController->get('/ads', array($this, 'indexAction'));
         $adsController->get('/ads/', array($this, 'indexAction'));
         $adsController->get('/{page}', array($this, 'indexAction'))
-            ->value('page', 1)->bind('/ads/');
+            ->value('page', 1)->bind('ads_index');
         return $adsController;
     }
     /**
@@ -164,7 +164,7 @@ class AdsController implements ControllerProviderInterface
     {
         $data = array(
             'ad_name' => 'Advertisement',
-            'ad_contence' => ' ',
+            'ad_contence' => 'Contence',
         );
 
         $form = $app['form.factory']
