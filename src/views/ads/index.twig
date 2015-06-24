@@ -52,20 +52,20 @@
         <div>
         {% if paginator.page > 1 %}
             {% set previous = (paginator.page - 1) %}
-            <a href="{{ url('ads_index', {'page': previous}) }}" title="{{ 'previous page'|trans }}"
-                    class="btn btn-success">{{ 'previous page'|trans }}</a>
+            <a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}"
+                    class="btn btn-info">{{ 'previous page'|trans }}</a>
         {%  endif %}
 
         {% if paginator.page < paginator.pagesCount %}
             {% set next = (paginator.page + 1) %}
-            <a href="{{ url('ads_index', {'page': next}) }}" title="{{ 'next page'|trans }}"
-               class="btn btn-success">{{ 'Next page'|trans }}</a>
+            <a href="{{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}"
+               class="btn btn-info">{{ 'Next page'|trans }}</a>
         {% endif  %}
     </div>
 
     <p>
         <a href="{{ url('ads_add') }}" title="{{ 'Add ad'|trans }}"
-           class="btn btn-primary"> {{ 'Add ad'|trans }}
+           class="btn btn-success"> {{ 'Add ad'|trans }}
         </a>
     </p>
 

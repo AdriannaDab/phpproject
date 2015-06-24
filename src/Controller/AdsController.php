@@ -103,7 +103,7 @@ class AdsController implements ControllerProviderInterface
         $adsController->get('/ads', array($this, 'indexAction'));
         $adsController->get('/ads/', array($this, 'indexAction'));
         $adsController->get('/{page}', array($this, 'indexAction'))
-            ->value('page', 1)->bind('ads_index');
+            ->value('page', 1)->bind('/ads/');
         return $adsController;
     }
     /**
@@ -176,7 +176,7 @@ class AdsController implements ControllerProviderInterface
             $adsModel = new AdsModel($app);
             $adsModel->saveAd($data);
             return $app->redirect(
-                $app['url_generator']->generate('ads_index'), 301
+                $app['url_generator']->generate('/ads/'), 301
             );
         }
 
@@ -222,7 +222,7 @@ class AdsController implements ControllerProviderInterface
                     )
                 );
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_index'), 301
+                    $app['url_generator']->generate('/ads/'), 301
                 );
             }
 

@@ -1,21 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
     {% block head %}
-        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ app.request.basepath }}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="{{ app.request.basepath }}/assets/bootstrap/js/bootstrap.min.js"></script>
+        <title>{% block title %}Advertising service{% endblock %}</title>
     {% endblock %}
 </head>
+
 <body>
-<div id="content">{% block content %}
-    <button class = "btn bg-danger"> Test</button>{% endblock %}</div>
+<div class="container">
+<div class="row">
+    <div class="box">
+<nav class="navbar navbar-inverse" role="navigation">
+   {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+    {% include 'main_menu.twig' %}
+    {#{% endif %}#}
+</nav>
+
+<div class="jumbotron">
+    <h1 class="text-center">Advertising service</h1>
+    <p class="text-center">Buy, sold, rent</p>
+
+</div>
+
+
+    <div>
+        {% for flashMessage in app.session.getFlashBag.get('message') %}
+            <div class="alert alert-{{ flashMessage.type }}">
+                {{ flashMessage.content }}
+            </div>
+        {% endfor %}
+    </div>
+
+            <div id="content">{% block content %}{% endblock %}</div>
+            {% block categories %}{% endblock %}
+            {% block comments %}{% endblock %}
+        </div>
+    </div>
+
+
+<footer class="footer">
+
+
+    <div class=" text-left">
+               {% include 'footer.twig' %}
+
+    </div>
+
+</footer>
+</div>
 </body>
 </html>

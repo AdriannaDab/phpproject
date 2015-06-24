@@ -41,7 +41,7 @@ class AdsModel
     public function getAll()
     {
         try {
-            $query = 'SELECT idad, ad_name, ad_contence, ad_date, idcategory, iduser FROM ads';
+            $query = 'SELECT idad, ad_name, ad_contence, idcategory FROM ads';
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";

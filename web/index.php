@@ -44,8 +44,8 @@ $app->register(
         'db.options' => array(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
-            'dbname'    => 'baza',
-            'user'      => 'nazwa',
+            'dbname'    => 'baza!',
+            'user'      => 'nazwa!',
             'password'  => 'haslo!',
             'charset'   => 'utf8',
         ),
