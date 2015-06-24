@@ -47,27 +47,77 @@
             </tbody>
         </table>
 
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="#" alt="#">
+                    <div class="caption">
+                        {% for ad in ads %}
+                        <h3>{{ ad.ad_name|e }}</h3>
+                        <p>{{ ad.ad_contence|e }}</p>
+                        <p><a href="{{ url('ads_view', {'id': ad.idad}) }}" title="{{ 'View ad'|trans }}"
+                              class="btn btn-primary" role="button">{{ 'View ad'|trans }}</a>
+                            <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+                               class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+                             <br><br><a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
+                                class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="#" alt="#">
+                    <div class="caption">
+                        {% for ad in ads %}
+                            <h3>{{ ad.ad_name|e }}</h3>
+                            <p>{{ ad.ad_contence|e }}</p>
+                            <p><a href="{{ url('ads_view', {'id': ad.idad}) }}" title="{{ 'View ad'|trans }}"
+                                  class="btn btn-primary" role="button">{{ 'View ad'|trans }}</a>
+                                <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+                                   class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+                                <br><br><a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
+                                           class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="#" alt="#">
+                    <div class="caption">
+                        {% for ad in ads %}
+                            <h3>{{ ad.ad_name|e }}</h3>
+                            <p>{{ ad.ad_contence|e }}</p>
+                            <p><a href="{{ url('ads_view', {'id': ad.idad}) }}" title="{{ 'View ad'|trans }}"
+                                  class="btn btn-primary" role="button">{{ 'View ad'|trans }}</a>
+                                <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+                                   class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+                                <br><br><a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
+                                           class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-        <div>
-        {% if paginator.page > 1 %}
-            {% set previous = (paginator.page - 1) %}
-            <a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}"
-                    class="btn btn-info">{{ 'previous page'|trans }}</a>
-        {%  endif %}
-
-        {% if paginator.page < paginator.pagesCount %}
-            {% set next = (paginator.page + 1) %}
-            <a href="{{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}"
-               class="btn btn-info">{{ 'Next page'|trans }}</a>
-        {% endif  %}
-    </div>
-
-    <p>
-        <a href="{{ url('ads_add') }}" title="{{ 'Add ad'|trans }}"
-           class="btn btn-success"> {{ 'Add ad'|trans }}
-        </a>
-    </p>
+            <nav>
+                <ul class="pager">
+                    {% if paginator.page > 1 %}
+                    {% set previous = (paginator.page - 1) %}
+                    <li class="previous"><a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}">
+                    <span aria-hidden="true">&larr;</span> Older</a></li>
+                    {%  endif %}
+                    {% if paginator.page < paginator.pagesCount %}
+                    {% set next = (paginator.page + 1) %}
+                    <li class="next"><a href={{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}">
+                    Newer <span aria-hidden="true">&rarr;</span></a></li>
+                    {% endif  %}
+                </ul>
+            </nav>
 
 
 
