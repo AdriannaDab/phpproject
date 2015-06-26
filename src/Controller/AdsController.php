@@ -175,16 +175,17 @@ class AdsController implements ControllerProviderInterface
             $data = $form->getData();
             $adsModel = new AdsModel($app);
             $adsModel->saveAd($data);
+            $app['session']->getFlashBag()->add(
+                'message', array(
+                    'type' => 'success', 'content' => $app['translator']->trans('New ad added.')
+                )
+            );
             return $app->redirect(
                 $app['url_generator']->generate('/ads/'), 301
             );
         }
 
-        $app['session']->getFlashBag()->add(
-            'message', array(
-                'type' => 'success', 'content' => $app['translator']->trans('New ad added.')
-            )
-        );
+
         $this->_view['form'] = $form->createView();
         try {
             return $app['twig']->render('ads/add.twig', $this->_view);

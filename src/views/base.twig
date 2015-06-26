@@ -24,10 +24,15 @@
     <h1 class="text-center">Advertising service</h1>
     <p class="text-center">Buy, sold, rent</p>
 
+
 </div>
-
-
-
+        <div>
+            {% for flashMessage in app.session.getFlashBag.get('message') %}
+                <div class="alert alert-{{ flashMessage.type }}">
+                    {{ flashMessage.content }}
+                </div>
+            {% endfor %}
+        </div>
             <div id="content">
             {% block content %}{% endblock %}</div>
             {% block categories %}{% endblock %}
@@ -47,13 +52,7 @@
 
 </footer>
 
-    <div>
-        {% for flashMessage in app.session.getFlashBag.get('message') %}
-            <div class="alert alert-{{ flashMessage.type }}">
-                {{ flashMessage.content }}
-            </div>
-        {% endfor %}
-    </div>
+
 </div>
 </body>
 </html>

@@ -4,13 +4,10 @@
 {% block title %}{{  'Add ad'|trans }}{% endblock %}
 
 {% block content %}
-    <h2 class="text-center">
+
+    <h1 class="text-center">
         {{ 'Add ad'|trans }}
-    </h2>
-
-
-
-
+    </h1>
 
     <form  action="{{ url('ads_add') }}" method="post" class="form-inline"  >
        {{ form_widget(form ) }}

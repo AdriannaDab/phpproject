@@ -9,12 +9,8 @@
         {{ 'Edit ad'|trans }}
     </h1>
 
-
-
      <form role="form" action="{{ url ('ads_edit', {'id': id}  )  }}" method="post">
-        {{ form_widget(form) }}                                
-    
-
+        {{ form_widget(form) }}
     <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
     </form>
 
