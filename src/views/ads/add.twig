@@ -9,9 +9,14 @@
         {{ 'Add ad'|trans }}
     </h1>
 
-    <form  action="{{ url('ads_add') }}" method="post" class="form-inline"  >
+    <form  action="{{ url('ads_add') }}" method="post"   >
        {{ form_widget(form ) }}
+
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+        <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
+
     </form>
+
+
 {% endblock %}
 

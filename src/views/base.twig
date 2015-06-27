@@ -20,12 +20,7 @@
     {#{% endif %}#}
 </nav>
 
-<div class="jumbotron">
-    <h1 class="text-center">Advertising service</h1>
-    <p class="text-center">Buy, sold, rent</p>
 
-
-</div>
         <div>
             {% for flashMessage in app.session.getFlashBag.get('message') %}
                 <div class="alert alert-{{ flashMessage.type }}">
@@ -38,20 +33,22 @@
             {% block categories %}{% endblock %}
             {% block comments %}{% endblock %}
         </div>
-    </div>
 
 
-<footer class="footer">
+<br>
+<br>
+<footer class="footer panel-footer">
 
 
-    <div class=" text-left">
+
+
                {% include 'footer.twig' %}
 
-    </div>
+
 
 
 </footer>
-
+</div>
 
 </div>
 </body>

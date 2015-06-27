@@ -1,0 +1,14 @@
+{# Add action template for Albums controller #}
+{% extends 'base.twig' %}
+
+{% block title %}{{  'Add category'|trans }}{% endblock %}
+
+{% block content %}
+    <h1>
+        {{ 'Add category'|trans }}
+    </h1>
+    <form action="{{ url('categories_add') }}" method="post">
+        {{ form_widget(form) }}
+        <input type="submit" name="submit" value="{{ 'Save'|trans }}" />
+    </form>
+{% endblock %}

@@ -4,10 +4,14 @@
 {% block title %}{{  'Ads list'|trans }}{% endblock %}
 
 {% block content %}
-
+<div class="jumbotron">
+    <h1 class="text-center">Advertising service</h1>
+    <p class="text-center">Buy, sold, rent</p>
+</div>
     {%  if ads|length > 0 %}
 
         <div class="row">
+
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <img src="#" alt="#">
@@ -61,7 +65,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
 
             <div>

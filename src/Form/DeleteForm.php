@@ -67,7 +67,7 @@ class AdForm extends AbstractType
                             'max' => 45,
                             'minMessage' => 'Minimalna ilość znaków to 3',
                             'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}',
-                         )),
+                        )),
                         new Assert\Type(
                             array(
                                 'type' => 'string',
@@ -98,15 +98,15 @@ class AdForm extends AbstractType
                     )
                 )
             )
-           /* ->add(
-                'ad_date', 'date', array(
-                    'input' => 'string',
-                    'widget' => 'single_text',
-                    'constraints' => array(
-                        new Assert\Date()
-                    )
-                )
-            )*/
+            /* ->add(
+                 'ad_date', 'date', array(
+                     'input' => 'string',
+                     'widget' => 'single_text',
+                     'constraints' => array(
+                         new Assert\Date()
+                     )
+                 )
+             )*/
             ->add(
                 'idcategory',
                 'choice',
@@ -114,10 +114,9 @@ class AdForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank()
                     ),
-                'choices' => $this->getCategories($this->app)
+                    'choices' => $this->getCategories($this->app)
                 )
-            )
-            ;
+            );
 
     }
 

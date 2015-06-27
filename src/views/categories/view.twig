@@ -1,0 +1,14 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <p>
+        <h1>Item</h1>
+    </p>
+    <p>
+        {% if category|length > 0 %}
+    {{ category.id|upper }}, {{ category.name|e }}
+{% else %}
+    Invalid data.
+{% endif %}
+    </p>
+{% endblock %}

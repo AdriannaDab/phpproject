@@ -2,15 +2,34 @@
 /**
  * Ads model.
  *
- * @link http://epi.uj.edu.pl
- * @author epi(at)uj(dot)edu(dot)pl
- * @copyright EPI 2015
+ * PHP version 5
+ *
+ * @category Model
+ * @package  Model
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  SVN: $id$
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Model;
 
 use Silex\Application;
 
+/**
+ * Class PostsModel
+ *
+ * @category Model
+ * @package  Model
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  Release: <package_version>
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+ * @uses Doctrine\DBAL\DBALException
+ * @uses Silex\Application
+ */
 class AdsModel
 {
     /**
@@ -36,12 +55,12 @@ class AdsModel
      * Gets all ads.
      *
      * @access public
-     * @return array Result
+     * @return array Ads Array
      */
     public function getAll()
     {
         try {
-            $query = 'SELECT idad, ad_name, ad_contence, idcategory FROM ads';
+            $query = 'SELECT * FROM ads';
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
@@ -53,13 +72,13 @@ class AdsModel
      *
      * @access public
      * @param integer $id Record Id
-     * @return array Result
+     * @return array Array contains information about single ad
      */
     public function getAd($id)
     {
         try {
             if (($id != '') && ctype_digit((string)$id)) {
-                $query = 'SELECT idad, ad_name, ad_contence FROM ads WHERE idad= ?';
+                $query = 'SELECT * FROM ads WHERE idad= ?';
                 $result = $this->_db->fetchAssoc($query, array((int)$id));
                 if (!$result) {
                     return array();
@@ -73,8 +92,6 @@ class AdsModel
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
     }
-
-
 
     /**
      * Get all ads on page
@@ -126,66 +143,6 @@ class AdsModel
         return (($page <= 1) || ($page > $pagesCount)) ? 1 : $page;
     }
 
-
-    /* Save ad.
-     *
-     * @access public
-     * @param array $ad Ad data
-     * @retun mixed Result
-     */
-    public function saveAd($ad)
-    {
-        if (isset($ad['idad'])
-            && ($ad['idad'] != '')
-            && ctype_digit((string)$ad['idad'])) {
-            $id = $ad['idad'];
-            unset($ad['idad']);
-            return $this->_db->update('ads', $ad, array('idad' => $id));
-        } else {
-            return $this->_db->insert('ads', $ad);
-        }
-
-    }
-
-    public function addAd($idad, $ad_name, $ad_contence)
-    {
-        try {
-            if (($idad != '') && ctype_digit((string)$idad)
-                && ($$ad_name != '') && ctype_digit((string)$$ad_name)
-                && ($ad_contence != '') && ctype_digit((string)$ad_contence)) {
-                $query = 'INSERT INTO `ads` (`idad`, `ad_name`, `ad_contence`)
-                    VALUES (' . $idad . ', ' . $ad_name . ', ' . $ad_contence . ');';
-                return $this->_db->fetchAssoc($query, array((int)$idad));
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' . $e->getMessage() . "\n";
-        }
-    }
-
-    /**
-     * Delete single ad data.
-     *
-     * @access public
-     * @param integer $idad Record Id
-     * @return array Result
-     */
-    public function deleteAd($idad)
-    {
-        try {
-            if (($idad != '') && ctype_digit((string)$idad) ) {
-                $query = 'DELETE FROM ads WHERE idad= ?';
-                return $this->_db->delete('ads', array('idad' => $idad));
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
-
     /**
      * Gets ads for pagination.
      *
@@ -219,6 +176,74 @@ class AdsModel
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+
+    /**
+    * Delete single ad data.
+    *
+    * @access public
+    * @param integer $idad Record Id
+    * @return array Result
+    */
+    public function deleteAd($idad)
+    {
+        try {
+            if (($idad != '') && ctype_digit((string)$idad) ) {
+                $query = 'DELETE FROM ads WHERE idad= ?';
+                return $this->_db->delete('ads', array('idad' => $idad));
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+    /* Save ad.
+     *
+     * @access public
+     * @param array $ad Ad data
+     * @retun mixed Result
+     */
+    public function saveAd($ad)
+    {
+        if (isset($ad['idad'])
+            && ($ad['idad'] != '')
+            && ctype_digit((string)$ad['idad'])) {
+            $id = $ad['idad'];
+            unset($ad['idad']);
+            return $this->_db->update('ads', $ad, array('idad' => $id));
+        } else {
+            return $this->_db->insert('ads', $ad);
+        }
+
+    }
+
+    /**
+     * Add single ad data.
+     *
+     * @access public
+     * @param integer $idad Record Id
+     * @param string $ad_name Title of an ad
+     * @param string $ad_contence Contence of an ad
+     * @return array Result
+     */
+    public function addAd($idad, $ad_name, $ad_contence)
+    {
+        try {
+            if (($idad != '') && ctype_digit((string)$idad)
+                && ($$ad_name != '') && ctype_digit((string)$$ad_name)
+                && ($ad_contence != '') && ctype_digit((string)$ad_contence)) {
+                $query = 'INSERT INTO `ads` (`idad`, `ad_name`, `ad_contence`)
+                    VALUES (' . $idad . ', ' . $ad_name . ', ' . $ad_contence . ');';
+                return $this->_db->fetchAssoc($query, array((int)$idad));
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
         }
     }
 
