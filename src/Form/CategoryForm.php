@@ -37,7 +37,6 @@ class CategoryForm extends AbstractType
             'idcategory', 'hidden',
             array(
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Type(array('type' => 'digit'))
                 )
             )

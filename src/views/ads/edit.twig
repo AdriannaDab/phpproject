@@ -4,8 +4,9 @@
 {% block title %}{{  'Edit ad'|trans }}{% endblock %}
 
 {% block content %}
+<div class="thumbnail">
 
-    <h1 class="text-center">
+  <h1 class="text-center">
         {{ 'Edit ad'|trans }}
     </h1>
 
@@ -14,6 +15,6 @@
     <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
          <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
-
+</div>
 {% endblock %}
 

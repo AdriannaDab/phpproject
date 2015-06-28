@@ -63,9 +63,9 @@ class AdForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 5,
+                            'min' => 6,
                             'max' => 45,
-                            'minMessage' => 'Minimalna ilość znaków to 3',
+                            'minMessage' => 'Minimalna ilość znaków to 6',
                             'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}',
                          )),
                         new Assert\Type(
@@ -84,9 +84,9 @@ class AdForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 5,
+                            'min' => 10,
                             'max' => 150,
-                            'minMessage' => 'Minimalna ilość znaków to 3',
+                            'minMessage' => 'Minimalna ilość znaków to 10',
                             'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}',
                         )),
                         new Assert\Type(

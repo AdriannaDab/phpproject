@@ -161,7 +161,7 @@ class AdsController implements ControllerProviderInterface
     public function addAction(Application $app, Request $request)
     {
         $data = array(
-            'ad_name' => 'Advertisement',
+            'ad_name' => 'Title',
             'ad_contence' => 'Contence',
             'ad_date' => date('Y-m-d'),
         );
@@ -222,7 +222,6 @@ class AdsController implements ControllerProviderInterface
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
 
                 $data = $form->getData();
                 $adsModel = new AdsModel($app);

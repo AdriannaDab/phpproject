@@ -72,7 +72,7 @@ class CategoriesController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $pageLimit = 3;
+        $pageLimit = 10;
         $page = (int) $request->get('page', 1);
         $categoriesModel = new CategoriesModel($app);
         $this->_view = array_merge(
@@ -158,6 +158,7 @@ class CategoriesController implements ControllerProviderInterface
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+
                 $data = $form->getData();
                 $categoriesModel = new CategoriesModel($app);
                 $categoriesModel->saveCategory($data);
@@ -203,14 +204,13 @@ class CategoriesController implements ControllerProviderInterface
 
             $form = $app['form.factory']
                 ->createBuilder(new CategoryForm(), $category)->getForm();
-            $form->remove('ad_name');
-            $form->remove('ad_contence');
+            $form->remove('category_name');
             $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
                 $categoriesModel = new CategoriesModel($app);
-                $categoriesModel->deleteCategory($data['id']);
+                $categoriesModel->deleteCategory($data['idcategory']);
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'danger', 'content' => $app['translator']->trans('Category deleted.')

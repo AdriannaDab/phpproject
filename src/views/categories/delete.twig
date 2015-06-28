@@ -4,12 +4,15 @@
 {% block title %}{{  'Delete category'|trans }}{% endblock %}
 
 {% block content %}
+    <div class="thumbnail">
     <h1>
         {{ 'Delete category'|trans }}
     </h1>
     <p>  {{ 'Do you really want to delete this'|trans }}?</p>
-    <form action="{{ url('categories_delete', {'id' : category.id}) }}" method="post">
+    <form action="{{ url('categories_delete', {'id' : category.idcategory}) }}" method="post">
         {{ form_widget(form) }}
-        <input type="submit" name="submit" value="{{ 'Delete'|trans }}" />
+        <input class="btn btn-danger" type="submit" name="submit" value="{{ 'Delete'|trans }}" />
+        <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
+    </div>
 {% endblock %}

@@ -147,14 +147,14 @@ class CategoriesModel
      */
     public function saveCategory($category)
     {
-        if (isset($category['id'])
-            && ($category['id'] != '')
-            && ctype_digit((string)$category['id'])) {
-            $id = $category['id'];
-            unset($category['id']);
-            return $this->_db->update('ads_categories', $category, array('id' => $id));
+        if (isset($category['idcategory'])
+            && ($category['idcategory'] != '')
+            && ctype_digit((string)$category['idcategory'])) {
+            $id = $category['idcategory'];
+            unset($category['idcategory']);
+            return $this->_db->update('ad_categories', $category, array('idcategory' => $id));
         } else {
-            return $this->_db->insert('ads_categories', $category);
+            return $this->_db->insert('ad_categories', $category);
         }
     }
 
@@ -173,8 +173,8 @@ class CategoriesModel
     {
         try {
             if (($id != '') && ctype_digit((string)$id) ) {
-                $query = 'DELETE FROM ad_categories WHERE idcategory= ?';
-                return $this->_db->delete('ads_categories', array('id' => $id));
+                $query = 'DELETE * FROM ad_categories WHERE idcategory= ?';
+                return $this->_db->delete('ad_categories', array('idcategory' => $id));
             } else {
                 return array();
             }

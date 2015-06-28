@@ -6,7 +6,7 @@
         <link href="{{ app.request.basepath }}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <script src="{{ app.request.basepath }}/assets/bootstrap/js/bootstrap.min.js"></script>
-        <title>{% block title %}Advertising service{% endblock %}</title>
+        <title>{% block title %}{{  'Advertising service'|trans }}{% endblock %}</title>
     {% endblock %}
 </head>
 
@@ -32,21 +32,13 @@
             {% block content %}{% endblock %}</div>
             {% block categories %}{% endblock %}
             {% block comments %}{% endblock %}
-        </div>
 
 
+    </div>
 <br>
 <br>
 <footer class="footer panel-footer">
-
-
-
-
                {% include 'footer.twig' %}
-
-
-
-
 </footer>
 </div>
 

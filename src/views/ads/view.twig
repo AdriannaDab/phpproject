@@ -1,18 +1,38 @@
 {% extends 'base.twig' %}
-
+{% block title %}{{  'View ad'|trans }}{% endblock %}
 {% block content %}
-    <p class="bg-info">
+<div class="thumbnail">
+
+
         {% if ad|length > 0 %}
-   <h1 class="text-center">{{ ad.ad_name|upper }}</h1>
-         <h2 class="text-center">{{ ad.ad_contence|e }}</h2>
-    </p>
+        <h3>{{ ad.ad_name|upper }}</h3>
+            <h4>{{ ad.ad_contence|e }}</h4>
+
+            <small>{{ ad.ad_date|e }}</small>
+
+
 {% else %}
     Invalid data.
 {% endif %}
+ </div>
 
 
+
+       {# {% if is_granted('ROLE_ADMIN') %}#}
+            <p>
+               <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+                                   class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+            <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
+                                    class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+
+       {# {% endif %}#}
+
+
+{#{% block comments %}#}
+    <div>
+      {# {{ render( path('/comments/',{'idad': post.idad|e})) }}#}
+    </div>
+{#{% endblock %}#}
 
 {% endblock %}
-
-
 

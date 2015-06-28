@@ -1,14 +1,19 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-    <p>
-        <h1>Item</h1>
-    </p>
+
     <p>
         {% if category|length > 0 %}
-    {{ category.id|upper }}, {{ category.name|e }}
+     {{ category.category_name|e }}
 {% else %}
     Invalid data.
 {% endif %}
+        <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
     </p>
+
+
+        <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"  title="{{ 'Edit category'|trans }}"class="btn btn-default">{{ 'Edit category'|trans }}</a>
+
+        <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"  class="btn btn-danger" title="{{ 'Delete category'|trans }}">{{ 'Delete category'|trans }}</a>
+
 {% endblock %}
