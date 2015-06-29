@@ -46,7 +46,12 @@ class CategoryForm extends AbstractType
                 array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 5))
+                        new Assert\Length(array('min' => 5)),
+                         new Assert\Regex(array(
+                             'pattern' => '/^(([A-ZĄĆĘŁŚŻŹ])+|[0-9]).*/',
+                             'match'   => true,
+                             'message' => 'Kategoria musi zaczynać się od wielkiej litery lub cyfry',
+                         ))
                     )
                 )
             );

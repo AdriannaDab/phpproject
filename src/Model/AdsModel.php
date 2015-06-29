@@ -60,7 +60,7 @@ class AdsModel
     public function getAll()
     {
         try {
-            $query = 'SELECT * FROM ads';
+            $query = 'SELECT * FROM ads ORDER BY ad_date DESC';
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
@@ -104,7 +104,7 @@ class AdsModel
      */
     public function getAdsPage($page, $limit, $pagesCount)
     {
-        $sql = 'SELECT idad, ad_name, ad_contence FROM ads LIMIT :start, :limit';
+        $sql = 'SELECT idad, ad_name, ad_contence FROM ads ORDER BY ad_date DESC LIMIT :start, :limit';
         $statement = $this->_db->prepare($sql);
         $statement->bindValue('start', ($page-1)*$limit, \PDO::PARAM_INT);
         $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
@@ -163,44 +163,6 @@ class AdsModel
         );
     }
 
-    /**
-     * Gets all categories.
-     *
-     * @access public
-     * @return array Result
-     */
-    public function getAllCategories()
-    {
-        try {
-            $query = 'SELECT idcategory, category_name FROM ads_categories';
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
-
-    /**
-    * Delete single ad data.
-    *
-    * @access public
-    * @param integer $idad Record Id
-    * @return array Result
-    */
-    public function deleteAd($idad)
-    {
-        try {
-            if (($idad != '') && ctype_digit((string)$idad) ) {
-                $query = 'DELETE FROM ads WHERE idad= ?';
-                return $this->_db->delete('ads', array('idad' => $idad));
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
     /* Save ad.
      *
      * @access public
@@ -219,6 +181,27 @@ class AdsModel
             return $this->_db->insert('ads', $ad);
         }
 
+    }
+
+    /**
+     * Delete single ad data.
+     *
+     * @access public
+     * @param integer $idad Record Id
+     * @return array Result
+     */
+    public function deleteAd($idad)
+    {
+        try {
+            if (($idad != '') && ctype_digit((string)$idad) ) {
+                $query = 'DELETE FROM ads WHERE idad= ?';
+                return $this->_db->delete('ads', array('idad' => $idad));
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
     }
 
     /**
@@ -247,4 +230,19 @@ class AdsModel
         }
     }
 
+    /**
+     * Gets all categories.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAllCategories()
+    {
+        try {
+            $query = 'SELECT idcategory, category_name FROM ads_categories';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
 }

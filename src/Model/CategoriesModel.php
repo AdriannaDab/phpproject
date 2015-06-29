@@ -33,6 +33,48 @@ class CategoriesModel
     }
 
     /**
+     * Gets all categories.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAll()
+    {
+        try {
+            $query = 'SELECT idcategory, category_name FROM ad_categories';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+    /**
+     * Gets single category data.
+     *
+     * @access public
+     * @param integer $id Record Id
+     * @return array Result
+     */
+    public function getCategory($id)
+    {
+        try {
+            if (($id != '') && ctype_digit((string)$id)) {
+                $query = 'SELECT idcategory, category_name FROM ad_categories WHERE idcategory= ?';
+                $result = $this->_db->fetchAssoc($query, array((int)$id));
+                if (!$result) {
+                    return array();
+                } else {
+                    return $result;
+                }
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Get all categories on page
      *
      * @access public
@@ -84,59 +126,26 @@ class CategoriesModel
         return (($page <= 1) || ($page > $pagesCount)) ? 1 : $page;
     }
 
+
     /**
-     * Gets all categories.
+     * Gets categories for pagination.
      *
      * @access public
+     * @param integer $page Page number
+     * @param integer $limit Number of records on single page
+     *
      * @return array Result
      */
-    public function getAll()
+    public function getPaginatedCategories($page, $limit)
     {
-        try {
-            $query = 'SELECT idcategory, category_name FROM ad_categories';
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
+        $pagesCount = $this->countCategoriesPages($limit);
+        $page = $this->getCurrentPageNumber($page, $pagesCount);
+        $categories = $this->getCategoriesPage($page, $limit);
+        return array(
+            'categories' => $categories,
+            'paginator' => array('page' => $page, 'pagesCount' => $pagesCount)
+        );
     }
-
-    /**
-     * Gets single category data.
-     *
-     * @access public
-     * @param integer $id Record Id
-     * @return array Result
-     */
-    public function getCategory($id)
-    {
-        try {
-            if (($id != '') && ctype_digit((string)$id)) {
-                $query = 'SELECT idcategory, category_name FROM ad_categories WHERE idcategory= ?';
-                $result = $this->_db->fetchAssoc($query, array((int)$id));
-                if (!$result) {
-                    return array();
-                } else {
-                    return $result;
-                }
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
-
-
-    /**
-     * Add single category data.
-     *
-     * @access public
-     * @param integer $id Record Id
-     * @param string $title Record Title
-     * @param string $artist Record Artist
-     * @return array Result
-     */
 
     /**
      * Save category.
@@ -157,10 +166,6 @@ class CategoriesModel
             return $this->_db->insert('ad_categories', $category);
         }
     }
-
-
-
-
 
     /**
      * Delete single category data.
@@ -183,25 +188,42 @@ class CategoriesModel
         }
     }
 
-
     /**
-     * Gets categories for pagination.
+     * Gets ads from one category
      *
      * @access public
-     * @param integer $page Page number
-     * @param integer $limit Number of records on single page
-     *
+     * @param array $ads ads data
      * @return array Result
      */
-    public function getPaginatedCategories($page, $limit)
+    public function getAdsListByIdcategory($id)
     {
-        $pagesCount = $this->countCategoriesPages($limit);
-        $page = $this->getCurrentPageNumber($page, $pagesCount);
-        $categories = $this->getCategoriesPage($page, $limit);
-        return array(
-            'categories' => $categories,
-            'paginator' => array('page' => $page, 'pagesCount' => $pagesCount)
-        );
+        $sql = 'SELECT *
+            FROM ads
+            natural join ad_categories
+            where idcategory = ?';
+        return $this->_db->fetchAll($sql, array($id));
+    }
+
+
+
+
+    /**
+     * Check if category id exists
+     *
+     * @param $idcategory id category from request
+     *
+     * @access public
+     * @return bool True if exists.
+     */
+    public function checkCategoryId($idcategory)
+    {
+        $sql = 'SELECT * FROM ad_categories WHERE idcategory=?';
+        $result = $this->_db->fetchAll($sql, array($idcategory));
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -6,7 +6,7 @@
 {% block content %}
 <div class="jumbotron">
     <h1 class="text-center">Advertising service</h1>
-    <p class="text-center">Buy, sold, rent</p>
+    <p class="text-center">What are you looking for?</p>
 </div>
     {%  if ads|length > 0 %}
 
@@ -15,11 +15,11 @@
             <div class="col-sm-6 col-md-4">
 
                 <div class="thumbnail">
-                    <img src="#" alt="#">
+                    {#<img src="#" alt="#">#}
                     <div class="caption">
 
                         <h3>{{ ad.ad_name|e }}</h3>
-                        <p>{{ ad.ad_contence|e }}</p>
+                        <p>{{ ad.ad_contence|slice(0,20) }}...</p>
                         <p><a href="{{ url('ads_view', {'id': ad.idad}) }}" title="{{ 'View ad'|trans }}"
                               class="btn btn-primary" role="button">{{ 'View ad'|trans }}</a>
                             <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
@@ -34,18 +34,18 @@
         {% endfor %}
 
 <br>
-            <div>
+            <div class="row">
 
                 <ul class="pager">
                     {% if paginator.page > 1 %}
                     {% set previous = (paginator.page - 1) %}
                     <li class="previous"><a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}">
-                    <span aria-hidden="true">&larr;</span> Older</a></li>
+                    <span aria-hidden="true">&larr;</span> Newer</a></li>
                     {%  endif %}
                     {% if paginator.page < paginator.pagesCount %}
                     {% set next = (paginator.page + 1) %}
                     <li class="next"><a href={{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}">
-                    Newer <span aria-hidden="true">&rarr;</span></a></li>
+                    Older <span aria-hidden="true">&rarr;</span> </a> </li>
                     {% endif  %}
                 </ul>
             </div>

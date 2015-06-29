@@ -1,19 +1,33 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+    {% if ads|length > 0 %}
+        <div>
+        {% for ad in ads %}
+            <div class="thumbnail">
+                <h2>
 
-    <p>
-        {% if category|length > 0 %}
-     {{ category.category_name|e }}
-{% else %}
-    Invalid data.
-{% endif %}
+                    <h2 >
+                        <a href="{{ url('ads_view', {'id': ad.idad|e}) }}" title="View ad">
+                            {{ ad.ad_name|e }}
+                        </a>
+                    </h2>
+                    <small>{{ ad.ad_date|e }}</small>
+                    <hr>
+                </h2>
+                <p>{{ ad.ad_contence|slice(0,20) }}...</p>
+
+            </div>
+        {% endfor %}
         <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
-    </p>
+    {% else %}
+        <div class="thumbnail">
+        <p>
+            Didn't found any ads. Sorry.
+        </p>
+            <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 
-
-        <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"  title="{{ 'Edit category'|trans }}"class="btn btn-default">{{ 'Edit category'|trans }}</a>
-
-        <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"  class="btn btn-danger" title="{{ 'Delete category'|trans }}">{{ 'Delete category'|trans }}</a>
-
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -6,7 +6,7 @@
 {% block content %}
     <div class="jumbotron">
         <h1 class="text-center">Advertising service</h1>
-        <p class="text-center">Buy, sold, rent</p>
+        <p class="text-center">What are you looking for?</p>
     </div>
 
     <div class="thumbnail">
@@ -16,7 +16,7 @@
         <table class="table table-hover ">
             <thead>
             <tr class="active">
-                <th></th>
+
                 <th class="text-center">{{ 'Name'|trans }}</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
@@ -24,13 +24,15 @@
             <tbody>
             {% for category in categories %}
                 <tr class="text-center">
-                    <td></td>
+
                     <td>
                         <a href="{{ url('categories_view', {'id': category.idcategory}) }}"  title="{{ 'View category'|trans }}"
                            class="btn btn-info">{{ category.category_name|e }}</a>
                     </td>
                     <td>
+                        <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"  title="{{ 'Edit category'|trans }}"class="btn btn-default">{{ 'Edit category'|trans }}</a>
 
+                        <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"  class="btn btn-danger" title="{{ 'Delete category'|trans }}">{{ 'Delete category'|trans }}</a>
                     </td>
                 </tr>
             {% endfor %}

@@ -6,9 +6,11 @@
 
         {% if ad|length > 0 %}
         <h3>{{ ad.ad_name|upper }}</h3>
+            <small>{{ ad.ad_date|e }}</small>
+            <hr>
             <h4>{{ ad.ad_contence|e }}</h4>
 
-            <small>{{ ad.ad_date|e }}</small>
+
 
 
 {% else %}
@@ -27,7 +29,7 @@
 
        {# {% endif %}#}
 
-
+    <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 {#{% block comments %}#}
     <div>
       {# {{ render( path('/comments/',{'idad': post.idad|e})) }}#}
