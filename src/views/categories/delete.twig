@@ -1,18 +1,18 @@
 {# Add action template for Albums controller #}
 {% extends 'base.twig' %}
-
 {% block title %}{{  'Delete category'|trans }}{% endblock %}
-
 {% block content %}
-    <div class="thumbnail">
-    <h1>
+<div class="thumbnail">
+    <h1 class="text-center">
         {{ 'Delete category'|trans }}
     </h1>
-    <p>  {{ 'Do you really want to delete this'|trans }}?</p>
+    <p>
+        {{ 'Do you really want to delete this'|trans }}?
+    </p>
     <form action="{{ url('categories_delete', {'id' : category.idcategory}) }}" method="post">
         {{ form_widget(form) }}
         <input class="btn btn-danger" type="submit" name="submit" value="{{ 'Delete'|trans }}" />
         <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
-    </div>
+</div>
 {% endblock %}

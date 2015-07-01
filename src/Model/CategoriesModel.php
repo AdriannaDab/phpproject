@@ -2,15 +2,26 @@
 /**
  * Categories model.
  *
- * @link http://epi.uj.edu.pl
- * @author epi(at)uj(dot)edu(dot)pl
- * @copyright EPI 2015
+ * @category Model
+ * @package  Model
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Model;
 
 use Silex\Application;
-
+/**
+ * Class CategoriessModel
+ *
+* @category Model
+* @package  Model
+* @author   Adrianna Dąbkowska
+* @email    adrianna.dabkowska@uj.edu.pl
+* @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+* @uses Silex\Application
+*/
 class CategoriesModel
 {
     /**
@@ -25,7 +36,7 @@ class CategoriesModel
      * Object constructor.
      *
      * @access public
-     * @param Silex\Application $app Silex application
+     * @param Silex\Application $app Silex application object
      */
     public function __construct(Application $app)
     {
@@ -41,7 +52,12 @@ class CategoriesModel
     public function getAll()
     {
         try {
-            $query = 'SELECT idcategory, category_name FROM ad_categories';
+            $query = '
+              SELECT
+                idcategory, category_name
+              FROM
+                ad_categories
+            ';
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
@@ -59,7 +75,14 @@ class CategoriesModel
     {
         try {
             if (($id != '') && ctype_digit((string)$id)) {
-                $query = 'SELECT idcategory, category_name FROM ad_categories WHERE idcategory= ?';
+                $query = '
+                  SELECT
+                    idcategory, category_name
+                  FROM
+                    ad_categories
+                  WHERE
+                    idcategory= ?
+                ';
                 $result = $this->_db->fetchAssoc($query, array((int)$id));
                 if (!$result) {
                     return array();
@@ -85,7 +108,13 @@ class CategoriesModel
      */
     public function getCategoriesPage($page, $limit)
     {
-        $sql = 'SELECT idcategory, category_name FROM ad_categories LIMIT :start, :limit';
+        $sql = '
+          SELECT
+            idcategory, category_name
+          FROM
+            ad_categories
+          LIMIT :start, :limit
+        ';
         $statement = $this->_db->prepare($sql);
         $statement->bindValue('start', ($page-1)*$limit, \PDO::PARAM_INT);
         $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
@@ -103,7 +132,13 @@ class CategoriesModel
     public function countCategoriesPages($limit)
     {
         $pagesCount = 0;
-        $sql = 'SELECT COUNT(*) as pages_count FROM ad_categories';
+        $sql = '
+          SELECT COUNT(*)
+          AS
+            pages_count
+          FROM
+            ad_categories
+        ';
         $result = $this->_db->fetchAssoc($sql);
         if ($result) {
             $pagesCount =  ceil($result['pages_count']/$limit);
@@ -143,7 +178,9 @@ class CategoriesModel
         $categories = $this->getCategoriesPage($page, $limit);
         return array(
             'categories' => $categories,
-            'paginator' => array('page' => $page, 'pagesCount' => $pagesCount)
+            'paginator' => array(
+                'page' => $page,
+                'pagesCount' => $pagesCount)
         );
     }
 
@@ -178,7 +215,14 @@ class CategoriesModel
     {
         try {
             if (($id != '') && ctype_digit((string)$id) ) {
-                $query = 'DELETE * FROM ad_categories WHERE idcategory= ?';
+                $query = '
+                  DELETE
+                    *
+                  FROM
+                    ad_categories
+                  WHERE
+                    idcategory= ?
+                ';
                 return $this->_db->delete('ad_categories', array('idcategory' => $id));
             } else {
                 return array();
@@ -197,14 +241,18 @@ class CategoriesModel
      */
     public function getAdsListByIdcategory($id)
     {
-        $sql = 'SELECT *
-            FROM ads
-            natural join ad_categories
-            where idcategory = ?';
+        $sql = '
+            SELECT
+              *
+            FROM
+              ads
+            NATURAL JOIN
+             ad_categories
+            WHERE
+              idcategory = ?
+        ';
         return $this->_db->fetchAll($sql, array($id));
     }
-
-
 
 
     /**
@@ -217,7 +265,14 @@ class CategoriesModel
      */
     public function checkCategoryId($idcategory)
     {
-        $sql = 'SELECT * FROM ad_categories WHERE idcategory=?';
+        $sql = '
+          SELECT
+            *
+          FROM
+            ad_categories
+          WHERE
+            idcategory=?
+        ';
         $result = $this->_db->fetchAll($sql, array($idcategory));
         if ($result) {
             return true;
@@ -225,5 +280,4 @@ class CategoriesModel
             return false;
         }
     }
-
 }

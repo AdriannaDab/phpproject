@@ -2,10 +2,14 @@
 /**
  * User provider.
  *
- * @author EPI <epi@uj.edu.pl>
- * @link http://epi.uj.edu.pl
- * @copyright 2015 EPI
- */
+ * PHP version 5
+ *
+ * @category Provider
+ * @package  Provider
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+ **/
 
 namespace Provider;
 
@@ -23,6 +27,11 @@ use Model\UsersModel;
  *
  * @category Epi
  * @package Provider
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  Release: <package_version>
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  * @use Silex\Application
  * @use Symfony\Component\Security\Core\User\UserProviderInterface
  * @use Symfony\Component\Security\Core\User\UserInterface
@@ -31,7 +40,7 @@ use Model\UsersModel;
  * @use Symfony\Component\Security\Core\Exception\UnsupportedUserException
  * @use Model\UsersModel
  */
-class UserProvider implements UserProviderInterface//realizuje ten kontrakt
+class UserProvider implements UserProviderInterface
 {
     /**
      * Silex application.

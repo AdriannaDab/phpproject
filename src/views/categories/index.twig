@@ -1,77 +1,68 @@
 {# Index action template for Categories controller #}
 {% extends 'base.twig' %}
-
 {% block title %}{{  'Categories list'|trans }}{% endblock %}
-
 {% block content %}
-    <div class="jumbotron">
-        <h1 class="text-center">Advertising service</h1>
+<div class="jumbotron">
+    <h1 class="text-center">Advertising service</h1>
         <p class="text-center">What are you looking for?</p>
-    </div>
-
-    <div class="thumbnail">
-
+</div>
+<div class="thumbnail">
     {%  if categories|length > 0 %}
-
-        <table class="table table-hover ">
-            <thead>
+    <table class="table table-hover ">
+        <thead>
             <tr class="active">
-
                 <th class="text-center">{{ 'Name'|trans }}</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             {% for category in categories %}
-                <tr class="text-center">
-
-                    <td>
-                        <a href="{{ url('categories_view', {'id': category.idcategory}) }}"  title="{{ 'View category'|trans }}"
-                           class="btn btn-info">{{ category.category_name|e }}</a>
-                    </td>
-                    <td>
-                        <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"  title="{{ 'Edit category'|trans }}"class="btn btn-default">{{ 'Edit category'|trans }}</a>
-
-                        <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"  class="btn btn-danger" title="{{ 'Delete category'|trans }}">{{ 'Delete category'|trans }}</a>
-                    </td>
-                </tr>
+            <tr class="text-center">
+                <td>
+                    <a href="{{ url('categories_view', {'id': category.idcategory}) }}"
+                       title="{{ 'View category'|trans }}"
+                       class="btn btn-info">{{ category.category_name|e }}</a>
+                </td>
+                <td>
+                    <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"
+                       title="{{ 'Edit category'|trans }}"
+                       class="btn btn-default">{{ 'Edit category'|trans }}</a>
+                    <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"
+                       title="{{ 'Delete category'|trans }}"
+                       class="btn btn-danger">{{ 'Delete category'|trans }}</a>
+                </td>
+            </tr>
             {% endfor %}
-            </tbody>
-        </table>
-
-
-        <div>
-
-            <ul class="pager">
-                {% if paginator.page > 1 %}
-                    {% set previous = (paginator.page - 1) %}
-                    <li class="previous"><a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}">
-                            <span aria-hidden="true">&larr;</span> Older</a></li>
-                {%  endif %}
-                {% if paginator.page < paginator.pagesCount %}
-                    {% set next = (paginator.page + 1) %}
-                    <li class="next"><a href={{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}">
-                        Newer <span aria-hidden="true">&rarr;</span></a></li>
-                {% endif  %}
-            </ul>
-        </div>
-
-
-        <a href="{{ url('categories_add') }}" class="btn btn-default" title="{{ 'Add category'|trans }}">
-            {{ 'Add category'|trans }}
-        </a>
+        </tbody>
+    </table>
+    <div>
+        <ul class="pager">
+            {% if paginator.page > 1 %}
+                {% set previous = (paginator.page - 1) %}
+                <li class="previous">
+                    <a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}">
+                        <span aria-hidden="true">&larr;</span> Older </a></li>
+            {%  endif %}
+            {% if paginator.page < paginator.pagesCount %}
+                {% set next = (paginator.page + 1) %}
+                <li class="next">
+                    <a href={{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}">
+                    Newer <span aria-hidden="true">&rarr;</span></a></li>
+            {% endif  %}
+        </ul>
+    </div>
+    <a href="{{ url('categories_add') }}" class="btn btn-default" title="{{ 'Add category'|trans }}">
+        {{ 'Add category'|trans }}
+    </a>
     {% else %}
-        <div class="alert alert-danger" role="alert">
-            {{ 'Categories not found'|trans }}.
-        </div>
+    <div class="alert alert-danger" role="alert">
+        {{ 'Categories not found'|trans }}.
+    </div>
     {% endif %}
     {% for flashMessage in app.session.getFlashBag.get('message') %}
-        <div class="alert alert-{{ flashMessage.type }}" role="alert">
-            {{ flashMessage.content }}
-        </div>
-
-
-        </div>
-
+    <div class="alert alert-{{ flashMessage.type }}" role="alert">
+        {{ flashMessage.content }}
+    </div>
+</div>
     {% endfor %}
 {% endblock %}

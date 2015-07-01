@@ -2,9 +2,13 @@
 /**
  * Ad form.
  *
- * @author EPI <epi@uj.edu.pl>
- * @link http://epi.uj.edu.pl
- * @copyright 2015 EPI
+ * PHP version 5
+ *
+ * @category Form
+ * @package  Form
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Form;
@@ -19,18 +23,32 @@ use Model\CategoriesModel;
 /**
  * Class AdForm.
  *
- * @category Epi
- * @package Form
- * @extends AbstractType
- * @use Symfony\Component\Form\AbstractType
- * @use Symfony\Component\Form\FormBuilderInterface
- * @use Symfony\Component\OptionsResolver\OptionsResolverInterface
- * @use Symfony\Component\Validator\Constraints as Assert
+ * @category Form
+ * @package  Form
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+ * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\FormBuilderInterface
+ * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
+ * @uses Symfony\Component\Validator\Constraints as Assert
  */
 class AdForm extends AbstractType
 {
+    /**
+     * AdsForm object.
+     *
+     * @var $app
+     * @access protected
+     */
     protected $app;
 
+    /**
+     * Object constructor.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     */
     public function __construct($app)
     {
         $this-> app = $app;
@@ -98,26 +116,16 @@ class AdForm extends AbstractType
                     )
                 )
             )
-           /* ->add(
-                'ad_date', 'date', array(
-                    'input' => 'string',
-                    'widget' => 'single_text',
-                    'constraints' => array(
-                        new Assert\Date()
-                    )
-                )
-            )*/
-            ->add(
-                'idcategory',
-                'choice',
-                array(
-                    'constraints' => array(
-                        new Assert\NotBlank()
-                    ),
-                'choices' => $this->getCategories($this->app)
-                )
-            )
-            ;
+           ->add(
+               'idcategory',
+               'choice',
+               array(
+                   'constraints' => array(
+                       new Assert\NotBlank()
+                   ),
+               'choices' => $this->getCategories($this->app)
+               )
+           );
 
     }
 

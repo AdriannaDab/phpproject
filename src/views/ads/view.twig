@@ -2,39 +2,27 @@
 {% block title %}{{  'View ad'|trans }}{% endblock %}
 {% block content %}
 <div class="thumbnail">
-
-
-        {% if ad|length > 0 %}
+    {% if ad|length > 0 %}
         <h3>{{ ad.ad_name|upper }}</h3>
-            <small>{{ ad.ad_date|e }}</small>
-            <hr>
-            <h4>{{ ad.ad_contence|e }}</h4>
-
-
-
-
-{% else %}
-    Invalid data.
-{% endif %}
+        <small>{{ ad.ad_date|e }}</small>
+        <hr>
+        <h4>{{ ad.ad_contence|e }}</h4>
+    {% else %}
+        Invalid data.
+    {% endif %}
  </div>
-
-
-
-       {# {% if is_granted('ROLE_ADMIN') %}#}
-            <p>
-               <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
-                                   class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
-            <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
-                                    class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
-
-       {# {% endif %}#}
-
+ {# {% if is_granted('ROLE_ADMIN') %}#}
+    <p>
+        <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+           class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+        <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
+           class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+ {# {% endif %}#}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
-{#{% block comments %}#}
+{% block comments %}
     <div>
-      {# {{ render( path('/comments/',{'idad': post.idad|e})) }}#}
+      {{ render( path('/comments/',{'idad': ad.idad|e})) }}
     </div>
-{#{% endblock %}#}
-
+{% endblock %}
 {% endblock %}
 

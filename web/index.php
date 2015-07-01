@@ -45,7 +45,7 @@ $app->register(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
             'dbname'    => 'baza!',
-            'user'      => 'nazwa!',
+            'user'      => 'user!',
             'password'  => 'haslo!',
             'charset'   => 'utf8',
         ),
@@ -76,5 +76,7 @@ $app->get('/', function () use ($app) {
 date_default_timezone_set('Europe/Warsaw');
 
 $app->mount('/ads/', new Controller\AdsController());
+$app->mount('/categories/', new Controller\CategoriesController());
+$app->mount('/comments/', new Controller\CommentsController());
 
 $app->run();

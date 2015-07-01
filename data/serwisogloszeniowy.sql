@@ -135,7 +135,7 @@ CREATE TABLE `ad_categories` (
   `idcategory` int(11) NOT NULL auto_increment,
   `category_name` varchar(60) NOT NULL,
   PRIMARY KEY  (`idcategory`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +144,7 @@ CREATE TABLE `ad_categories` (
 
 LOCK TABLES `ad_categories` WRITE;
 /*!40000 ALTER TABLE `ad_categories` DISABLE KEYS */;
-INSERT INTO `ad_categories` VALUES (1,'Properties'),(2,'Motorisation'),(3,'Electronics'),(4,'Fashion'),(5,'Sport'),(6,'Animals'),(7,'Furniture');
+INSERT INTO `ad_categories` VALUES (1,'Properties'),(2,'Motorisation'),(15,'Electronics'),(4,'Fashion'),(5,'Sport'),(6,'Animals'),(7,'Furniture'),(14,'Different stuff');
 /*!40000 ALTER TABLE `ad_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,6 +173,32 @@ LOCK TABLES `ad_users` WRITE;
 /*!40000 ALTER TABLE `ad_users` DISABLE KEYS */;
 INSERT INTO `ad_users` VALUES (1,1,'ada','aaa','ada@onet.pl'),(2,2,'aga','bbb','aga@onet.pl'),(3,2,'natalia','bbb','natalia@onet.pl'),(4,2,'pawel','bbb','pawel@onet.pl'),(5,2,'szymon','bbb','szymon@onet.pl'),(6,2,'krzysztof','bbb','krzysztof@onet.pl'),(7,2,'paula','bbb','paula@onet.pl'),(8,2,'marcin','bbb','marcin@onet.pl'),(9,3,'boss','ccc','boss@onet.pl');
 /*!40000 ALTER TABLE `ad_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_comments`
+--
+
+DROP TABLE IF EXISTS `ad_comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_comments` (
+  `idcomment` int(11) NOT NULL auto_increment,
+  `contence` varchar(45) NOT NULL,
+  `comment_date` date default NULL,
+  `idad` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  PRIMARY KEY  (`idcomment`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_comments`
+--
+
+LOCK TABLES `ad_comments` WRITE;
+/*!40000 ALTER TABLE `ad_comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -259,14 +285,14 @@ DROP TABLE IF EXISTS `ads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ads` (
-  `idad` int(11) NOT NULL auto_increment,
-  `iduser` int(11) default NULL,
-  `idcategory` int(11) default NULL,
-  `ad_name` varchar(60) default NULL,
-  `ad_date` datetime default NULL,
-  `ad_contence` varchar(200) default NULL,
+  `idad` int(11) unsigned NOT NULL auto_increment,
+  `iduser` int(11) unsigned default NULL,
+  `idcategory` int(11) unsigned default NULL,
+  `ad_name` varchar(60) NOT NULL,
+  `ad_date` date default NULL,
+  `ad_contence` varchar(200) NOT NULL,
   PRIMARY KEY  (`idad`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +301,7 @@ CREATE TABLE `ads` (
 
 LOCK TABLES `ads` WRITE;
 /*!40000 ALTER TABLE `ads` DISABLE KEYS */;
-INSERT INTO `ads` VALUES (1,1,1,'Little house for sale','0000-00-00 00:00:00','Mam do sprzedania domek na wzgórzu.');
+INSERT INTO `ads` VALUES (11,NULL,6,'Oddam w dobre rÄ™ce','2015-06-26','Piesek, miÅ‚y, maÅ‚y, kudÅ‚aty, przyjazny. Kontakt tel.450983489'),(3,1,1,'Domek na wsi','0000-00-00','duzy domek'),(4,2,4,'Sukieneczka','2015-06-27','czerwona, zwiewna, piÄ™kna, cud miÃ³d'),(23,NULL,1,'PokÃ³j marzeÅ„!','2015-06-29','20m2, z widokiem na gÃ³ry, miÅ‚e sÄ…siedztwo, wynajmÄ™ od lipca!'),(21,NULL,5,'Szukam trenera','2015-06-29','MÅ‚oda studentka szuka trenera na wakacje, by zgubiÄ‡ parÄ™ kilogramÃ³w. Kontakt pod tel. 63463294952948574298'),(25,NULL,4,'Super buty!','2015-07-01','Nowiutkie, rozmiar 40, mÄ™skie, skÃ³rzane.');
 /*!40000 ALTER TABLE `ads` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -288,4 +314,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-23 17:57:56
+-- Dump completed on 2015-07-01 20:17:19

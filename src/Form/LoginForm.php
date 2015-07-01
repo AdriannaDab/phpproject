@@ -2,9 +2,13 @@
 /**
  * Log in form.
  *
- * @author EPI <epi@uj.edu.pl>
- * @link http://epi.uj.edu.pl
- * @copyright 2015 EPI
+ * PHP version 5
+ *
+ * @category Form
+ * @package  Form
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Form;
@@ -17,13 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class LoginForm.
  *
- * @category Epi
- * @package Form
- * @extends AbstractType
- * @use Symfony\Component\Form\AbstractType
- * @use Symfony\Component\Form\FormBuilderInterface
- * @use Symfony\Component\OptionsResolver\OptionsResolverInterface
- * @use Symfony\Component\Validator\Constraints as Assert
+ * @category Form
+ * @package  Form
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+ * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\FormBuilderInterface
+ * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
+ * @uses Symfony\Component\Validator\Constraints as Assert
  */
 class LoginForm extends AbstractType
 {
@@ -44,7 +50,12 @@ class LoginForm extends AbstractType
             array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('min' => 8, 'max' => 16))
+                    new Assert\Length(array(
+                        'min' => 8,
+                        'max' => 16,
+                        'minMessage' => 'Minimalna ilość znaków to 6',
+                        'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}'
+                    ))
                 )
             )
         )
@@ -54,7 +65,10 @@ class LoginForm extends AbstractType
                 array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 8))
+                        new Assert\Length(array(
+                            'min' => 8,
+                            'minMessage' => 'Minimalna ilość znaków to 8'
+                        ))
                     )
                 )
             );

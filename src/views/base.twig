@@ -6,42 +6,38 @@
         <link href="{{ app.request.basepath }}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <script src="{{ app.request.basepath }}/assets/bootstrap/js/bootstrap.min.js"></script>
-        <title>{% block title %}{{  'Advertising service'|trans }}{% endblock %}</title>
+
+        <title>
+            {% block title %}{{  'Advertising service'|trans }}{% endblock %}
+        </title>
     {% endblock %}
 </head>
-
 <body>
-<div class="container">
-<div class="row">
-    <div class="box">
-<nav class="navbar navbar-inverse" role="navigation">
-   {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
-    {% include 'main_menu.twig' %}
-    {#{% endif %}#}
-</nav>
-
-
-        <div>
-            {% for flashMessage in app.session.getFlashBag.get('message') %}
+    <div class="container">
+        <div class="row">
+            <div class="box">
+                <nav class="navbar navbar-inverse" role="navigation">
+                    {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+                        {% include 'main_menu.twig' %}
+                    {#{% endif %}#}
+                </nav>
+            <div>
+                {% for flashMessage in app.session.getFlashBag.get('message') %}
                 <div class="alert alert-{{ flashMessage.type }}">
                     {{ flashMessage.content }}
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+                <div id="content">
+                    {% block content %}{% endblock %}</div>
+
+                    {% block comments %}{% endblock %}
+            </div>
+            <br><br>
+            <footer class="footer panel-footer">
+                {% include 'footer.twig' %}
+            </footer>
         </div>
-            <div id="content">
-            {% block content %}{% endblock %}</div>
-            {% block categories %}{% endblock %}
-            {% block comments %}{% endblock %}
-
-
     </div>
-<br>
-<br>
-<footer class="footer panel-footer">
-               {% include 'footer.twig' %}
-</footer>
-</div>
-
-</div>
 </body>
 </html>

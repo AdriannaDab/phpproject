@@ -2,24 +2,32 @@
 /**
  * Users model.
  *
- * @author EPI <epi@uj.edu.pl>
- * @link http://epi.uj.edu.pl
- * @copyright 2015 EPI
+ * @category Model
+ * @package  Model
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Model;
 
-use Doctrine\DBAL\DBALException;
 use Silex\Application;
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * Class Users.
  *
- * @category Epi
- * @package Model
- * @use Silex\Application
+ * @category Model
+ * @package  Model
+ * @author   Adrianna Dąbkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
+ * @uses Silex\Application
+ * @uses Doctrine\DBAL\DBALException;
+ * @uses Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+ * @uses Symfony\Component\Security\Core\Exception\UsernameNotFoundException; *
  */
 class UsersModel
 {
@@ -50,7 +58,7 @@ class UsersModel
      * @throws UsernameNotFoundException
      * @return array Result
      */
-    public function loadUserByLogin($login) //pobiera role uzytkownika
+    public function loadUserByLogin($login)
     {
         $user = $this->getUserByLogin($login);
 
@@ -113,9 +121,9 @@ class UsersModel
      *
      * @return array Result
      */
-    public function getUserRoles($userId)//pobranie roli
+    public function getUserRoles($userId)
     {
-        $roles = array();//zwykle query
+        $roles = array();
         try {
             $query = '
                 SELECT
