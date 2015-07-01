@@ -82,10 +82,10 @@ class CommentsModel
      * @access public
      * @return array Associative array with comments
      */
-    public function getComment($idcomment)
+    public function getComment($idad)
     {
         try {
-            if (($idcomment != '') && ctype_digit((string)$idcomment)) {
+            if (($idad != '') && ctype_digit((string)$idad)) {
                 $query = '
                   SELECT
                     *
@@ -94,7 +94,7 @@ class CommentsModel
                   WHERE
                     idcomment = ? LIMIT 1
                 ';
-                $result = $this->_db->fetchAssoc($query, array((int)$idcomment));
+                $result = $this->_db->fetchAssoc($query, array((int)$idad));
                 if (!$result) {
                     return array();
                 } else {
@@ -198,7 +198,7 @@ class CommentsModel
      * @access public
      * @return bool true if exists.
      */
-    public function checkCommentId($idcomment)
+    public function checkCommentId($idad)
     {
         $query = '
           SELECT
@@ -207,7 +207,7 @@ class CommentsModel
             ad_comments
           WHERE
             idcomment=?';
-        $result = $this->_db->fetchAll($query, array($idcomment));
+        $result = $this->_db->fetchAll($query, array($idad));
         if ($result) {
             return true;
         } else {

@@ -113,7 +113,7 @@ class CommentsController implements ControllerProviderInterface
     {
         $id = (int)$request->get('idad', 0);
         $commentsModel = new CommentsModel($app);
-        $this->_ads = $commentsModel ->checkCommentId($idcomment);
+        $this->_ads = $commentsModel ->checkCommentId($idad);
         if ($this->_ads) {
             $comments = $this->_model = $commentsModel ->getCommentsList($id);
             //$_isLogged = $this->_user->_isLoggedIn($app);
