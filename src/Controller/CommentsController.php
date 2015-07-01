@@ -165,7 +165,9 @@ class CommentsController implements ControllerProviderInterface
             $data = array(
                 'comment_date' => date('Y-m-d'),
                 'idad' => $idad,
-                //'iduser' => $iduser,
+                'contence' => $contence,
+                'idcomment' => $idcomment,
+                'iduser' => $iduser
             );
             $form = $app['form.factory']
                 ->createBuilder(new CommentForm($app), $data)->getForm();
