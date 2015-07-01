@@ -111,9 +111,12 @@ class CommentsController implements ControllerProviderInterface
     public function indexAction(Application $app, Request $request)
     {
             $idAd = (int)$request->get('idad', 0); //pobieramy id z geta
-               $checkAd = $this->_ads->checkAdsId($idAd); //używając funkcje z modelu sprawdzamy czy jest ogłószenie o takim id
+            $adsModel = new AdsModel($app);
+            $checkAd = $this->_ads = $adsModel->checkAdsId($idAd);
+              // $checkAd = $this->_ads->checkAdsId($idAd); //używając funkcje z modelu sprawdzamy czy jest ogłószenie o takim id
                 if ($checkAd) { //jeśli tak to działamy dalej
-                    $comments = $this->_model->getCommentsList($idAd); //pobieramy listę komentarzy
+                    $commentsModel = new CommentsModel($app);
+                    $comments = $this->_model = $commentsModel->getCommentsList($idAd); //pobieramy listę komentarzy
             //$_isLogged = $this->_user->_isLoggedIn($app);
             //if ($_isLogged) {
             //    $access = $this->_user->getIdCurrentUser($app);
@@ -149,9 +152,10 @@ class CommentsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        var_dump('add');die();
+        //var_dump('add');die();
         $idad = (int)$request->get('idad', 0);
-        $check = $this->_ads->checkAdId($idad);
+        $adsModel = new AdsModel($app);
+        $check = $this->_ads = $adsModel->checkAdsId($idad);
         if ($check) {
             //if ($this->_user->_isLoggedIn($app)) {
             //    $iduser = $this->_user->getIdCurrentUser($app);
