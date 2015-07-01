@@ -19,6 +19,7 @@
            class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
  {# {% endif %}#}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
+<br><br>
 {% block comments %}
     <div>
       {{ render( path('comments',{'idad': ad.idad|e})) }}
