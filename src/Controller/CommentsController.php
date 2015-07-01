@@ -163,7 +163,7 @@ class CommentsController implements ControllerProviderInterface
             //    $iduser = 0;
             //}
             $data = array(
-                'ad_date' => date('Y-m-d'),
+                'comment_date' => date('Y-m-d'),
                 'idad' => $idad,
                 //'iduser' => $iduser,
             );
@@ -195,7 +195,7 @@ class CommentsController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => $app['translator']->trans ('Comment not found')
+                    'conten' => $app['translator']->trans ('Comment not found')
                 )
             );
             return $app->redirect(
@@ -295,7 +295,7 @@ class CommentsController implements ControllerProviderInterface
             if (count($comment)) {
                 $form = $app['form.factory']
                     ->createBuilder(new CommentForm($app), $data)->getForm();
-                $form->remove('content');
+                $form->remove('contence');
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                         $data = $form->getData();

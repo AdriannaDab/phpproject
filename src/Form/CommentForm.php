@@ -57,7 +57,7 @@ class CommentForm extends AbstractType
             )
         )
             ->add(
-                'content',
+                'contence',
                 'textarea', //array('required' => false),
                 array(
                     'constraints' => array(
