@@ -170,16 +170,16 @@ class CommentsModel
      * @param int $iduser User
      * @return array Result
      */
-    public function addComment($contence, $comment_date, $idad, $iduser)
+    public function addComment($contence, $comment_date, $idad)
     {
         try {
             if (($idad != '') && ctype_digit((string)$idad)
                 && ($$contence != '') && ctype_digit((string)$$contence)){
                 $query = '
                   INSERT INTO
-                    `ad_comments` (`idad`, `contence`, `comment_date`, `iduser`)
+                    `ad_comments` (`idad`, `contence`, `comment_date` )
                   VALUES
-                    (' . $idad . ', ' . $contence . ', ' . $comment_date . ', ' . $iduser . ');
+                    (' . $idad . ', ' . $contence . ', ' . $comment_date . ' );
                 ';
                 return $this->_db->fetchAssoc($query, array((int)$idad));
             } else {
