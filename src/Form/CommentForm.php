@@ -51,7 +51,6 @@ class CommentForm extends AbstractType
             'idcomment',
             'hidden',
             array(
-                'data' => $id,
                 'constraints' => array(
                     new Assert\Type(array('type' => 'digit'))
                 )
