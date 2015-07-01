@@ -21,7 +21,7 @@
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 {% block comments %}
     <div>
-      {{ render( path('/comments/',{'idad': ad.idad|e})) }}
+      {{ render(path( 'comments', {'idad': ad.idad|e})) }}
     </div>
 {% endblock %}
 {% endblock %}

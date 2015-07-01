@@ -287,4 +287,29 @@ class AdsModel
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
     }
+
+    /**
+     * Check if ad id exists
+     *
+     * @param $idad id comment
+     *
+     * @access public
+     * @return bool true if exists.
+     */
+    public function checkAdsId($idAd)
+    {
+        $query = '
+          SELECT
+            *
+          FROM
+            ads
+          WHERE
+            idad=?';
+        $result = $this->_db->fetchAll($query, array($idAd));
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

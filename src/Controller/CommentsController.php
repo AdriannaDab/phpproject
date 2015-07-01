@@ -84,7 +84,7 @@ class CommentsController implements ControllerProviderInterface
         $this->_user = new UsersModel($app);
         $this->_ads = new AdsModel($app);
         $commentController = $app['controllers_factory'];
-        $commentController->match('/add/{idad}', array($this, 'add'))
+        $commentController->match('/add/{idad}', array($this, 'addAction'))
             ->bind('/comments/add');
         $commentController->match('/edit/{id}', array($this, 'editAction'))
             ->bind('comments_edit');
@@ -92,9 +92,8 @@ class CommentsController implements ControllerProviderInterface
         $commentController->match('/delete/{id}', array($this, 'deleteAction'))
             ->bind('comments_delete');
         $commentController->match('/delete/{id}/', array($this, 'deleteAction'));
-        $commentController->get('/{page}/{idad}/', array($this, 'indexAction'))
-            ->value('page', 1)
-            ->bind('/comments/');
+        $commentController->get('/{idad}/', array($this, 'indexAction'))
+            ->bind('comments');
         return $commentController;
     }
 
@@ -111,11 +110,12 @@ class CommentsController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('idad', 0);
-        $commentsModel = new CommentsModel($app);
-        $this->_ads = $commentsModel ->checkCommentId($idcomment);
-        if ($this->_ads) {
-            $comments = $this->_model = $commentsModel ->getCommentsList($id);
+        $idAd = (int)$request->get('idad', 0); //pobieramy id z geta
+
+        $checkAd = $this->_ads->checkAdsId($idAd); //używając funkcje z modelu sprawdzamy czy jest ogłószenie o takim id
+        if ($checkAd) { //jeśli tak to działamy dalej
+
+            $comments = $this->_model->getCommentsList($idAd); //pobieramy listę komentarzy
             //$_isLogged = $this->_user->_isLoggedIn($app);
             //if ($_isLogged) {
             //    $access = $this->_user->getIdCurrentUser($app);
@@ -124,10 +124,10 @@ class CommentsController implements ControllerProviderInterface
             //}
             return $app['twig']->render('comments/index.twig', array(
                     'comments' => $comments,
-                    'idad' => $id//, 'access' => $access
+                    'idad' => $idAd//, 'access' => $access
                 )
             );
-        } else {
+        } else { //jeśli nie to wyrzucamy komunikat i przekierowujemy
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
@@ -151,6 +151,7 @@ class CommentsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
+        var_dump('add');die();
         $idad = (int)$request->get('idad', 0);
         $check = $this->_ads->checkAdId($idad);
         if ($check) {
