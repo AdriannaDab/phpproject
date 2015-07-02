@@ -214,9 +214,43 @@ class CommentsController implements ControllerProviderInterface
      * @param Symfony\Component\HttpFoundation\Request $request Request object
      * @return string Output
      */
-    public function edit(Application $app, Request $request)
+    public function editAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('idad', 0);
+
+        try {
+            $commentsModel = new CommentsModel($app);
+            $id = (int) $request->get('id', 0);
+            $comment = $commentsModel->getComment($id);
+            if (count($comment)) {
+                $form = $app['form.factory']
+                    ->createBuilder(new CommentForm($app), $comment)->getForm();
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $commentsModel = new CommentsModel($app);
+                    $commentsModel->saveComment($data);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Comment edited.')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate('/ads/'), 301
+                    );
+                }
+                $this->_view['form'] = $form->createView();
+                $this->_view['id'] = $id;
+            } else {
+                return $app->redirect(
+                    $app['url_generator']->generate('/comments/add'), 301
+                );
+            }
+        } catch (Exception $e) {
+            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('comments/edit.twig', $this->_view);
+       /* $id = (int)$request->get('idad', 0);
         $check = $this->_model->checkCommentId($id);
         if ($check) {
            // $idCurrentUser = $this->_user->getIdCurrentUser($app);
@@ -276,7 +310,7 @@ class CommentsController implements ControllerProviderInterface
             return $app->redirect(
                 $app['url_generator']->generate('/ads/'), 301
             );
-        }
+        }*/
     }
     /**
      * Delete action.
