@@ -1,23 +1,25 @@
 {% block comments %}
+    <h2>Komentarze:</h2>
     <hr>
+
     <p>
         <a href="{{ url('/comments/add', {'idad': idad|e}) }}" title="Add comment">
             <button type="button" class="btn btn-success">Dodaj komentarz</button>
         </a>
     </p>
-    <div class="row">
-    {% for comment in comments %}
-        <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-            <p>
-            <p>
-                <small> {{ comment.comment_date|e }}</small>
-            </p>
-            <p>
-                {{ comment.contence|raw }}
-            </p>
-            </p>
 
+    {% for comment in comments %}
+
+        <div class="well">
+        <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" data-src="holder.js/64x64">
+        </a>
+        <div class="media-body">
+            <h5 class="media-heading">{{ comment.comment_date|e }}</h5>
+            <p>
+                <b>{{ comment.contence|raw }}</b>
+            </p>
             {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
                {#{% if comment.iduser|e == access|e %}#}
                     <p>
@@ -40,5 +42,6 @@
         </div>
         </div>
         </div>
+
     {% endfor %}
 {% endblock %}

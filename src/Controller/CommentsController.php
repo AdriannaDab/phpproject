@@ -164,10 +164,8 @@ class CommentsController implements ControllerProviderInterface
             //}
             $data = array(
                 'comment_date' => date('Y-m-d'),
+                'contence' => 'Contence',
                 'idad' => $idad,
-                'contence' => $contence,
-                'idcomment' => $idcomment,
-                'iduser' => $iduser
             );
             $form = $app['form.factory']
                 ->createBuilder(new CommentForm($app), $data)->getForm();
@@ -188,7 +186,7 @@ class CommentsController implements ControllerProviderInterface
                         $app['url_generator']->generate('/ads/'), 301
                     );
                 } catch (Exception $e) {
-                    echo $app['translator']->trans('Caught Add Exception: ') .  $e->getMessage() . "\n";
+                    echo $app['translator']->trans('Caught Add Exception: ') . $e->getMessage() . "\n";
                 }
             }
             $this->_view['form'] = $form->createView();
@@ -197,7 +195,7 @@ class CommentsController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'conten' => $app['translator']->trans ('Comment not found')
+                    'content' => $app['translator']->trans('Comment not found')
                 )
             );
             return $app->redirect(
@@ -206,6 +204,7 @@ class CommentsController implements ControllerProviderInterface
         }
 
     }
+
 
     /**
      * Edit action.
@@ -217,7 +216,7 @@ class CommentsController implements ControllerProviderInterface
      */
     public function edit(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
+        $id = (int)$request->get('idad', 0);
         $check = $this->_model->checkCommentId($id);
         if ($check) {
            // $idCurrentUser = $this->_user->getIdCurrentUser($app);
@@ -289,7 +288,7 @@ class CommentsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
+        $id = (int)$request->get('idad', 0);
         $check = $this->_model->checkCommentId($id);
         if ($check) {
             $comment = $this->_model->getComment($id);

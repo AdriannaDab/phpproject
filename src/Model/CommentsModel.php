@@ -170,25 +170,41 @@ class CommentsModel
      * @param int $iduser User
      * @return array Result
      */
-    public function addComment($contence, $comment_date, $idad, $iduser)
+    public function addComment($data )
     {
+        $query = 'INSERT INTO ad_comments
+            (contence, comment_date, idad)
+            VALUES (?,?,?)';
+        $this->_db
+            ->executeQuery(
+                $query,
+                array(
+                    $data['contence'],
+                    $data['comment_date'],
+                    $data['idad'],
+                    // $data['iduser']
+                )
+            );
+    }
+/*
+
         try {
-            if (($idad != '') && ctype_digit((string)$idad)
+            if (($idcomment != '') && ctype_digit((string)$idcomment)
                 && ($$contence != '') && ctype_digit((string)$$contence)){
                 $query = '
                   INSERT INTO
-                    `ad_comments` (`idad`, `contence`, `comment_date`, `iduser`)
+                    `ad_comments` (`idcomment`, `contence`, `comment_date`, `idad`)
                   VALUES
-                    (' . $idad . ', ' . $contence . ', ' . $comment_date . ', ' . $iduser . ');
+                    (' . $idcomment . ', ' . $contence . ', ' . $comment_date . ', ' .$idad .');
                 ';
-                return $this->_db->fetchAssoc($query, array((int)$idad));
+                return $this->_db->fetchAssoc($query, array((int)$idcomment));
             } else {
                 return array();
             }
         } catch (Exception $e) {
             echo 'Caught exception: ' . $e->getMessage() . "\n";
         }
-    }
+    }*/
 
     /**
      * Check if comment id exists
