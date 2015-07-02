@@ -120,12 +120,12 @@ class CommentsModel
      */
     public function saveComment($comment)
     {
-        if (isset($comment['idad'])
-            && ($comment['idad'] != '')
-            && ctype_digit((string)$comment['idad'])) {
-            $id = $comment['idad'];
-            unset($comment['idad']);
-            return $this->_db->update('ad_comments', $comment, array('idad' => $id));
+        if (isset($comment['idcomment'])
+            && ($comment['idcomment'] != '')
+            && ctype_digit((string)$comment['idcomment'])) {
+            $id = $comment['idcomment'];
+            unset($comment['idcomment']);
+            return $this->_db->update('ad_comments', $comment, array('idcomment' => $id));
         } else {
             return $this->_db->insert('ad_comments', $comment);
         }
@@ -151,7 +151,7 @@ class CommentsModel
                   WHERE
                     idcomment= ?
                 ';
-                return $this->_db->delete('comments', array('idcomment' => $idcomment));
+                return $this->_db->delete('ad_comments', array('idcomment' => $idcomment));
             } else {
                 return array();
             }
@@ -214,7 +214,7 @@ class CommentsModel
      * @access public
      * @return bool true if exists.
      */
-    public function checkCommentId($idad)
+    public function checkCommentId($id)
     {
         $query = '
           SELECT
@@ -223,7 +223,7 @@ class CommentsModel
             ad_comments
           WHERE
             idcomment=?';
-        $result = $this->_db->fetchAll($query, array($idad));
+        $result = $this->_db->fetchAll($query, array($id));
         if ($result) {
             return true;
         } else {

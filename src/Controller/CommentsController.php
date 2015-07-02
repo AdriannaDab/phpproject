@@ -175,7 +175,7 @@ class CommentsController implements ControllerProviderInterface
                 $commentsModel = new CommentsModel($app);
                 $commentsModel->saveComment($data);
                 try {
-                    $this->_model->addComment($data);
+                   // $this->_model->addComment($data);
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'success',
@@ -288,9 +288,47 @@ class CommentsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('idad', 0);
+        try {
+            $commentsModel = new CommentsModel($app);
+            $id = (int) $request->get('id', 0);
+            $comment = $commentsModel->getComment($id);
+            $this->_view['comment'] = $comment;
+            if (count($comment)) {
+                $form = $app['form.factory']
+                    ->createBuilder(new CommentForm($app), $comment)->getForm();
+                $form->remove('contence');
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $commentsModel = new  CommentsModel($app);
+                    $commentsModel->deleteComment($data['idcomment']);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'danger',
+                            'content' => $app['translator']
+                                ->trans('Comment deleted.')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate('/ads/'), 301
+                    );
+                }
+                $this->_view['form'] = $form->createView();
+            } else {
+                return $app->redirect(
+                    $app['url_generator']->generate('/comments/add'), 301
+                );
+            }
+        } catch (Exception $e) {
+            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('comments/delete.twig', $this->_view);
+    }
+
+       /* $id = (int)$request->get('idad', 0);
+
         $check = $this->_model->checkCommentId($id);
         if ($check) {
+
             $comment = $this->_model->getComment($id);
             $data = array();
             if (count($comment)) {
@@ -301,7 +339,8 @@ class CommentsController implements ControllerProviderInterface
                 if ($form->isValid()) {
                         $data = $form->getData();
                         try {
-                            $this->_model->deleteComment($data);
+
+                            $this->_model->deleteComment($idcomment);
                             $app['session']->getFlashBag()->add(
                                 'message', array(
                                     'type' => 'success',
@@ -335,7 +374,7 @@ class CommentsController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => $app['translator']->trans('Nie znaleziono komentarza')
+                    'content' => $app['translator']->trans('Nie znalezionoo komentarza')
                 )
             );
             return $app->redirect(
@@ -343,5 +382,5 @@ class CommentsController implements ControllerProviderInterface
             );
         }
     }
-
+*/
 }
