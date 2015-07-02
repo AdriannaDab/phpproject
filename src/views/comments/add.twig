@@ -1,12 +1,15 @@
+{# Add action template for Comments controller #}
 {% extends 'base.twig' %}
+{% block title %}{{  'Add comment'|trans }}{% endblock %}
 {% block content %}
     <hr>
     <h2 class="intro-text text-center">
-        Dodaj komentarz
+        {{ 'Add comment'|trans }}
     </h2>
     <hr>
     <form action="" method="post">
         {{ form_widget(form) }}
-        <input type="submit" name="submit"/>
+        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+        <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
 {% endblock %}

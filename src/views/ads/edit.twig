@@ -2,15 +2,16 @@
 {% extends 'base.twig' %}
 {% block title %}{{  'Edit ad'|trans }}{% endblock %}
 {% block content %}
-<div class="thumbnail">
-    <h1 class="text-center">
+    <hr>
+    <h1  class="intro-text text-center"
         {{ 'Edit ad'|trans }}
     </h1>
+    <hr>
     <form role="form" action="{{ url ('ads_edit', {'id': id}  )  }}" method="post">
         {{ form_widget(form) }}
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
         <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
-</div>
+
 {% endblock %}
 

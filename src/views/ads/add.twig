@@ -2,10 +2,11 @@
 {% extends 'base.twig' %}
 {% block title %}{{  'Add ad'|trans }}{% endblock %}
 {% block content %}
-<div class="thumbnail">
-    <h1 class="text-center">
+    <hr>
+    <h1 class="intro-text text-center">
         {{ 'Add ad'|trans }}
     </h1>
+    <hr>
     <form  action="{{ url('ads_add') }}" method="post"   >
        {{ form_widget(form ) }}
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />

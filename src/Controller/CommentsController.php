@@ -216,7 +216,6 @@ class CommentsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-
         try {
             $commentsModel = new CommentsModel($app);
             $id = (int) $request->get('id', 0);

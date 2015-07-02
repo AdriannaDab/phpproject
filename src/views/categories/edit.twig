@@ -1,15 +1,16 @@
-{# Add action template for Albums controller #}
+{# Add action template for Categories controller #}
 {% extends 'base.twig' %}
 {% block title %}{{  'Edit category'|trans }}{% endblock %}
 {% block content %}
-<div class="thumbnail">
-    <h1 class="text-center">
+    <hr>
+    <h1  class="intro-text text-center">
         {{ 'Edit category'|trans }}
     </h1>
+    <hr>
     <form action="{{ url('categories_edit', {'id' :id}) }}" method="post">
         {{ form_widget(form) }}
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
         <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
-</div>
+
 {% endblock %}
