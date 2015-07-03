@@ -160,12 +160,13 @@ class CommentsController implements ControllerProviderInterface
             //if ($this->_user->_isLoggedIn($app)) {
             //    $iduser = $this->_user->getIdCurrentUser($app);
             //} else {
-            //    $iduser = 0;
+             $iduser = 0;
             //}
             $data = array(
                 'comment_date' => date('Y-m-d'),
                 'contence' => 'Contence',
                 'idad' => $idad,
+                'iduser'=>$iduser
             );
             $form = $app['form.factory']
                 ->createBuilder(new CommentForm($app), $data)->getForm();
@@ -237,7 +238,7 @@ class CommentsController implements ControllerProviderInterface
                     );
                     $this->_view['id'] = $id;
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id' => $id)), 301
+                        $app['url_generator']->generate('ads_view', array('id'=>$comment['idad'])), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();
