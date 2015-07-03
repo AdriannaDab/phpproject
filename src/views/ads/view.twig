@@ -24,6 +24,12 @@
     <div>
       {{ render( path('comments',{'idad': ad.idad|e})) }}
     </div>
+{% for flashMessage in app.session.getFlashBag.get('message') %}
+<div class="alert alert-{{ flashMessage.type }}" role="alert">
+    {{ flashMessage.content }}
+</div>
+    {% endfor %}
+
 {% endblock %}
 {% endblock %}
 

@@ -235,8 +235,9 @@ class CommentsController implements ControllerProviderInterface
                                 ->trans('Comment edited.')
                         )
                     );
+                    $this->_view['id'] = $id;
                     return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
+                        $app['url_generator']->generate('ads_view'), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();
