@@ -237,14 +237,14 @@ class CommentsController implements ControllerProviderInterface
                     );
                     $this->_view['id'] = $id;
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view'), 301
+                        $app['url_generator']->generate('ads_view', array('id' => $id)), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();
                 $this->_view['id'] = $id;
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('/comments/add'), 301
+                    $app['url_generator']->generate('/comments/add', array('idad' => $id)), 301
                 );
             }
         } catch (Exception $e) {
