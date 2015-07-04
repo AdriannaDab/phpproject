@@ -184,7 +184,7 @@ class CommentsController implements ControllerProviderInterface
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
+                        $app['url_generator']->generate('ads_view', array('id'=>$comment['idad'])), 301
                     );
                 } catch (Exception $e) {
                     echo $app['translator']->trans('Caught Add Exception: ') . $e->getMessage() . "\n";
@@ -345,7 +345,7 @@ class CommentsController implements ControllerProviderInterface
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
+                        $app['url_generator']->generate('ads_view', array('id'=>$comment['idad'])), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();
