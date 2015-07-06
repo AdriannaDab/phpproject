@@ -85,7 +85,7 @@ class CommentsController implements ControllerProviderInterface
         $this->_ads = new AdsModel($app);
         $commentController = $app['controllers_factory'];
         $commentController->match('/add/{idad}', array($this, 'addAction'))
-            ->bind('/comments/add');
+            ->bind('comments_add');
         $commentController->match('/edit/{id}', array($this, 'editAction'))
             ->bind('comments_edit');
         $commentController->match('/edit/{id}/', array($this, 'editAction'));
@@ -110,13 +110,12 @@ class CommentsController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-            $idAd = (int)$request->get('idad', 0); //pobieramy id z geta
+            $idad = (int)$request->get('idad', 0);
             $adsModel = new AdsModel($app);
-            $checkAd = $this->_ads = $adsModel->checkAdsId($idAd);
-              // $checkAd = $this->_ads->checkAdsId($idAd); //używając funkcje z modelu sprawdzamy czy jest ogłószenie o takim id
-                if ($checkAd) { //jeśli tak to działamy dalej
+            $checkAd = $this->_ads = $adsModel->checkAdsId($idad);
+                if ($checkAd) {
                     $commentsModel = new CommentsModel($app);
-                    $comments = $this->_model = $commentsModel->getCommentsList($idAd); //pobieramy listę komentarzy
+                    $comments = $this->_model = $commentsModel->getCommentsList($idad);
             //$_isLogged = $this->_user->_isLoggedIn($app);
             //if ($_isLogged) {
             //    $access = $this->_user->getIdCurrentUser($app);
@@ -125,10 +124,11 @@ class CommentsController implements ControllerProviderInterface
             //}
             return $app['twig']->render('comments/index.twig', array(
                     'comments' => $comments,
-                    'idad' => $idAd//, 'access' => $access
+                    'idad' => $idad
+                    //, 'access' => $access
                 )
             );
-        } else { //jeśli nie to wyrzucamy komunikat i przekierowujemy
+        } else {
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
@@ -140,7 +140,6 @@ class CommentsController implements ControllerProviderInterface
             );
         }
     }
-
 
     /**
      * Add action.
@@ -176,7 +175,6 @@ class CommentsController implements ControllerProviderInterface
                 $commentsModel = new CommentsModel($app);
                 $commentsModel->saveComment($data);
                 try {
-                   // $this->_model->addComment($data);
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'success',
@@ -184,7 +182,7 @@ class CommentsController implements ControllerProviderInterface
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id'=>$comment['idad'])), 301
+                        $app['url_generator']->generate('/ads/'), 301
                     );
                 } catch (Exception $e) {
                     echo $app['translator']->trans('Caught Add Exception: ') . $e->getMessage() . "\n";
@@ -203,9 +201,7 @@ class CommentsController implements ControllerProviderInterface
                 $app['url_generator']->generate('/ads/'), 301
             );
         }
-
     }
-
 
     /**
      * Edit action.
@@ -219,7 +215,7 @@ class CommentsController implements ControllerProviderInterface
     {
         try {
             $commentsModel = new CommentsModel($app);
-            $id = (int) $request->get('id', 0);
+            $id = (int)$request->get('id', 0);
             $comment = $commentsModel->getComment($id);
             if (count($comment)) {
                 $form = $app['form.factory']
@@ -238,81 +234,22 @@ class CommentsController implements ControllerProviderInterface
                     );
                     $this->_view['id'] = $id;
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id'=>$comment['idad'])), 301
+                        $app['url_generator']->generate('ads_view', array('id' => $comment['idad'])), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();
                 $this->_view['id'] = $id;
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('/comments/add', array('idad' => $id)), 301
+                    $app['url_generator']->generate('comments_add', array('idad' => $id)), 301
                 );
             }
         } catch (Exception $e) {
-            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('comments/edit.twig', $this->_view);
-       /* $id = (int)$request->get('idad', 0);
-        $check = $this->_model->checkCommentId($id);
-        if ($check) {
-           // $idCurrentUser = $this->_user->getIdCurrentUser($app);
-            $comment = $this->_model->getComment($id);
-            if (count($comment)) {
-                $data = array(
-                    'idcomment' => $id,
-                    'ad_date' => date('Y-m-d'),
-                    'idad' => $comment['idad'],
-                    //'iduser' => $comment['iduser'],
-                    //'idCurrentUser' => $idCurrentUser,
-                    'content' => $comment['content'],
-                );
-                $form = $app['form.factory']
-                    ->createBuilder(new CommentForm($app), $data)->getForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    try {
-                        $this->_model->editComment($data);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'success',
-                                'content' => $app['translator']->trans ('Komanetarz został zmieniony')
-                            )
-                        );
-                        return $app->redirect(
-                            $app['url_generator']->generate('/ads/'), 301
-                        );
-                    } catch (Exception $e) {
-                        echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-                    }
-                }
-                return $app['twig']->render(
-                    'comments/edit.twig', array(
-                        'form' => $form->createView()
-                    )
-                );
-            } else {
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'danger',
-                        'content' => $app['translator']->trans ('Nie znaleziono komentarza')
-                    )
-                );
-                return $app->redirect(
-                    $app['url_generator']->generate('/comments/add'), 301
-                );
-            }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']->trans ('Nie znaleziono komentarza')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate('/ads/'), 301
-            );
-        }*/
+            echo $app['translator']->trans('Caught Edit Exception: ') . $e->getMessage() . "\n";
+        }
+        return $app['twig']->render('comments/edit.twig', $this->_view);
     }
+
     /**
      * Delete action.
      *
@@ -351,71 +288,11 @@ class CommentsController implements ControllerProviderInterface
                 $this->_view['form'] = $form->createView();
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('/comments/add'), 301
+                    $app['url_generator']->generate('comments_add'), 301
                 );
             }
         } catch (Exception $e) {
             echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
         } return $app['twig']->render('comments/delete.twig', $this->_view);
     }
-
-       /* $id = (int)$request->get('idad', 0);
-
-        $check = $this->_model->checkCommentId($id);
-        if ($check) {
-
-            $comment = $this->_model->getComment($id);
-            $data = array();
-            if (count($comment)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new CommentForm($app), $data)->getForm();
-                $form->remove('contence');
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                        $data = $form->getData();
-                        try {
-
-                            $this->_model->deleteComment($idcomment);
-                            $app['session']->getFlashBag()->add(
-                                'message', array(
-                                    'type' => 'success',
-                                    'content' => $app['translator']->trans('Komantarz został usunięty')
-                                )
-                            );
-                            return $app->redirect(
-                                $app['url_generator']->generate('/ads/'), 301
-                            );
-                        } catch (\Exception $e) {
-                            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-                        }
-                }
-                return $app['twig']->render(
-                    'comments/delete.twig', array(
-                        'form' => $form->createView()
-                    )
-                );
-            } else {
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'danger',
-                        'content' => $app['translator']->trans ('Nie znaleziono komentarza')
-                    )
-                );
-                return $app->redirect(
-                    $app['url_generator']->generate('/ads/'), 301
-                );
-            }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']->trans('Nie znalezionoo komentarza')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate('/ads/'), 301
-            );
-        }
-    }
-*/
 }

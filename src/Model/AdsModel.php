@@ -296,7 +296,7 @@ class AdsModel
     * @access public
     * @return bool true if exists.
     */
-    public function checkAdsId($idAd)
+    public function checkAdsId($idad)
     {
         $query = '
           SELECT
@@ -305,7 +305,7 @@ class AdsModel
             ads
           WHERE
             idad=?';
-        $result = $this->_db->fetchAll($query, array($idAd));
+        $result = $this->_db->fetchAll($query, array($idad));
         if ($result) {
             return true;
         } else {

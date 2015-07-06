@@ -44,9 +44,9 @@ $app->register(
         'db.options' => array(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
-            'dbname'    => 'baza!',
-            'user'      => 'user!',
-            'password'  => 'haslo!',
+            'dbname'    => '13_dabkowska',
+            'user'      => '13_dabkowska',
+            'password'  => '8691Prodigy!',
             'charset'   => 'utf8',
         ),
     )
@@ -78,5 +78,6 @@ date_default_timezone_set('Europe/Warsaw');
 $app->mount('/ads/', new Controller\AdsController());
 $app->mount('/categories/', new Controller\CategoriesController());
 $app->mount('/comments/', new Controller\CommentsController());
+$app->mount('/photos/', new Controller\PhotosController());
 
 $app->run();

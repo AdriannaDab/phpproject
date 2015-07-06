@@ -7,6 +7,9 @@
         <p class="text-center"><small>{{ ad.ad_date|e }}</small></p>
         <hr>
         <h4 class="text-center">{{ ad.ad_contence|e }}</h4>
+        <p>
+            {{ render( path('/photos/',{'idad': ad.idad|e})) }}
+        </p>
     {% else %}
         Invalid data.
     {% endif %}
@@ -17,6 +20,14 @@
            class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
         <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
            class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+
+    </p>
+    <p>
+        <a href="{{ url('photos_upload', {'idad': ad.idad|e}) }}" title="{{ 'Add Photos'|trans }}"
+           class="btn btn-success" role="button">{{ 'Add Photos'|trans }}</a>
+        <a href="{{ url('photos_manager', {'idad': ad.idad|e}) }}" title="{{ 'Photos Manager'|trans }}"
+           class="btn btn-info" role="button">{{ 'Photos Manager'|trans }}</a>
+    </p>
  {# {% endif %}#}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 <br><br>

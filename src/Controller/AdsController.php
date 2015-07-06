@@ -21,6 +21,7 @@ use Model\AdsModel;
 use Form\AdForm;
 use Model\CategoriesModel;
 use Model\UsersModel;
+use Model\PhotosModel;
 
 /**
  * Class AdsController
@@ -37,6 +38,7 @@ use Model\UsersModel;
  * @uses Model\AdsModel
  * @uses Model\CategoriesModel
  * @uses Model\UsersModel
+ * @uses Model\PhotosModel
  */
 class AdsController implements ControllerProviderInterface
 {
@@ -48,6 +50,14 @@ class AdsController implements ControllerProviderInterface
     * @access protected
     */
     protected $_model;
+
+    /**
+     * PhotosModel object.
+     *
+     * @var $_model
+     * @access protected
+     */
+    protected $_photos;
 
    /**
     * UsersModel object.
@@ -76,6 +86,7 @@ class AdsController implements ControllerProviderInterface
     {
         $this->_model = new AdsModel($app);
         $this->_user = new UsersModel($app);
+        $this->_photos = new PhotosModel($app);
         $adsController = $app['controllers_factory'];
         $adsController->match('/add', array($this, 'addAction'))
             ->bind('ads_add');
@@ -265,6 +276,17 @@ class AdsController implements ControllerProviderInterface
                     $data = $form->getData();
                     $adsModel = new AdsModel($app);
                     $adsModel->deleteAd($data['idad']);
+                    $photosModel = new PhotosModel($app);
+                    $photos = $this->_photos = $photosModel
+                        ->getPhotosByAd($data['idad']);
+                    foreach ($photos as $photo) {
+                        $path
+                            = dirname(dirname(dirname(__FILE__))).
+                            '/web/media/'.$photo['photo_name'];
+                        unlink($path);
+                        $this->_photos = $photosModel
+                            ->removePhoto($photo['photo_name']);
+                    }
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'danger',

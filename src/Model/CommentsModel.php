@@ -108,10 +108,6 @@ class CommentsModel
         }
     }
 
-
-
-
-
     /* Save comment.
      *
      * @access public
@@ -186,25 +182,6 @@ class CommentsModel
                 )
             );
     }
-/*
-
-        try {
-            if (($idcomment != '') && ctype_digit((string)$idcomment)
-                && ($$contence != '') && ctype_digit((string)$$contence)){
-                $query = '
-                  INSERT INTO
-                    `ad_comments` (`idcomment`, `contence`, `comment_date`, `idad`)
-                  VALUES
-                    (' . $idcomment . ', ' . $contence . ', ' . $comment_date . ', ' .$idad .');
-                ';
-                return $this->_db->fetchAssoc($query, array((int)$idcomment));
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' . $e->getMessage() . "\n";
-        }
-    }*/
 
     /**
      * Check if comment id exists
