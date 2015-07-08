@@ -46,7 +46,7 @@ class UsersModel
      * @access protected
      * @var Silex\Provider\DoctrineServiceProvider $db
      */
-    protected $db;
+    protected $_db;
 
     /**
      * Object constructor.
@@ -56,7 +56,7 @@ class UsersModel
      */
     public function __construct(Application $app)
     {
-        $this->db = $app['db'];
+        $this->_db = $app['db'];
     }
 
     /**
@@ -112,7 +112,7 @@ class UsersModel
               WHERE
                 `login` = :login
             ';
-            $statement = $this->db->prepare($query);
+            $statement = $this->_db->prepare($query);
             $statement->bindValue('login', $login, \PDO::PARAM_STR);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -145,7 +145,7 @@ class UsersModel
                 WHERE
                     `ad_users`.`iduser` = :user_id
                 ';
-            $statement = $this->db->prepare($query);
+            $statement = $this->_db->prepare($query);
             $statement->bindValue('user_id', $userId, \PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);

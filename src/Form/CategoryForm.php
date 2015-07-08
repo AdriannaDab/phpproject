@@ -1,6 +1,6 @@
 <?php
 /**
- * Album form.
+ * Category form.
  *
  * PHP version 5
  *
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AlbumForm.
+ * Class CategoryForm.
  *
  * @category Form
  * @package  Form

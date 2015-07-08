@@ -66,6 +66,7 @@ class UsersController implements ControllerProviderInterface
             ->bind('users_password');
         $usersController->get('/view/', array($this, 'viewAction'))
             ->bind('users_view');
+
         return $usersController;
     }
 
