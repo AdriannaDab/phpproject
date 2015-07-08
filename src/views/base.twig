@@ -30,14 +30,6 @@
             </div>
                 <div id="content">
                     {% block content %}{% endblock %}</div>
-                <nav>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        {#is authenticated fully #}
-                        <a href="{{ url('auth_logout') }}" title="{{ 'Logout'|trans }}">{{ 'Logout'|trans }}</a>
-                    {% else %}
-                        <a href="{{ url('auth_login') }}" title="{{ 'Login'|trans }}">{{ 'Login'|trans }}</a>
-                    {% endif %}
-                </nav>
             </div>
             <br><br>
             <footer class="footer panel-footer">
