@@ -42,7 +42,10 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Sign up</a></li>
+            <li>{% if is_granted('IS_AUTHENTICATED_FULLY') == NULL %}
+                    <a href="{{ path('users_register') }}" title="{{ 'Sign up'|trans }}">{{ 'Sign up'|trans }}</a>
+                    {% endif %}
+            </li>
             <li>{% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {#is authenticated fully #}
                     <a href="{{ url('auth_logout') }}" title="{{ 'Logout'|trans }}">{{ 'Logout'|trans }}</a>

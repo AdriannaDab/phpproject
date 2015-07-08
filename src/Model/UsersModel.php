@@ -77,7 +77,7 @@ class UsersModel
             );
         }
 
-        $roles = $this->getUserRoles($user['id']);
+        $roles = $this->getUserRoles($user['iduser']);
 
         if (!$roles || !count($roles)) {
             throw new UsernameNotFoundException(

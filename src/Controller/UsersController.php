@@ -123,7 +123,7 @@ class UsersController implements ControllerProviderInterface
         if ($form->isValid()) {
             $data = $form->getData();
             $check = $this->_model
-                ->getUserByLogin($data['nickname']);
+                ->getUserByLogin($data['login']);
             if (!$check) {
                 if ($data['password'] === $data['confirm_password']) {
                     $data['password']
@@ -153,7 +153,7 @@ class UsersController implements ControllerProviderInterface
                         )
                     );
                     return $app['twig']->render(
-                        'users/add.twig', array(
+                        'users/register.twig', array(
                             'form' => $form->createView()
                         )
                     );
@@ -162,18 +162,18 @@ class UsersController implements ControllerProviderInterface
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'danger',
-                        'content' => 'Użytkownik o tym nicku już istnieje'
+                        'content' => 'Użytkownik o tym loginie już istnieje'
                     )
                 );
                 return $app['twig']->render(
-                    'users/add.twig', array(
+                    'users/register.twig', array(
                         'form' => $form->createView()
                     )
                 );
             }
         }
         return $app['twig']->render(
-            'users/add.twig', array(
+            'users/register.twig', array(
                 'form' => $form->createView()
             )
         );
