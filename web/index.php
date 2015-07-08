@@ -65,14 +65,14 @@ $app->register(
                 'form' => array(
                     'login_path' => 'auth_login',
                     'check_path' => 'auth_login_check',
-                    'default_target_path'=> '/ads/',
+                    'default_target_path'=> '/ads',
                     'username_parameter' => 'loginForm[login]',
                     'password_parameter' => 'loginForm[password]',
                 ),
                 'anonymous' => true,
                 'logout' => array(
                     'logout_path' => 'auth_logout',
-                    'default_target_path' => '/ads/'
+                    'default_target_path' => '/ads'
                 ),
                 'users' => $app->share(
                     function() use ($app)
@@ -85,7 +85,6 @@ $app->register(
         'security.access_rules' => array(
             array('^/auth.+$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/[a-z]+/?[1-9]*/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-
             array('^/[a-z]+/([1-9]*|(view/[1-9]*))/?$', 'ROLE_USER'),
             array('^/.+$', 'ROLE_ADMIN')
         ),

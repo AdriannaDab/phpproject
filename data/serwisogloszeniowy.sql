@@ -159,7 +159,7 @@ CREATE TABLE `ad_users` (
   `iduser` int(11) NOT NULL auto_increment,
   `idrole` int(11) default NULL,
   `login` varchar(16) default NULL,
-  `password` varchar(64) default NULL,
+  `password` varchar(90) default NULL,
   `email` varchar(40) default NULL,
   PRIMARY KEY  (`iduser`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
@@ -171,7 +171,7 @@ CREATE TABLE `ad_users` (
 
 LOCK TABLES `ad_users` WRITE;
 /*!40000 ALTER TABLE `ad_users` DISABLE KEYS */;
-INSERT INTO `ad_users` VALUES (1,1,'ada','aaa','ada@onet.pl'),(2,2,'aga','bbb','aga@onet.pl'),(3,2,'natalia','bbb','natalia@onet.pl'),(4,2,'pawel','bbb','pawel@onet.pl'),(5,2,'szymon','bbb','szymon@onet.pl'),(6,2,'krzysztof','bbb','krzysztof@onet.pl'),(7,2,'paula','bbb','paula@onet.pl'),(8,2,'marcin','bbb','marcin@onet.pl'),(9,3,'boss','ccc','boss@onet.pl');
+INSERT INTO `ad_users` VALUES (1,3,'ada','5fEcfEpWfUd5m4oY6tGxexGaWNS5t6tIHN7lgF9t/Ik8OCRnBPZaKSolAwpwNbmzHhqM962W3lWKadJf4EqLKQ==','ada@onet.pl'),(2,2,'aga','bbb','aga@onet.pl'),(3,2,'natalia','bbb','natalia@onet.pl'),(4,2,'pawel','bbb','pawel@onet.pl'),(5,2,'szymon','bbb','szymon@onet.pl'),(6,2,'krzysztof','bbb','krzysztof@onet.pl'),(7,2,'paula','bbb','paula@onet.pl'),(8,2,'marcin','bbb','marcin@onet.pl'),(9,3,'boss','ccc','boss@onet.pl');
 /*!40000 ALTER TABLE `ad_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +251,7 @@ CREATE TABLE `ad_roles` (
 
 LOCK TABLES `ad_roles` WRITE;
 /*!40000 ALTER TABLE `ad_roles` DISABLE KEYS */;
-INSERT INTO `ad_roles` VALUES (1,'user'),(2,'moderator'),(3,'admin');
+INSERT INTO `ad_roles` VALUES (1,'ROLE_USER'),(2,'ROLE_MODERATOR'),(3,'ROLE_ADMIN');
 /*!40000 ALTER TABLE `ad_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,4 +316,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-08 14:26:05
+-- Dump completed on 2015-07-08 20:00:33
