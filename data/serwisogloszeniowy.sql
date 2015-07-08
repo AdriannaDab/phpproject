@@ -135,7 +135,7 @@ CREATE TABLE `ad_categories` (
   `idcategory` int(11) NOT NULL auto_increment,
   `category_name` varchar(60) NOT NULL,
   PRIMARY KEY  (`idcategory`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `ad_comments` (
   `idad` int(11) NOT NULL,
   `iduser` int(11) NOT NULL,
   PRIMARY KEY  (`idcomment`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,6 +198,7 @@ CREATE TABLE `ad_comments` (
 
 LOCK TABLES `ad_comments` WRITE;
 /*!40000 ALTER TABLE `ad_comments` DISABLE KEYS */;
+INSERT INTO `ad_comments` VALUES (48,'Bardzo mi siÄ™ podoba','2015-07-07',29,0),(20,'Fajne ogÅ‚oszenie','2015-07-02',23,0),(19,'Contencedvsv','2015-07-02',0,0),(21,'Bardzo fajne','2015-07-02',23,0),(23,'Fajne, Å¼e tak powiem','2015-07-02',23,0),(49,'yeah nice rly nice gj','2015-07-07',4,0),(39,'PiÄ™knie','2015-07-06',26,0);
 /*!40000 ALTER TABLE `ad_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,8 +216,9 @@ CREATE TABLE `ad_photos` (
   `idad` int(11) NOT NULL,
   `photo_name` varchar(60) NOT NULL,
   `photo_date` datetime NOT NULL,
+  `photo_alt` varchar(90) default NULL,
   PRIMARY KEY  (`idphotos`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +227,7 @@ CREATE TABLE `ad_photos` (
 
 LOCK TABLES `ad_photos` WRITE;
 /*!40000 ALTER TABLE `ad_photos` DISABLE KEYS */;
-INSERT INTO `ad_photos` VALUES (1,1,1,1,'Little house','0000-00-00 00:00:00');
+INSERT INTO `ad_photos` VALUES (1,1,1,1,'Little house','0000-00-00 00:00:00',NULL),(2,0,0,23,'2cyknnouvgn41x8dq8c01hyiji7f1ic3.jpg','0000-00-00 00:00:00','PokÃ³j do wynajÄ™cia'),(4,0,0,29,'78g8e1polg090spbwzdpkpelmlc3v2wy.jpg','0000-00-00 00:00:00','PokÃ³j do wynajÄ™cia'),(5,0,0,29,'ofhsayekvvr89qqrv08xxkclirum5zy8.jpg','0000-00-00 00:00:00','pokoj'),(6,0,0,29,'s2zib0mspuzacna6w9gwzn9v77egwan1.jpg','0000-00-00 00:00:00','pokÃ³j'),(7,0,0,29,'7eg9r2t9sa23ytdw05d8c72yygdvheek.jpg','0000-00-00 00:00:00','pokoik'),(8,0,0,4,'tw7q81epizi04d1zxh69x3hjvbq466pz.jpg','0000-00-00 00:00:00','sukienka');
 /*!40000 ALTER TABLE `ad_photos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +294,7 @@ CREATE TABLE `ads` (
   `ad_date` date default NULL,
   `ad_contence` varchar(200) NOT NULL,
   PRIMARY KEY  (`idad`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +303,7 @@ CREATE TABLE `ads` (
 
 LOCK TABLES `ads` WRITE;
 /*!40000 ALTER TABLE `ads` DISABLE KEYS */;
-INSERT INTO `ads` VALUES (11,NULL,6,'Oddam w dobre rÄ™ce','2015-06-26','Piesek, miÅ‚y, maÅ‚y, kudÅ‚aty, przyjazny. Kontakt tel.450983489'),(3,1,1,'Domek na wsi','0000-00-00','duzy domek'),(4,2,4,'Sukieneczka','2015-06-27','czerwona, zwiewna, piÄ™kna, cud miÃ³d'),(23,NULL,1,'PokÃ³j marzeÅ„!','2015-06-29','20m2, z widokiem na gÃ³ry, miÅ‚e sÄ…siedztwo, wynajmÄ™ od lipca!'),(21,NULL,5,'Szukam trenera','2015-06-29','MÅ‚oda studentka szuka trenera na wakacje, by zgubiÄ‡ parÄ™ kilogramÃ³w. Kontakt pod tel. 63463294952948574298'),(25,NULL,4,'Super buty!','2015-07-01','Nowiutkie, rozmiar 40, mÄ™skie, skÃ³rzane.');
+INSERT INTO `ads` VALUES (11,NULL,6,'Oddam w dobre rÄ™ce','2015-06-26','Piesek, miÅ‚y, maÅ‚y, kudÅ‚aty, przyjazny. Kontakt tel.450983489'),(3,1,1,'Domek na wsi','0000-00-00','duzy domek'),(4,2,4,'Sukieneczka','2015-06-27','zwiewna, piÄ™kna, cud miÃ³d'),(29,NULL,1,'PokÃ³j do wynajÄ™cia','2015-07-06','PiÄ™kny, w gÃ³rach, kontakt 4634634635'),(21,NULL,5,'Szukam trenera','2015-06-29','MÅ‚oda studentka szuka trenera na wakacje, by zgubiÄ‡ parÄ™ kilogramÃ³w. Kontakt pod tel. 63463294952948574298'),(25,NULL,4,'Super buty!','2015-07-01','Nowiutkie, rozmiar 40, mÄ™skie, skÃ³rzane.');
 /*!40000 ALTER TABLE `ads` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -314,4 +316,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-01 20:17:19
+-- Dump completed on 2015-07-08 14:26:05
