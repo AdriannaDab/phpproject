@@ -71,7 +71,7 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($login)
     {
-        $userModel = new UsersModel($this->app);//tu zmieniam tylko model i moge dane trzymac na fb, google doc
+        $userModel = new UsersModel($this->app);
         $user = $userModel->loadUserByLogin($login);
         return new User(
             $user['login'],

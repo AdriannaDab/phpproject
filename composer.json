@@ -4,6 +4,7 @@
     "doctrine/dbal": "2.2.*",
     "symfony/form": "~2.3",
     "symfony/locale": "~2.3",
+    "symfony/security": "~2.3",
     "symfony/security-csrf": "~2.3",
     "silex/silex": "~1.2",
     "symfony/translation": "~2.3",
@@ -15,7 +16,8 @@
     "psr-0": {
       "Controller" : "src/",
       "Model": "src/",
-      "Form": "src/"
+      "Form": "src/",
+      "Provider" : "src/"
     }
   }
 

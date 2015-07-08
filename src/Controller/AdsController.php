@@ -235,7 +235,7 @@ class AdsController implements ControllerProviderInterface
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
+                        $app['url_generator']->generate('ads_view', array('id' => $ad['idad'])), 301
                     );
                 }
                 $this->_view['form'] = $form->createView();

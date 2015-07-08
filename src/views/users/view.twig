@@ -1,0 +1,12 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    <div>
+        <hr>
+        <h2 class="intro-text text-center">{{ user.login|e }}</h2>
+        <hr>
+        <p>{{ user.email|e }}</p>
+
+    </div>
+{% endblock %}

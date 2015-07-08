@@ -1,6 +1,7 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+    <div class="row">
     {% for photo in photos %}
         <hr>
         <h2 class="intro-text text-center">
@@ -21,5 +22,5 @@
             <hr>
         </div>
     {% endfor %}
-
+</div>
 {% endblock %}

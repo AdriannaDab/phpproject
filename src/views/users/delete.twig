@@ -1,15 +1,15 @@
-{# Delete action template for Comments controller #}
+{# Delete action template for Users controller #}
 {% extends 'base.twig' %}
-{% block title %}{{  'Delete comment'|trans }}{% endblock %}
+{% block title %}{{  'Delete user'|trans }}{% endblock %}
 {% block content %}
     <hr>
     <h2 class="intro-text text-center">
-        {{ 'Delete comment'|trans }}
+        {{ 'Delete user'|trans }}
     </h2>
     <hr>
     <div>
         <h3>
-            {{  'Do you really want to delete this'|trans }}?
+            {{  'Do you really want to delete this user'|trans }}?
         </h3>
         <form action="#" method="post">
             {{ form_widget(form) }}
