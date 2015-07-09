@@ -181,7 +181,11 @@ class UsersModel
               NATURAL JOIN
                 ad_user_data
               NATURAL JOIN
-                ad_cities, ad_provinces, ad_countries
+                ad_cities
+              NATURAL JOIN
+                 ad_provinces
+              NATURAL JOIN
+                 ad_countries
               WHERE
                 iduser=?
             ";
