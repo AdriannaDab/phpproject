@@ -178,6 +178,10 @@ class UsersModel
                 *
               FROM
                 ad_users
+              NATURAL JOIN
+                ad_user_data
+              NATURAL JOIN
+                ad_cities, ad_provinces, ad_countries
               WHERE
                 iduser=?
             ";

@@ -1,0 +1,36 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+{% for flashMessage in app.session.getFlashBag.get('message') %}
+				<div class="alert alert-{{ flashMessage.type }}" role="alert">
+				{{ flashMessage.content }}</div>
+			{% endfor%}
+   
+<p>Wyniki wyszukiwania: </p>
+	<table class="table">
+	
+		{% for row in ads %}
+			<tr>{#{% if is_granted('ROLE_ADMIN') %}#}
+			<tr>
+            {#{%endif%}#}
+				<td><a href="{{ url('ads_view', {'id': row.idad}) }}" title="{{ row.ad_name }}">{{ row.ad_name }}</a></td>
+				<td>{{row.ad_name}} {{row.author_surname}}</td>
+				<td>{{row.ad_contence}}</td>
+
+            {#{% if is_granted('ROLE_ADMIN') %}#}
+					<td > <a class="btn btn-warning  " href="{{ url('ads_edit', {'id': row.book_id}) }}" title="{{'Edit'|trans}}">{{'Edit'|trans}}</a> </td>
+					<td ><a class="btn btn-danger" href="{{ url('ads_delete', {'id': row.book_id}) }}" title="{{'Delete'|trans}}">{{'Delete'|trans}}</a></td>
+            {#{%endif%}#}
+
+			</tr>
+		
+			
+			
+			
+			    
+    
+		{%endfor %}
+	</table>   
+
+
+{% endblock %}

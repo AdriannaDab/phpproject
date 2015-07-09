@@ -100,6 +100,13 @@ class AdsController implements ControllerProviderInterface
         $adsController->get('/view/{id}', array($this, 'viewAction'))
             ->bind('ads_view');
         $adsController->get('/view/{id}/', array($this, 'viewAction'));
+        $adsController->match('/search', array($this, 'searchAction'))
+            ->bind('ads_search');
+        $adsController->match('/search/', array($this, 'searchAction'));
+        $adsController->get('/show/{result}', array($this, 'showAction'))
+            ->value('result', 1)
+            ->bind('ads_show');
+        $adsController->get('/show/{result}/', array($this, 'showAction'));
         $adsController->get('/ads', array($this, 'indexAction'));
         $adsController->get('/ads/', array($this, 'indexAction'));
         $adsController->get('/{page}', array($this, 'indexAction'))
@@ -308,5 +315,66 @@ class AdsController implements ControllerProviderInterface
             echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
         } return $app['twig']->render('ads/delete.twig', $this->_view);
     }
+
+   /**
+     * Search action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    /* public function searchAction(Application $app, Request $request)
+    {
+        try {
+            $data = array();
+            $form = $app['form.factory']
+                ->createBuilder(new SearchForm(), $data)->getForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $adsModel = new AdsModel($app);
+                $query=$data['text'];
+                return  $app->redirect(
+                    $app['url_generator']->generate('ads_show', array($query)),
+                    301
+                );
+            }
+            $this->view['form'] = $form->createView();
+        } catch (\PDOException $e) {
+            $app->abort($app['translator']->trans('Error'));
+        }
+        return $app['twig']->render('ads/search.twig', $this->view);
+    }*/
+
+    /**
+     * Show action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    /*public function showAction(Application $app, Request $request)
+    {
+        if (!isset($_GET[0])) {
+            $_GET[0]='';
+        }
+        $query=preg_replace('/[^a-ząćęłńóśżźA-ZĄĆĘŁŚŻŹ ]/', '', strip_tags($_GET[0]));
+        $adsModel = new AdsModel($app);
+        $result=$adsModel->searchAds($query);
+        ;
+        try {
+            if (!$result) {
+                $view['ads']=array();
+            } else {
+                $view['ads']=$adsModel->showAds($result);
+            }
+        } catch (\PDOException $e) {
+            $app->abort($app['translator']->trans('Error'));
+        }
+        return $app['twig']->render('ads/show.twig', $view);
+    }
+    */
 
 }

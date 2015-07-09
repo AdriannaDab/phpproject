@@ -83,9 +83,10 @@ $app->register(
             ),
         ),
         'security.access_rules' => array(
-            array('^/auth.+$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/[a-z]+/?[1-9]*/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/[a-z]+/([1-9]*|(view/[1-9]*))/?$', 'ROLE_USER'),
+
+            array('^/auth/.+$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
+                    ^/users/add|^/comments/view/.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*', 'ROLE_USER'),
             array('^/.+$', 'ROLE_ADMIN')
         ),
         'security.role_hierarchy' => array(
