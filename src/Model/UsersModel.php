@@ -175,9 +175,13 @@ class UsersModel
         try {
             $query = '
               SELECT
-                iduser, surname
+                *
               FROM
-                ad_users_data
+                ad_users
+              NATURAL JOIN
+                ad_user_data
+              NATURAL JOIN
+                ad_roles
             ';
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
@@ -199,9 +203,13 @@ class UsersModel
     {
         $sql = '
           SELECT
-            iduser, surname
+            *
           FROM
-            ad_users_data
+            ad_users
+          NATURAL JOIN
+            ad_user_data
+          NATURAL JOIN
+            ad_roles
           LIMIT :start, :limit
         ';
         $statement = $this->_db->prepare($sql);
@@ -226,7 +234,11 @@ class UsersModel
           AS
             pages_count
           FROM
-            ad_users_data
+            ad_users
+          NATURAL JOIN
+            ad_user_data
+          NATURAL JOIN
+            ad_roles
         ';
         $result = $this->_db->fetchAssoc($sql);
         if ($result) {
@@ -272,8 +284,47 @@ class UsersModel
         );
     }
 
+    /**
+     * Save user.
+     *
+     * @access public
+     * @param array $category Category data
+     * @retun mixed Result
+     */
+    public function saveUser($user)
+    {
+        if (isset($user['iduser'])
+            && ($user['iduser'] != '')
+            && ctype_digit((string)$user['iduser'])) {
+            $id = $user['iduser'];
+            unset($user['iduser']);
+            return $this->_db->update('ad_users', $user, array('iduser' => $id));
+        } else {
+            return $this->_db->insert('ad_users', $user);
+        }
+    }
 
-
+    /**
+     * Gets ads from one user
+     *
+     * @access public
+     * @param array $ads ads data
+     * @return array Result
+     */
+    public function getAdsListByIduser($id)
+    {
+        $sql = '
+            SELECT
+              *
+            FROM
+              ads
+            NATURAL JOIN
+             ad_users_data
+            WHERE
+              iduser = ?
+        ';
+        return $this->_db->fetchAll($sql, array($id));
+    }
 
 
 

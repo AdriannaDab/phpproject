@@ -80,7 +80,9 @@ class UsersController implements ControllerProviderInterface
         $usersController->get('/view/', array($this, 'viewAction'))
             ->bind('users_view');
         $usersController->get('/users', array($this, 'indexAction'));
-        $usersController->get('/users/', array($this, 'indexAction'))
+        $usersController->get('/users/', array($this, 'indexAction'));
+        $usersController->get('/{page}', array($this, 'indexAction'))
+            ->value('page', 1)
             ->bind('users_index');
         return $usersController;
     }
@@ -101,6 +103,7 @@ class UsersController implements ControllerProviderInterface
             $usersModel = new UsersModel($app);
             $this->_view = array_merge(
                 $this->_view, $usersModel->getPaginatedUsers($page, $pageLimit)
+
             );
         } catch (\PDOException $e) {
             $app['session']->getFlashBag()->add(
@@ -162,10 +165,12 @@ class UsersController implements ControllerProviderInterface
     public function registerAction(Application $app, Request $request)
     {
         $data = array(
-            'signupdate' => date('Y-m-d'),
+            'login' => 'Login',
         );
         $form = $app['form.factory']
             ->createBuilder(new UserForm($app), $data)->getForm();
+        $form->remove('new_password');
+        $form->remove('confirm_new_password');
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
@@ -195,7 +200,7 @@ class UsersController implements ControllerProviderInterface
                 } else {
                     $app['session']->getFlashBag()->add(
                         'message', array(
-                            'type' => 'warning',
+                            'type' => 'danger',
                             'content' => 'Hasła nie są takie same'
                         )
                     );

@@ -7,7 +7,10 @@
         <table class="table table-hover ">
             <thead>
             <tr class="active">
+                <th class="text-center">{{ 'Login'|trans }}</th>
+                <th class="text-center">{{ 'Surname'|trans }}</th>
                 <th class="text-center">{{ 'Name'|trans }}</th>
+                <th class="text-center">{{ 'Role'|trans }}</th>
                 <th colspan="4">&nbsp;</th>
             </tr>
             </thead>
@@ -16,8 +19,19 @@
                 <tr class="text-center">
                     <td>
                         <a href="{{ url('users_view', {'id': user.iduser}) }}"
-                           title="{{ 'View user'|trans }}"
-                           class="btn btn-info">{{ user.surname|e }}</a>
+                           title="{{ 'View user'|trans }}">{{ user.login|e }}</a>
+                    </td>
+                    <td>
+                        {{ user.surname }}
+                    </td>
+                    <td>
+                        {{ user.name }}
+                    </td>
+                    <td>
+                        {{ user.role_name }}
+                    </td>
+                    <td>
+                        {{ user.email }}
                     </td>
                     <td>
                         <a href="{{ url('users_edit', {'id': user.iduser}) }}"

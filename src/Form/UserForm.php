@@ -75,15 +75,15 @@ class UserForm extends AbstractType
             )
         )
             ->add(
-                'nickname', 'text', array(
+                'login', 'text', array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
+                                'min' => 6,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 6',
                                 'maxMessage' =>
                                     'Maksymalna ilość znaków to 45',
                             )
@@ -103,8 +103,8 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
-                                'minMessage' => 'Minimalna ilość znaków to 3',
+                                'min' => 6,
+                                'minMessage' => 'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
@@ -122,9 +122,9 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
+                                'min' => 6,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
@@ -145,87 +145,26 @@ class UserForm extends AbstractType
                                 'min' => 5
                             )
                         ),
-                        new Assert\Regex(
+                       /* new Assert\Regex(
                             array(
                                 'pattern' =>
-                                    "/^[a-zA-Z0-9\.\-_]+\@
-                                   [a-zA-Z0-9\.\-_]+\.[a-z]{2,4}/",
+                                    "/^[a-żA-Ż0-9\.\-_]+\@[a-żA-Ż0-9\.\-_]+\.[a-ż]{2,}/",
                                 'message' => 'Email nie jest poprawny'
                             )
-                        )
+                        )*/
                     )
                 )
             )
-            ->add(
-                'homesite', 'text', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 3,
-                                'minMessage' => 'Minimalna ilość znaków to 3',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Adres nie jest poprawny',
-                            )
-                        ),
-                        new Assert\Url()
-                    )
-                )
-            )
-            ->add(
-                'email', 'email', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 5
-                            )
-                        ),
-                        new Assert\Regex(
-                            array(
-                                'pattern' =>
-                                    "/^[a-zA-Z0-9\.\-_]+\@
-                                         [a-zA-Z0-9\.\-_]+\.[a-z]{2,4}/",
-                                'message' => 'Email nie jest poprawny'
-                            )
-                        )
-                    )
-                )
-            )
-            ->add(
-                'homesite', 'text', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 3,
-                                'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Adres nie jest poprawny',
-                            )
-                        ),
-                        new Assert\Url()
-                    )
-                )
-            )
+
             ->add(
                 'password', 'password', array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
+                                'min' => 6,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
@@ -234,46 +173,6 @@ class UserForm extends AbstractType
                                 'message' => 'Hasło nie jest poprawne',
                             )
                         )
-                    )
-                )
-            )
-            ->add(
-                'password', 'password', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 5,
-                                'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Hasło nie jest poprawne',
-                            )
-                        ),
-                    )
-                )
-            )
-            ->add(
-                'confirm_password', 'password', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 5,
-                                'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Hasło nie jest poprawne',
-                            )
-                        ),
                     )
                 )
             )
@@ -283,9 +182,9 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 5,
+                                'min' => 6,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
@@ -303,9 +202,9 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 5,
+                                'min' => 6,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
