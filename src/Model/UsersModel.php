@@ -319,12 +319,40 @@ class UsersModel
             FROM
               ads
             NATURAL JOIN
-             ad_users_data
+             ad_user_data
             WHERE
               iduser = ?
         ';
         return $this->_db->fetchAll($sql, array($id));
     }
+
+
+    /**
+     * Check if user id exists
+     *
+     * @param $iduser id category from request
+     *
+     * @access public
+     * @return bool True if exists.
+     */
+    public function checkUserId($iduser)
+    {
+        $sql = '
+          SELECT
+            *
+          FROM
+            ad_users
+          WHERE
+            iduser=?
+        ';
+        $result = $this->_db->fetchAll($sql, array($iduser));
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 
@@ -472,7 +500,7 @@ class UsersModel
             if ($success) {
                 $queryTwo = '
                   DELETE FROM
-                    ad_users_data
+                    ad_user_data
                   WHERE
                     iduser = ?
                 ';

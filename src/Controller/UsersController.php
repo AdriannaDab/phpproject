@@ -76,6 +76,9 @@ class UsersController implements ControllerProviderInterface
         $usersController->match('/password', array($this, 'passwordAction'));
         $usersController->match('/password/', array($this, 'passwordAction'))
             ->bind('users_password');
+        $usersController->get('/show', array($this, 'showAction'));
+        $usersController->get('/show/', array($this, 'showAction'))
+            ->bind('users_show');
         $usersController->get('/view', array($this, 'viewAction'));
         $usersController->get('/view/', array($this, 'viewAction'))
             ->bind('users_view');
@@ -152,6 +155,36 @@ class UsersController implements ControllerProviderInterface
         }
     }
 
+    /**
+     * Show action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    public function showAction(Application $app, Request $request)
+    {
+        $usersModel = new UsersModel($app);
+        $id = $this->_model->getIdCurrentUser($app);
+        $user = $this->_model->getUser($id);
+        if ($user) {
+            $this->_view = $usersModel->getAdsListByIduser($id);
+            return $app['twig']
+                ->render('users/show.twig', array('ads' => $this->_view));
+        } else {
+            $app['session']->getFlashBag()->add(
+                'message', array(
+                    'type' => 'danger',
+                    'content' => $app['translator']
+                        ->trans('User not found')
+                )
+            );
+            return $app->redirect(
+                $app['url_generator']->generate('users_index'), 301
+            );
+        }
+    }
 
     /**
      * Register new user
@@ -241,18 +274,20 @@ class UsersController implements ControllerProviderInterface
      * @return mixed Generates page or redirect.
      *
      */
-    public function edit(Application $app, Request $request)
+    public function editAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUserById($id);
+        $user = $this->_model->getUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
+                'login' => $user['login'],
                 'email' => $user['email'],
-                'homesite' => $user['homesite']
             );
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
+            //$form->remove('password');
+            $form->remove('confirm_password');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -306,71 +341,46 @@ class UsersController implements ControllerProviderInterface
      * @access public
      * @return mixed Generates page or redirect.
      */
-    public function delete(Application $app, Request $request)
+    public function deleteAction (Application $app, Request $request)
     {
-        $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUserById($id);
-        $data = array();
-        if (count($user)) {
-            $form = $app['form.factory']
-                ->createBuilder(new UserForm($app), $data)->getForm();
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                if ($app['security']->isGranted('ROLE_ADMIN')) {
+        try {
+            $id = $this->_model->getIdCurrentUser($app);
+            $user = $this->_model->getUserById($id);
+            $this->_view['user'] = $user;
+            if (count($user)) {
+                $form = $app['form.factory']
+                    ->createBuilder(new UserForm($app), $user)->getForm();
+                $form->remove('login');
+                $form->remove('email');
+                $form->remove('password');
+                $form->remove('confirm_password');
+                $form->remove('new_password');
+                $form->remove('confirm_new_password');
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $usersModel = new  UsersModel($app);
+                    $usersModel->deleteUser($data['iduser']);
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'danger',
-                            'content' => 'Nie można usunąć konta admina'
+                            'content' => $app['translator']
+                                ->trans('User deleted.')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate(
-                            '/'
-                        ), 301
-                    );
-                } else {
-                    try {
-                        $model = $this->_model->deleteUser($id);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'success',
-                                'content' => 'Konto zostało usunięte'
-                            )
-                        );
-                        return $app->redirect(
-                            $app['url_generator']->generate(
-                                '/'
-                            ), 301
-                        );
-                    } catch (\Exception $e) {
-                        $errors[] = 'Coś poszło niezgodnie z planem';
-                    }
-                    return $app->redirect(
-                        $app['url_generator']->generate(
-                            '/users/edit'
-                        ), 301
+                        $app['url_generator']->generate('users_index'), 301
                     );
                 }
-                return $app['twig']->render(
-                    'users/delete.twig', array(
-                        'form' => $form->createView()
-                    )
+                $this->_view['form'] = $form->createView();
+            } else {
+                return $app->redirect(
+                    $app['url_generator']->generate('users_index'), 301
                 );
             }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => 'Nie znaleziono użytkownika'
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    '/'
-                ), 301
-            );
-        }
+        } catch (Exception $e) {
+            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('users/delete.twig', $this->_view);
     }
 
     /**
