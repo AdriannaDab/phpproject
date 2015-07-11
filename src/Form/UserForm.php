@@ -328,7 +328,7 @@ class UserForm extends AbstractType
      */
     public function getName()
     {
-        return 'userForm';
+        return 'user';
     }
 
 }

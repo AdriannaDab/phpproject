@@ -1,0 +1,49 @@
+{# Index action template for Users controller #}
+{% extends 'base.twig' %}
+{% block title %}{{  'Users list'|trans }}{% endblock %}
+{% block content %}
+    <div class="thumbnail">
+    {%  if users|length > 0 %}
+        <table class="table table-hover ">
+            <thead>
+            <tr class="active">
+                <th class="text-center">{{ 'Name'|trans }}</th>
+                <th colspan="4">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr class="text-center">
+                    <td>
+                        <a href="{{ url('users_view', {'id': user.iduser}) }}"
+                           title="{{ 'View user'|trans }}"
+                           class="btn btn-info">{{ user.surname|e }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ url('users_edit', {'id': user.iduser}) }}"
+                           title="{{ 'Edit user'|trans }}"
+                           class="btn btn-default">{{ 'Edit user'|trans }}</a>
+                        <a href="{{ url('users_delete', {'id': user.iduser}) }}"
+                           title="{{ 'Delete user'|trans }}"
+                           class="btn btn-danger">{{ 'Delete user'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url('users_register') }}" class="btn btn-default" title="{{ 'Add user'|trans }}">
+            {{ 'Add user'|trans }}
+        </a>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{ 'Users not found'|trans }}.
+        </div>
+    {% endif %}
+    {% for flashMessage in app.session.getFlashBag.get('message') %}
+        <div class="alert alert-{{ flashMessage.type }}" role="alert">
+            {{ flashMessage.content }}
+        </div>
+        </div>
+    {% endfor %}
+{% endblock %}

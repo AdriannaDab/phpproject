@@ -46,6 +46,14 @@ class UsersController implements ControllerProviderInterface
     protected $_model;
 
     /**
+     * Data for view.
+     *
+     * @access protected
+     * @var array $_view
+     */
+    protected $_view = array();
+
+    /**
      * Routing settings.
      *
      * @access public
@@ -56,18 +64,55 @@ class UsersController implements ControllerProviderInterface
     {
         $this->_model = new UsersModel($app);
         $usersController = $app['controllers_factory'];
+        $usersController->match('/register', array($this, 'registerAction'));
         $usersController->match('/register/', array($this, 'registerAction'))
             ->bind('users_register');
+        $usersController->match('/edit', array($this, 'editAction'));
         $usersController->match('/edit/', array($this, 'editAction'))
             ->bind('users_edit');
+        $usersController->match('/delete', array($this, 'deleteAction'));
         $usersController->match('/delete/', array($this, 'deleteAction'))
             ->bind('users_delete');
+        $usersController->match('/password', array($this, 'passwordAction'));
         $usersController->match('/password/', array($this, 'passwordAction'))
             ->bind('users_password');
+        $usersController->get('/view', array($this, 'viewAction'));
         $usersController->get('/view/', array($this, 'viewAction'))
             ->bind('users_view');
-
+        $usersController->get('/users', array($this, 'indexAction'));
+        $usersController->get('/users/', array($this, 'indexAction'))
+            ->bind('users_index');
         return $usersController;
+    }
+
+    /**
+     * Index action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    public function indexAction(Application $app, Request $request)
+    {
+        $pageLimit = 20;
+        $page = (int) $request->get('page', 1);
+        try {
+            $usersModel = new UsersModel($app);
+            $this->_view = array_merge(
+                $this->_view, $usersModel->getPaginatedUsers($page, $pageLimit)
+            );
+        } catch (\PDOException $e) {
+            $app['session']->getFlashBag()->add(
+                'message',
+                array(
+                    'type' => 'error',
+                    'content' => $app['translator']
+                        ->trans('Error code: '.$e->getCode())
+                )
+            );
+        }
+        return $app['twig']->render('users/index.twig', $this->_view);
     }
 
     /**
@@ -103,6 +148,7 @@ class UsersController implements ControllerProviderInterface
             );
         }
     }
+
 
     /**
      * Register new user

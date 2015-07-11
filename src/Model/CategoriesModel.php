@@ -154,7 +154,6 @@ class CategoriesModel
      * @param integer $pagesCount Number of all pages
      * @return integer Page number
      *
-     * trzeba jeszcze to rzutować na integera!
      */
     public function getCurrentPageNumber($page, $pagesCount)
     {

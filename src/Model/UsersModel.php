@@ -161,6 +161,123 @@ class UsersModel
 
 
 
+
+
+
+    /**
+     * Gets all users.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAll()
+    {
+        try {
+            $query = '
+              SELECT
+                iduser, surname
+              FROM
+                ad_users_data
+            ';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+
+    /**
+     * Get all users on page
+     *
+     * @access public
+     * @param integer $page Page number
+     * @param integer $limit Number of records on single page
+     * @param integer $pagesCount Number of all pages
+     * @retun array Result
+     */
+    public function getUsersPage($page, $limit)
+    {
+        $sql = '
+          SELECT
+            iduser, surname
+          FROM
+            ad_users_data
+          LIMIT :start, :limit
+        ';
+        $statement = $this->_db->prepare($sql);
+        $statement->bindValue('start', ($page-1)*$limit, \PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    /**
+     * Counts user pages.
+     *
+     * @access public
+     * @param integer $limit Number of records on single page
+     * @return integer Result
+     */
+    public function countUsersPages($limit)
+    {
+        $pagesCount = 0;
+        $sql = '
+          SELECT COUNT(*)
+          AS
+            pages_count
+          FROM
+            ad_users_data
+        ';
+        $result = $this->_db->fetchAssoc($sql);
+        if ($result) {
+            $pagesCount =  ceil($result['pages_count']/$limit);
+        }
+        return $pagesCount;
+    }
+
+    /**
+     * Returns current page number.
+     *
+     * @access public
+     * @param integer $page Page number
+     * @param integer $pagesCount Number of all pages
+     * @return integer Page number
+     *
+     */
+    public function getCurrentPageNumber($page, $pagesCount)
+    {
+        return (($page <= 1) || ($page > $pagesCount)) ? 1 : $page;
+    }
+
+
+    /**
+     * Gets users for pagination.
+     *
+     * @access public
+     * @param integer $page Page number
+     * @param integer $limit Number of records on single page
+     *
+     * @return array Result
+     */
+    public function getPaginatedUsers($page, $limit)
+    {
+        $pagesCount = $this->countUsersPages($limit);
+        $page = $this->getCurrentPageNumber($page, $pagesCount);
+        $users = $this->getUsersPage($page, $limit);
+        return array(
+            'users' => $users,
+            'paginator' => array(
+                'page' => $page,
+                'pagesCount' => $pagesCount)
+        );
+    }
+
+
+
+
+
+
+
     /**
      *
      * Get information about user
@@ -194,6 +311,8 @@ class UsersModel
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
     }
+
+
 
     /**
      * Puts one user to database.
