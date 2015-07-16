@@ -2,6 +2,7 @@
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', E_ALL);
 require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
+
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 $app = new Silex\Application();
 $app['debug']=true;
@@ -29,9 +30,7 @@ $app->register(new Silex\Provider\FormServiceProvider());
 
 // Validator
 $app->register(new Silex\Provider\ValidatorServiceProvider());
-$app->register(new Silex\Provider\TranslationServiceProvider(), array(
-    'translator.domains' => array(),
-));
+
 
 // Session
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -43,9 +42,9 @@ $app->register(
         'db.options' => array(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
-            'dbname'    => 'baza!',
-            'user'      => 'nazwa!',
-            'password'  => 'haslo!!',
+            'dbname'    => 'bza!',
+            'user'      => 'name!',
+            'password'  => 'haslo!',
             'charset'   => 'utf8',
         ),
     )
