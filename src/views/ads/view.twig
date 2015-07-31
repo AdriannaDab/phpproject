@@ -1,3 +1,4 @@
+{# View action template for Ads controller #}
 {% extends 'base.twig' %}
 {% block title %}{{  'View ad'|trans }}{% endblock %}
 {% block content %}
@@ -11,7 +12,7 @@
             {{ render( path('/photos/',{'idad': ad.idad|e})) }}
         </p>
     {% else %}
-        Invalid data.
+        {{ 'Invalid data.'|trans }}
     {% endif %}
  </div>
  {# {% if is_granted('ROLE_ADMIN') %}#}

@@ -1,9 +1,10 @@
+{# Upload action template for Photos controller #}
 {% extends 'base.twig' %}
 
 {% block content %}
     <hr>
     <h2 class="intro-text text-center">
-        Dodaj zdjęcie
+       {{ 'Add photo'|trans }}
     </h2>
     <hr>
     <form action="{{ url('photos_upload', {'idad': idad|e}) }}" {{ form_enctype(form) }}

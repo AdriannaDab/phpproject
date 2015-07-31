@@ -4,12 +4,12 @@
 
 {% block content %}
     <h1>
-        {{ 'Login'|trans }}
+        {{ 'Log in'|trans }}
     </h1>
     {{ error }}
     <form action="{{ path('auth_login_check') }}" method="post">
         {{ form_widget(form) }}
-        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Login'|trans }}" />
+        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Log in'|trans }}" />
         <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
 {% endblock %}

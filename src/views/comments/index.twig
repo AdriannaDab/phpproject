@@ -1,10 +1,11 @@
+{# Index action template for Comments controller #}
 {% block comments %}
-    <h2>Komentarze:</h2>
+    <h2>{{ 'Comments'|trans }}:</h2>
     <hr>
 
     <p>
-        <a href="{{ url('comments_add', {'idad': idad|e}) }}" title="Add comment">
-            <button type="button" class="btn btn-success">Dodaj komentarz</button>
+        <a href="{{ url('comments_add', {'idad': idad|e}) }}" title="{{ 'Add comment'|trans }}">
+            <button type="button" class="btn btn-success">{{ 'Add comment'|trans }}</button>
         </a>
     </p>
 
@@ -24,15 +25,13 @@
                {#{% if comment.iduser|e == access|e %}#}
                     <p>
                         <a href="{{ url('comments_edit', {'id': comment.idcomment|e}) }}"
-                           title="Edit comment">
-                            <button type="button" class="btn btn-warning" w>Edytuj
-                                komentarz
+                           title="{{ 'Edit comment'|trans }}">
+                            <button type="button" class="btn btn-warning" >{{ 'Edit comment'|trans }}
                             </button>
                         </a>
                         <a href="{{ url('comments_delete', {'id': comment.idcomment|e}) }}"
-                           title="Delete comment">
-                            <button type="button" class="btn btn-danger">Usuń
-                                komentarz
+                           title="{{ 'Delete comment'|trans }}">
+                            <button type="button" class="btn btn-danger">{{ 'Delete comment'|trans }}
                             </button>
                         </a>
                     </p>

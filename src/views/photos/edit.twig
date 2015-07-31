@@ -1,11 +1,14 @@
+{# Edit action template for Photos controller #}
 {% extends 'base.twig' %}
 
 {% block content %}
     <h1>
-        Edytuj komentarz
+        {{ 'Edit photo'|trans }}
     </h1>
+    <hr>
     <form action="" method="post">
         {{ form_widget(form) }}
-        <input type="submit" name="submit"/>
+        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+        <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
 {% endblock %}

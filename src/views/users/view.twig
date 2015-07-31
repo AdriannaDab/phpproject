@@ -1,3 +1,4 @@
+{# View action template for Users controller #}
 {% extends 'base.twig' %}
 
 {% block content %}
@@ -7,7 +8,7 @@
         <h2 class="intro-text text-center">{{ user.login|capitalize }}</h2>
         <hr>
         <ul class="list-group center-block">
-            <li class="list-group-item">{{ 'Name'|trans|upper }}:   <b> {{ user.name|capitalize }} </b></li>
+            <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ user.name|capitalize }} </b></li>
             <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b></li>
             <li class="list-group-item">{{ 'Email'|trans|upper }}:   <b> {{ user.email|e }}</b></li>
             <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b></li>

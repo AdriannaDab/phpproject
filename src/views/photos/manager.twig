@@ -1,3 +1,4 @@
+{# Manager action template for Photos controller #}
 {% extends 'base.twig' %}
 
 {% block content %}
@@ -13,8 +14,8 @@
                 <img class="img-responsive img-full" src="{{ app.request.basepath }}/media/{{ photo.photo_name }}">
                {#{% if is_granted('ROLE_ADMIN') %}#}
             </p><a href="{{ url('photos_delete',{'name': photo.photo_name|e}) }}"
-                   title="Delete Photo">
-                <button type="button" class="btn btn-danger">Usuń Photo
+                   title="{{ 'Delete Photo'|trans }}">
+                <button type="button" class="btn btn-danger">{{ 'Delete Photo'|trans }}
                 </button>
             </a></p>
         {#{% endif %}#}

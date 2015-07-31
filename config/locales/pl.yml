@@ -1,6 +1,10 @@
+Advertising service: Serwis ogłoszeniowy
+What are you looking for: Czego szukasz
 Ads list: Lista ogłoszeń
 Next page: Następna strona
 Previous page: Poprzednia strona
+Next: Następny
+Previous: Poprzedni
 Id: Numer
 Save: Zapisz
 save: Zapisz
@@ -30,7 +34,59 @@ Add ad: Dodaj ogłoszenie
 Add advertisement: Dodaj ogłoszenie
 View ad: Zobacz ogłoszenie
 Edit ad: Edytuj ogłoszenie
+Ad edited: Zmieniono ogłoszenie
 Delete ad: Usuń ogłoszenie
 Ad deleted: Usunięto ogłoszenie.
 New ad added: Dodano ogłoszenie.
 Ad edited: Zmieniono ogłoszenie.
+Ads not found: Nie znaleziono ogłoszenia.
+Project: Projekt
+Main advertisements: Główne ogłoszenia
+Categories: Kategorie
+Further information about: Więcej informacji na temat
+Your profile: Twój profil
+Your ads: Twoje ogłoszenia
+Admin panel: Panel administratora
+Register: Zarejestruj
+Sign up: Rejestracja
+Log out: Wyloguj
+Log in: Zaloguj
+Cancel: Cofnij
+Invalid data.: Niepoprawne dane
+Add Photos: Dodaj zdjęcia
+Photos Manager: Manager zdjęć
+Back: Powrót
+Add category: Dodaj kategorię
+Delete category: Usuń kategorię
+Edit category: Edytuj kategorię
+View category: Zobacz kategorię
+Categories list: Lista kategorii
+Name: nazwa
+Categories not found: Nie znaleziono kategorii
+Did not found any ads. Sorry.: Nie znaleziono żadnych ogłoszeń. Przepraszamy.
+Add comment: Dodaj komentarz
+Delete comment: Usuń komentarz
+Edit comment: Edytuj komentarz
+View comment: Zobacz komentarz
+Comments: Komentarze
+Add photo: Dodaj zdjęcie
+Delete photo: Usuń zdjęcie
+Edit photo: Edytuj zdjęcie
+View photo: Zobacz zdjęcie
+Do you really want to delete this user: Czy na pewno chcesz usunąć tego użytkownika
+Add user: Dodaj użytkownika
+Delete user: Usuń użytkownika
+Edit user information: Edytuj dane użytkownika
+View user: Zobacz użytkownika
+Users list: Lista użytkowników
+Login: Login
+Surname: Nazwisko
+Firstname: Imię
+Role: Rola
+Email: Email
+Users not found: Nie znaleziono użytkownika
+Change password: Zmień hasło
+City: Miasto
+Country: Kraj
+Province: Województwo
+

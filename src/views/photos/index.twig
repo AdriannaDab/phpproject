@@ -1,3 +1,4 @@
+{# Index action template for Photos controller #}
 {% block photos %}
 
     {% if photos|length > 0 %}
@@ -33,11 +34,11 @@
             <!-- Controls -->
             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
+                <span class="sr-only">{{ 'Previous'|trans }}</span>
             </a>
             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
+                <span class="sr-only">{{ 'Next'|trans }}</span>
             </a>
 
 

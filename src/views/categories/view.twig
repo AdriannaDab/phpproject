@@ -1,3 +1,4 @@
+{# View action template for Categories controller #}
 {% extends 'base.twig' %}
 {% block content %}
     {% if ads|length > 0 %}
@@ -19,7 +20,7 @@
             <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
         {% else %}
             <div class="thumbnail">
-                <p>Didn't found any ads. Sorry.</p>
+                <p>{{ 'Did not found any ads. Sorry.'|trans }}</p>
                 <a href="{{ url('categories_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
             </div>
         </div>

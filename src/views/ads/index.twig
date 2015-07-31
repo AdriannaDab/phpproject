@@ -3,8 +3,8 @@
 {% block title %}{{  'Advertising service'|trans }}{% endblock %}
 {% block content %}
 <div class="jumbotron">
-    <h1 class="text-center">Advertising service</h1>
-    <p class="text-center">What are you looking for?</p>
+    <h1 class="text-center">{{  'Advertising service'|trans }}</h1>
+    <p class="text-center">{{  'What are you looking for'|trans }}?</p>
 </div>
     {%  if ads|length > 0 %}
 <div class="row">
@@ -14,7 +14,7 @@
                 {#<img src="#" alt="#">#}
                 <div class="caption">
                     <h3>
-                        <a href="{{ url('ads_view', {'id': ad.idad|e}) }}" title="View ad">
+                        <a href="{{ url('ads_view', {'id': ad.idad|e}) }}" title="{{ 'View ad'|trans }}">
                         {{ ad.ad_name|e }}</a>
                     </h3>
                     <p>{{ ad.ad_contence|slice(0,20) }}...</p>
@@ -37,14 +37,14 @@
                 {% if paginator.page > 1 %}
                     {% set previous = (paginator.page - 1) %}
                     <li class="previous">
-                        <a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'previous page'|trans }}">
-                        <span aria-hidden="true">&larr;</span> Newer</a></li>
+                        <a href="{{ url('/ads/', {'page': previous}) }}" title="{{ 'Previous page'|trans }}">
+                        <span aria-hidden="true">&larr;</span> {{ 'Previous page'|trans }}</a></li>
                     {%  endif %}
                     {% if paginator.page < paginator.pagesCount %}
                         {% set next = (paginator.page + 1) %}
                         <li class="next">
-                            <a href={{ url('/ads/', {'page': next}) }}" title="{{ 'next page'|trans }}">
-                            Older <span aria-hidden="true">&rarr;</span> </a> </li>
+                            <a href={{ url('/ads/', {'page': next}) }}" title="{{ 'Next page'|trans }}">
+                            {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span> </a> </li>
                 {% endif  %}
             </ul>
         </div>
