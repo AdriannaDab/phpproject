@@ -13,7 +13,8 @@
             <p>
                 <img class="img-responsive img-full" src="{{ app.request.basepath }}/media/{{ photo.photo_name }}">
                {#{% if is_granted('ROLE_ADMIN') %}#}
-            </p><a href="{{ url('photos_delete',{'name': photo.photo_name|e}) }}"
+            </p>
+            <a href="{{ url('photos_delete', {'photo_name': photo.photo_name|e}) }}"
                    title="{{ 'Delete Photo'|trans }}">
                 <button type="button" class="btn btn-danger">{{ 'Delete Photo'|trans }}
                 </button>

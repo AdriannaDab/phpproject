@@ -59,9 +59,12 @@ class PhotosModel
                 *
               FROM
                 ad_photos
-              NATURAL JOIN
+              LEFT JOIN
                 ads
+              ON
+              ad_photos.idad = ads.idad
             ';
+
             return $this->_db->fetchAll($query);
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
@@ -132,15 +135,18 @@ class PhotosModel
         try{
             $query = '
               INSERT INTO
-                `ad_photos` (`photo_name`, `photo_alt`, `idad`)
+                `ad_photos` (`photo_name`, `photo_alt`, `idad`, `iduser`, `idcategory`, `photo_date`)
               VALUES
-                (?,?,?)
+                (?,?,?,?,?,?)
             ';
             $this->_db->executeQuery(
                 $query, array(
                     $name,
                     $data['photo_alt'],
-                    $data['idad']
+                    $data['idad'],
+                    $data['iduser'],
+                    $data['idcategory'],
+                    $data['photo_date'],
                 )
             );
         } catch (Exception $e) {

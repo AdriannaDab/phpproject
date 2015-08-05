@@ -11,6 +11,7 @@
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  **/
 namespace Controller;
+use Model\UsersModel;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,6 +79,7 @@ class PhotosController implements ControllerProviderInterface
             ->value('page', 1)
             ->bind('/photos/');
         return $photosController;
+
     }
 
     /**
@@ -131,11 +133,22 @@ class PhotosController implements ControllerProviderInterface
     public function uploadAction(Application $app, Request $request)
     {
         $idad = (int)$request->get('idad', 0);
+
+        $userModel = new UsersModel($app);
+        $iduser = $userModel->getIdCurrentUser($app);
         $adsModel = new AdsModel($app);
         $check = $this->_ads = $adsModel->checkAdsId($idad);
+
         if ($check) {
+            $ad = $adsModel->getAd($idad);
+            $idcategory = $ad['idcategory'];
+
+            $date = date('Y-m-d H:i:s');
             $data = array(
                 'idad' => $idad,
+                'iduser' => $iduser,
+                'idcategory'=>$idcategory,
+                'photo_date'=>$date
             );
             $form = $app['form.factory']
                 ->createBuilder(new PhotoForm($app), $data)->getForm();
@@ -297,7 +310,8 @@ class PhotosController implements ControllerProviderInterface
     public function managerAction(Application $app, Request $request)
     {
         $photosModel = new PhotosModel($app);
-        $photos = $this->_model= $photosModel->getPhotos();
+        $photos =  $photosModel->getPhotos();
+
         return $app['twig']->render(
             'photos/manager.twig', array(
                 'photos' => $photos
@@ -306,6 +320,5 @@ class PhotosController implements ControllerProviderInterface
 
 
     }
-
 
 }
