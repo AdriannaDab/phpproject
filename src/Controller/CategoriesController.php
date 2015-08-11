@@ -125,7 +125,7 @@ class CategoriesController implements ControllerProviderInterface
         if ($this->_view['category']) {
             $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
             return $app['twig']
-                ->render('categories/index.twig', array('ads' => $this->_view['category']));
+                ->render('categories/view.twig', array('ads' => $this->_view['category']));
         } else {
             $app['session']->getFlashBag()->add(
                 'message', array(

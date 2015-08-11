@@ -161,7 +161,7 @@ class AdsController implements ControllerProviderInterface
         } catch (PDOException $e) {
             $app->abort($app['translator']->trans('Ad not found'), 404);
         }
-        return $app['twig']->render('ads/index.twig', $this->_view);
+        return $app['twig']->render('ads/view.twig', $this->_view);
     }
 
     /**
