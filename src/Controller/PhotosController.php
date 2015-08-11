@@ -102,7 +102,7 @@ class PhotosController implements ControllerProviderInterface
             $photosModel = new PhotosModel($app);
             $photos = $this->_model=$photosModel->getPhotosByAd($idad);
             return $app['twig']->render(
-                'photos/view.twig', array(
+                'photos/index.twig', array(
                     'photos' => $photos
                 )
             );

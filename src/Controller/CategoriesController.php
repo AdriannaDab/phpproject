@@ -105,7 +105,7 @@ class CategoriesController implements ControllerProviderInterface
                 )
             );
         }
-        return $app['twig']->render('categories/view.twig', $this->_view);
+        return $app['twig']->render('categories/index.twig', $this->_view);
     }
 
     /**
@@ -125,7 +125,7 @@ class CategoriesController implements ControllerProviderInterface
         if ($this->_view['category']) {
             $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
             return $app['twig']
-                ->render('categories/view.twig', array('ads' => $this->_view['category']));
+                ->render('categories/index.twig', array('ads' => $this->_view['category']));
         } else {
             $app['session']->getFlashBag()->add(
                 'message', array(

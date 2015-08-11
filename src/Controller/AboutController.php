@@ -81,7 +81,7 @@ class AboutController implements ControllerProviderInterface
         $idabout = $about['idabout'];
         $about = $this->_model->getAbout($idabout);
         return $app['twig']->render(
-            'about/view.twig', array(
+            'about/index.twig', array(
                 'about' => $about
             )
         );
