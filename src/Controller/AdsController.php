@@ -138,7 +138,7 @@ class AdsController implements ControllerProviderInterface
                 )
             );
         }
-        return $app['twig']->render('ads/index.twig', $this->_view);
+        return $app['twig']->render('ads/view.twig', $this->_view);
     }
 
     /**

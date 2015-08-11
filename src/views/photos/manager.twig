@@ -2,7 +2,9 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+
     <div class="row">
+        <h2 class="text-center">{{ 'Photos'|trans }}:</h2>
     {% for photo in photos %}
         <hr>
         <h2 class="intro-text text-center">

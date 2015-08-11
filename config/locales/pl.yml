@@ -1,10 +1,11 @@
 Advertising service: Serwis ogłoszeniowy
-What are you looking for: Czego szukasz
+What are you looking for: Czego poszukujesz
 Ads list: Lista ogłoszeń
 Next page: Następna strona
 Previous page: Poprzednia strona
 Next: Następny
 Previous: Poprzedni
+Newest advertisements: Najnowsze ogłoszenia
 Id: Numer
 Save: Zapisz
 save: Zapisz
@@ -41,7 +42,7 @@ New ad added: Dodano ogłoszenie.
 Ad edited: Zmieniono ogłoszenie.
 Ads not found: Nie znaleziono ogłoszenia.
 Project: Projekt
-Main advertisements: Główne ogłoszenia
+Main advertisement site: Strona główna z ogłoszeniami
 Categories: Kategorie
 Further information about: Więcej informacji na temat
 Your profile: Twój profil
@@ -55,6 +56,7 @@ Cancel: Cofnij
 Invalid data.: Niepoprawne dane
 Add Photos: Dodaj zdjęcia
 Photos Manager: Manager zdjęć
+Photos: Zdjęcia
 Back: Powrót
 Add category: Dodaj kategorię
 Delete category: Usuń kategorię

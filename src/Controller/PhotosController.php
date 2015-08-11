@@ -102,7 +102,7 @@ class PhotosController implements ControllerProviderInterface
             $photosModel = new PhotosModel($app);
             $photos = $this->_model=$photosModel->getPhotosByAd($idad);
             return $app['twig']->render(
-                'photos/index.twig', array(
+                'photos/view.twig', array(
                     'photos' => $photos
                 )
             );
@@ -238,13 +238,16 @@ class PhotosController implements ControllerProviderInterface
                 $data = array();
                 $form = $app['form.factory']
                     ->createBuilder(new PhotoForm($app), $data)->getForm();
+                $form->remove('photo_name');
+                $form->remove('file');
+                $form->remove('photo_alt');
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                         $data = $form->getData();
                         try {
                             $model = unlink($path);
                             try {
-                                $link = $this->_model->removePhoto($name);
+                                $link = $this->_model = $photosModel->removePhoto($name);
                                 $app['session']->getFlashBag()->add(
                                     'message', array(
                                         'type' => 'success',

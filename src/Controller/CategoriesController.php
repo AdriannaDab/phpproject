@@ -105,7 +105,7 @@ class CategoriesController implements ControllerProviderInterface
                 )
             );
         }
-        return $app['twig']->render('categories/index.twig', $this->_view);
+        return $app['twig']->render('categories/view.twig', $this->_view);
     }
 
     /**

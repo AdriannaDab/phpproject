@@ -1,0 +1,12 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <hr>
+    <h2 class="intro-text text-center">
+        Kontakt
+    </h2>
+    <hr>
+    {% for about in about %}
+        <p>{{ about.title|trans }} : {{ about.content|raw }}</p>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.twig' %}
+{% block title %}{{  'About me'|trans }}{% endblock %}
+{% block content %}
+    <hr>
+    <h2 class="intro-text text-center">
+        O mnie
+    </h2>
+    <hr>
+    {% for about in about %}
+        <p>{{ ad_about.name|e }} : {{ ad_about.content|raw }}</p>
+    {% endfor %}
+{% endblock %}

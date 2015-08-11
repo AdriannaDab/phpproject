@@ -122,7 +122,7 @@ class CommentsController implements ControllerProviderInterface
             //} else {
             //   $access = 0;
             //}
-            return $app['twig']->render('comments/index.twig', array(
+            return $app['twig']->render('comments/view.twig', array(
                     'comments' => $comments,
                     'idad' => $idad
                     //, 'access' => $access

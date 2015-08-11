@@ -118,7 +118,7 @@ class UsersController implements ControllerProviderInterface
                 )
             );
         }
-        return $app['twig']->render('users/index.twig', $this->_view);
+        return $app['twig']->render('users/view.twig', $this->_view);
     }
 
     /**
