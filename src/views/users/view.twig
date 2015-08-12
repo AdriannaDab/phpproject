@@ -16,5 +16,12 @@
             <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b></li>
         </ul>
 
+        <a href="{{ url('users_edit', {'id': user.iduser}) }}"
+           title="{{ 'Edit user'|trans }}"
+           class="btn btn-default">{{ 'Edit user'|trans }}</a>
+        <a href="{{ url('users_delete', {'id': user.iduser}) }}"
+           title="{{ 'Delete user'|trans }}"
+           class="btn btn-danger">{{ 'Delete user'|trans }}</a>
+
     </div>
 {% endblock %}
