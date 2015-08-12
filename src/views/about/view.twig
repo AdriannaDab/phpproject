@@ -6,7 +6,7 @@
         {{ 'About project'|trans }}
     </h2>
     <hr>
-    {% for about in about %}
+
         <p><h4 class="text-center"><b>{{ about.content|capitalize }}</b></h4><br>
            <hr>
            <h2 class="intro-text text-center">
@@ -16,7 +16,6 @@
            <h4 > {{ 'Surname'|trans }}: <b>{{ about.surname|raw}}</b></h4>
            <h4 > {{ 'Contact'|trans }}:<b> {{ about.email|raw}}</b></h4>
            </p>
-    {% endfor %}
     <a href="{{ url('abouts_edit') }}" class="btn btn btn-default">
         {{ 'Edit'|trans }}</a></p>
     <br>
