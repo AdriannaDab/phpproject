@@ -313,15 +313,12 @@ class PhotosController implements ControllerProviderInterface
     public function managerAction(Application $app, Request $request)
     {
         $photosModel = new PhotosModel($app);
-        $photos =  $photosModel->getPhotos();
+        $photos = $photosModel->getPhotos();
 
         return $app['twig']->render(
             'photos/manager.twig', array(
                 'photos' => $photos
             )
         );
-
-
     }
-
 }

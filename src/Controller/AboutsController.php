@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Advertisement service About controller.
+ * Advertisement service Abouts controller.
  *
  * PHP version 5
  *
@@ -17,11 +16,11 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Model\AboutModel;
+use Model\AboutsModel;
 use Form\AboutForm;
 
 /**
- * Class AboutController
+ * Class AboutsController
  *
  * @category Controller
  * @package  Controller
@@ -32,18 +31,27 @@ use Form\AboutForm;
  * @uses Silex\ControllerProviderInterface
  * @uses Symfony\Component\HttpFoundation\Request
  * @uses Symfony\Component\Validator\Constraints
- * @uses Model\AboutModel
- * @uses Form\AboutForm;
+ * @uses Model\AboutsModel
+ * @uses Form\AboutForm
  */
-class AboutController implements ControllerProviderInterface
+class AboutsController implements ControllerProviderInterface
 {
     /**
-     * AboutModel object.
+     *
+     * AboutsModel object.
      *
      * @var $_model
-     * @access protected
+     * $access protected
      */
     protected $_model;
+
+    /**
+     * Data for view.
+     *
+     * @access protected
+     * @var array $_view
+     */
+    protected $_view = array();
 
     /**
      * Routing settings.
@@ -54,17 +62,17 @@ class AboutController implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $this->_model = new AboutModel($app);
-        $aboutController = $app['controllers_factory'];
-        $aboutController->match('/edit', array($this, 'editAction'))
-            ->bind('edit_about_me');
-        $aboutController->match('/edit/', array($this, 'editAction'));
-        $aboutController->get('/view/', array($this, 'viewAction'));
-        $aboutController->get('/view', array($this, 'viewAction'));
-        $aboutController->get('/{page}', array($this, 'viewAction'))
+        $this->_model = new AboutsModel($app);
+        $aboutsController = $app['controllers_factory'];
+        $aboutsController->match('/edit', array($this, 'editAction'));
+        $aboutsController->match('/edit/', array($this, 'editAction'))
+            ->bind('abouts_edit');
+        $aboutsController->get('/about', array($this, 'viewAction'));
+        $aboutsController->get('/about/', array($this, 'viewAction'));
+        $aboutsController->get('/{page}', array($this, 'viewAction'))
             ->value('page', 1)
-            ->bind('about_me');
-        return $aboutController;
+            ->bind('abouts_view');
+        return $aboutsController;
     }
 
     /**
@@ -87,8 +95,6 @@ class AboutController implements ControllerProviderInterface
             )
         );
     }
-
-
     /**
      * Edit about me
      *
@@ -138,5 +144,4 @@ class AboutController implements ControllerProviderInterface
             )
         );
     }
-
 }

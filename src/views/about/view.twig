@@ -3,10 +3,21 @@
 {% block content %}
     <hr>
     <h2 class="intro-text text-center">
-        O mnie
+        {{ 'About project'|trans }}
     </h2>
     <hr>
     {% for about in about %}
-        <p>{{ ad_about.name|e }} : {{ ad_about.content|raw }}</p>
+        <p><h4 class="text-center"><b>{{ about.content|capitalize }}</b></h4><br>
+           <hr>
+           <h2 class="intro-text text-center">
+            {{ 'About author'|trans }}
+           </h2><hr>
+           <h4 >{{ 'Firstname'|trans }}:<b>{{ about.name|raw }}</b></h4>
+           <h4 > {{ 'Surname'|trans }}: <b>{{ about.surname|raw}}</b></h4>
+           <h4 > {{ 'Contact'|trans }}:<b> {{ about.email|raw}}</b></h4>
+           </p>
     {% endfor %}
+    <br>
+    <p class="text-center"><a href="{{ url('/ads/') }}" class="btn btn-lg btn-primary text-center">
+        {{ 'Back to main site'|trans }}</a></p>
 {% endblock %}

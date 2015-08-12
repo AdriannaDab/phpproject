@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Advertisement service About controller.
+ * Advertisement service Projects controller.
  *
  * PHP version 5
  *
@@ -17,11 +16,11 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Model\AboutModel;
-use Form\AboutForm;
+use Model\ProjectsModel;
+use Form\ProjectForm;
 
 /**
- * Class AboutController
+ * Class ProjectsController
  *
  * @category Controller
  * @package  Controller
@@ -32,18 +31,27 @@ use Form\AboutForm;
  * @uses Silex\ControllerProviderInterface
  * @uses Symfony\Component\HttpFoundation\Request
  * @uses Symfony\Component\Validator\Constraints
- * @uses Model\AboutModel
- * @uses Form\AboutForm;
+ * @uses Model\ProjectsModel
+ * @uses Form\ProjectsForm
  */
-class AboutController implements ControllerProviderInterface
+class ProjectsController implements ControllerProviderInterface
 {
     /**
-     * AboutModel object.
+     *
+     * ProjectsModel object.
      *
      * @var $_model
-     * @access protected
+     * $access protected
      */
     protected $_model;
+
+    /**
+     * Data for view.
+     *
+     * @access protected
+     * @var array $_view
+     */
+    protected $_view = array();
 
     /**
      * Routing settings.
@@ -54,35 +62,48 @@ class AboutController implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $this->_model = new AboutModel($app);
-        $aboutController = $app['controllers_factory'];
-        $aboutController->match('/edit', array($this, 'editAction'))
-            ->bind('edit_about_me');
-        $aboutController->match('/edit/', array($this, 'editAction'));
-        $aboutController->get('/view/', array($this, 'viewAction'));
-        $aboutController->get('/view', array($this, 'viewAction'));
-        $aboutController->get('/{page}', array($this, 'viewAction'))
+        $this->_model = new ProjectsModel($app);
+        $projectsController = $app['controllers_factory'];
+        $projectsController->match('/edit', array($this, 'editAction'));
+        $projectsController->match('/edit/', array($this, 'editAction'))
+            ->bind('projects_edit');
+        $projectsController->match('/delete', array($this, 'deleteAction'));
+        $projectsController->match('/delete/', array($this, 'deleteAction'))
+            ->bind('projects_delete');
+        $projectsController->get('/projects', array($this, 'indexAction'));
+        $projectsController->get('/projects/', array($this, 'indexAction'));
+        $projectsController->get('/{page}', array($this, 'indexAction'))
             ->value('page', 1)
-            ->bind('about_me');
-        return $aboutController;
+            ->bind('projects_index');
+        return $projectsController;
     }
 
     /**
-     * View About me
-     *
-     * @param Application $app     application object
-     * @param Request     $request request
+     * Index action.
      *
      * @access public
-     * @return mixed Generates page or redirects.
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
      */
-    public function viewAction(Application $app, Request $request)
+    public function indexAction(Application $app, Request $request)
     {
-        $about = $this->_model->getAboutId('aboutme');
-        $idabout = $about['idabout'];
-        $about = $this->_model->getAbout($idabout);
+        try {
+            $about = $this->_model->getAboutId('aboutme');
+            $idabout = $about['idabout'];
+            $about = $this->_model->getAbout($idabout);
+        } catch (\PDOException $e) {
+            $app['session']->getFlashBag()->add(
+                'message',
+                array(
+                    'type' => 'error',
+                    'content' => $app['translator']
+                        ->trans('Error code: '.$e->getCode())
+                )
+            );
+        }
         return $app['twig']->render(
-            'about/view.twig', array(
+            'about/index.twig', array(
                 'about' => $about
             )
         );

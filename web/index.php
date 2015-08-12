@@ -42,8 +42,8 @@ $app->register(
         'db.options' => array(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
-            'dbname'    => 'bza!',
-            'user'      => 'name!',
+            'dbname'    => 'baza!',
+            'user'      => 'nazwa!',
             'password'  => 'haslo!',
             'charset'   => 'utf8',
         ),
@@ -83,7 +83,7 @@ $app->register(
         'security.access_rules' => array(
 
             array('^/auth/.+$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
-                    ^/users/add|^/comments/view/.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+                    ^/users/add|^/comments/view/.*$|^/about.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*', 'ROLE_USER'),
             array('^/.+$', 'ROLE_ADMIN')
         ),
@@ -107,5 +107,6 @@ $app->mount('/photos/', new Controller\PhotosController());
 $app->mount('/users', new Controller\UsersController());
 //$app->mount('/admin', new Controller\AdminController());
 $app->mount('auth', new Controller\AuthController());
+$app->mount('/about', new Controller\AboutsController());
 
 $app->run();

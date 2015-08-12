@@ -136,7 +136,7 @@ class UsersController implements ControllerProviderInterface
         $user = $this->_model->getUser($id);
         if (count($user)) {
             return $app['twig']->render(
-                'users/index.twig', array(
+                'users/view.twig', array(
                     'user' => $user
                 )
             );
