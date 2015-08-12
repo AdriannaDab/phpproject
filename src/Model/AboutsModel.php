@@ -52,7 +52,7 @@ class AboutsModel
      * @access public
      * @return array Array with about attributes and values
      */
-    public function getAbout($idabout)
+    public function getAbout()
     {
         $sql = 'SELECT
                   *
@@ -60,58 +60,53 @@ class AboutsModel
                   ad_about
                 WHERE
                   idabout = 1';
-        return $this->_db->fetchall($sql, array($idabout));
-    }
-    /**
-     * Get about id
-     *
-     * @param $name
-     *
-     * @access public
-     * @return Array Associative array with id about
-     */
-    public function getAboutId($name)
-    {
-        $sql = 'SELECT * FROM ad_about WHERE idabout = 1';
-        return $this->_db->fetchAssoc($sql, array($name));
+        return $this->_db->fetchall($sql);
     }
 
     /**
-     * Update about
+     * Updates about.
      *
-     * @param array $data Array with about information
+     * @param Array $data Associative array.
      *
      * @access public
-     * @return bool true if updeted
+     * @return Void
      */
-    public function updateAbout($data)
+    public function editAbout($data)
     {
-        $aboutValues = 'SELECT
-                          *
-                        FROM
-                          ad_about
-                        WHERE
-                          idabout = 1';
-        $attriubutesNames = $this->_db
-            ->fetchAll($aboutValues, array($data['idabout']));
-        foreach ($attriubutesNames as $attribute) {
-            foreach ($data as $key => $value) {
-                if ($attribute['title'] == $key) {
-                    $sql = 'UPDATE ad_about
-                        SET
-                          content = ?
-                        WHERE
-                          idabout = ?';
-                    $this->_db->executeQuery(
-                        $sql, array(
-                            $value,
-                            $data['idabout'],
-                            $attribute['idattribute']
-                        )
-                    );
-                }
-            }
+            $sql = 'UPDATE
+                      ad_about
+                    SET
+                      firstname = ?, surname = ?, content = ?, email = ?
+                    WHERE
+                      idabout = 1';
+            $this->_db->executeQuery(
+                $sql,
+                array(
+                    $data['firstname'],
+                    $data['idabout'],
+                    $data['email'],
+                    $data['content']
+                )
+            );
+    }
+
+    /* Save about.
+    *
+    * @access public
+    * @param array $ad About data
+    * @retun mixed Result
+    */
+    public function saveAbout($about)
+    {
+        if (isset($about['idabout'])
+            && ($about['idabout'] != '')
+            && ctype_digit((string)$about['idabout'])) {
+            $id = $about['idabout'];
+            unset($about['idabout']);
+            return $this->_db->update('about', $about, array('idabout' => $id));
+        } else {
+            return $this->_db->insert('about', $about);
         }
-        return true;
+
     }
 }

@@ -83,7 +83,7 @@ $app->register(
         'security.access_rules' => array(
 
             array('^/auth/.+$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
-                    ^/users/add|^/comments/view/.*$|^/about.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+                    ^/users/add|^/comments/view/.*$|^/about/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*', 'ROLE_USER'),
             array('^/.+$', 'ROLE_ADMIN')
         ),

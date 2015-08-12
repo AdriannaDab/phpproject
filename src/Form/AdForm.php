@@ -59,7 +59,7 @@ class AdForm extends AbstractType
      *
      * @access public
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array $data
      *
      * @return FormBuilderInterface
      */

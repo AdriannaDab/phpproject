@@ -169,7 +169,7 @@ class AboutForm extends AbstractType
      */
     public function getName()
     {
-        return 'aboutForm';
+        return 'about';
     }
 
 }

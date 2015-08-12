@@ -86,9 +86,7 @@ class AboutsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        $about = $this->_model->getAboutId('aboutme');
-        $idabout = $about['idabout'];
-        $about = $this->_model->getAbout($idabout);
+        $about = $this->_model->getAbout();
         return $app['twig']->render(
             'about/view.twig', array(
                 'about' => $about
@@ -106,42 +104,55 @@ class AboutsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        $about = $this->_model->getAbout('aboutme');
-        $currentAbout = $this->_model->getAboutId('aboutme');
-        $idabout = $currentAbout['idabout'];
+        $aboutsModel = new AboutsModel($app);
+        $idabout = (int) $request->get('idabout', 0);
+        $about = $aboutsModel->getAbout();
         $data = array(
-            'idabout' => $idabout,
-            'name' => $this->getAttributeName($about, 'imie'),
-            'surname' => $this->getAttributeName($about, 'nazwisko'),
-            'email' => $this->getAttributeName($about, 'email'),
-            'contence' => $this->getAttributeName($about, 'opis'),
-        );
-        $form = $app['form.factory']
-            ->createBuilder(new AboutForm($app), $data)->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $data = $form->getData();
-            try {
-                $model = $this->_model->updateAbout($data);
+            'firstname' => $about['firstname'],
+            'surname' => $about['surname'],
+            'email' => $about['email'],
+            'content' => $about['content'],
+            'idabout' => $idabout
+            );
+        if (count($about)) {
+            $form = $app['form.factory']
+                ->createBuilder(new AboutForm($app), $data)->getForm();
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    try {
+                        $model = $this->_model->editAbout($data);
+                        $app['session']->getFlashBag()->add(
+                            'message', array(
+                                'type' => 'success',
+                                'content' => 'Kategoria została zmieniona'
+                            )
+                        );
+                        return $app->redirect(
+                            $app['url_generator']
+                                ->generate('abouts_view'), 301
+                        );
+                    } catch (\Exception $e) {
+                        $errors[] = 'Coś poszło niezgodnie z planem';
+                    }
+                }
+                return $app['twig']->render(
+                    'about/edit.twig', array('form' => $form->createView())
+                );
+            } else {
                 $app['session']->getFlashBag()->add(
                     'message', array(
-                        'type' => 'success',
-                        'content' => 'Informacje zostały dodane'
+                        'type' => 'danger',
+                        'content' => 'Nie znaleziono kategorii'
                     )
                 );
                 return $app->redirect(
-                    $app['url_generator']->generate(
-                        'about_me'
-                    ), 301
+                    $app['url_generator']->generate('abouts_view'), 301
                 );
-            } catch (\Exception $e) {
-                $errors[] = 'Coś poszło niezgodnie z planem';
             }
+            return $app->redirect(
+                $app['url_generator']->generate("abouts_edit"), 301
+            );
         }
-        return $app['twig']->render(
-            'about/edit.twig', array(
-                'form' => $form->createView()
-            )
-        );
-    }
+
 }
