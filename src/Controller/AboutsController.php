@@ -86,9 +86,7 @@ class AboutsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-
         $about = $this->_model->getAbout();
-
         return $app['twig']->render(
             'about/view.twig', array(
                 'about' => $about
@@ -109,7 +107,6 @@ class AboutsController implements ControllerProviderInterface
         $aboutsModel = new AboutsModel($app);
         $idabout = (int) $request->get('idabout', 0);
         $about = $aboutsModel->getAbout();
-
         $data = array(
             'firstname' => $about['firstname'],
             'surname' => $about['surname'],
@@ -123,7 +120,6 @@ class AboutsController implements ControllerProviderInterface
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                     $data = $form->getData();
-
                     try {
                         $model = $this->_model->editAbout($data);
                         $app['session']->getFlashBag()->add(

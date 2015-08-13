@@ -15,7 +15,7 @@
         {{ 'Invalid data.'|trans }}
     {% endif %}
  </div>
- {# {% if is_granted('ROLE_ADMIN') %}#}
+ {% if is_granted('ROLE_ADMIN') %}
     <p>
         <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
            class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
@@ -29,7 +29,7 @@
         <a href="{{ url('photos_manager')}}" title="{{ 'Photos Manager'|trans }}"
            class="btn btn-info" role="button">{{ 'Photos Manager'|trans }}</a>
     </p>
- {# {% endif %}#}
+ {% endif %}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 <br><br>
 {% block comments %}

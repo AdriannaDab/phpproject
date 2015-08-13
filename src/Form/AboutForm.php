@@ -74,7 +74,7 @@ class AboutForm extends AbstractType
             )
         )
             ->add(
-                'firstname', 'text', array(
+                'name', 'text', array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(

@@ -60,8 +60,7 @@ class AboutsModel
                   ad_about
                 WHERE
                   idabout = 1';
-        $result = $this->_db->fetchall($sql);
-        return $result[0];
+        return $this->_db->fetchall($sql);
     }
 
     /**
@@ -74,7 +73,6 @@ class AboutsModel
      */
     public function editAbout($data)
     {
-
             $sql = 'UPDATE
                       ad_about
                     SET
@@ -85,9 +83,9 @@ class AboutsModel
                 $sql,
                 array(
                     $data['firstname'],
-                    $data['surname'],
-                    $data['content'],
-                    $data['email']
+                    $data['idabout'],
+                    $data['email'],
+                    $data['content']
                 )
             );
     }
