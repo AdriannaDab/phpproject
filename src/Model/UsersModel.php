@@ -388,7 +388,7 @@ class UsersModel
         if (!$check) {
             $users = "
               INSERT INTO
-                `ad_users` (`login`, `email`, `password`),
+                `ad_users` (`login`, `email`, `password`)
               VALUES
                 (?,?,?)
             ";
@@ -430,9 +430,9 @@ class UsersModel
             $user = $this->_db->fetchAssoc($query);
             $addRole = '
               INSERT INTO
-                ad_users ( iduser, idrole )
+                ad_users (  idrole )
               VALUES
-                (?, ?)';
+                (?)';
             $this->_db->executeQuery($addRole, array($user['iduser'], 1));
         }
     }
