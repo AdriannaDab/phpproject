@@ -451,22 +451,34 @@ class UsersModel
             $query = '
               UPDATE
                 ad_users
+              NATURAL JOIN
+                ad_user_data
               SET
+                login = ?,
                 email = ?,
+                street = ?,
+                idcity = ?,
+                idprovince = ?,
+                idcountry = ?
               WHERE
                 iduser = ?
             ';
             $this->_db->executeQuery(
                 $query, array(
+                    $data['login'],
                     $data['email'],
+                    $data['street'],
+                    $data['idcity'],
+                    $data['idprovince'],
+                    $data['idcountry'],
                     $data['iduser']
                 )
             );
         } else {
             $query = '
               INSERT INTO
-                `ad_users` (`email`, `password`)
-              VALUES (?,?);
+                `ad_users` (`login`,`email`, `password`,`street`,`idcity`,`idprovince`,`idcountry`)
+              VALUES (?,?,?,?,?,?,?);
             ';
             $this->_db
                 ->executeQuery(
@@ -474,7 +486,11 @@ class UsersModel
                     array(
                         $data['login'],
                         $data['email'],
-                        $data['password'],)
+                        $data['password'],
+                        $data['street'],
+                        $data['idcity'],
+                        $data['idprovince'],
+                        $data['idcountry'])
                 );
         }
     }

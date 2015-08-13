@@ -300,7 +300,8 @@ class UsersController implements ControllerProviderInterface
                     try {
                         //$model = $this->_model->editUser($data);
                         $usersModel = new UsersModel($app);
-                        $usersModel->saveUser($data);
+
+                        $usersModel->editUser($data);
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'success',
@@ -309,7 +310,7 @@ class UsersController implements ControllerProviderInterface
                         );
                         return $app->redirect(
                             $app['url_generator']->generate(
-                                '/users/view'
+                                'users_view'
                             ), 301
                         );
                     } catch (\Exception $e) {
