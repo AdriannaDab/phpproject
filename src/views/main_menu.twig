@@ -34,8 +34,10 @@
                     <li><a href="{{ url('users_show') }}" title="{{ 'Your ads'|trans }}">{{ 'Your ads'|trans }}</a>
                     </li>
                     <li role="separator" class="divider"></li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="{{ url('users_index') }}" title="{{ 'Admin panel'|trans }}">
                         {{ 'Admin panel'|trans }}</a></li>
+                    {% endif %}
                 </ul>
             </li>
         </ul>
@@ -45,8 +47,8 @@
                     {% endif %}
             </li>
             <li>{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {#is authenticated fully #}
                     <a href="{{ url('auth_logout') }}" title="{{ 'Logout'|trans }}">{{ 'Logout'|trans }}</a>
+
                 {% else %}
                     <a href="{{ url('auth_login') }}" title="{{ 'Login'|trans }}">{{ 'Login'|trans }}</a>
                 {% endif %}

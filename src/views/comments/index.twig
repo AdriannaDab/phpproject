@@ -21,7 +21,7 @@
             <p>
                 <b>{{ comment.contence|raw }}</b>
             </p>
-            {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+        {% if is_granted('ROLE_USER') %}
                {#{% if comment.iduser|e == access|e %}#}
                     <p>
                         <a href="{{ url('comments_edit', {'id': comment.idcomment|e}) }}"
@@ -35,7 +35,7 @@
                             </button>
                         </a>
                     </p>
-        {#{% endif %}#}
+        {% endif %}
             {#{% endif %}#}
 
         </div>
