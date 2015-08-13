@@ -284,25 +284,6 @@ class UsersModel
         );
     }
 
-    /**
-     * Save user.
-     *
-     * @access public
-     * @param array $user User data
-     * @retun mixed Result
-     */
-    public function saveUser($user)
-    {
-        if (isset($user['iduser'])
-            && ($user['iduser'] != '')
-            && ctype_digit((string)$user['iduser'])) {
-            $id = $user['iduser'];
-            unset($user['iduser']);
-            return $this->_db->update('ad_users', $user, array('iduser' => $id));
-        } else {
-            return $this->_db->insert('ad_users', $user);
-        }
-    }
 
     /**
      * Gets ads from one user
