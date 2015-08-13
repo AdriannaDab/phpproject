@@ -283,19 +283,24 @@ class UsersController implements ControllerProviderInterface
                 'iduser' => $id,
                 'login' => $user['login'],
                 'email' => $user['email'],
+                'street' => $user['street']
             );
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
-            //$form->remove('password');
+            $form->remove('password');
             $form->remove('confirm_password');
+            $form->remove('new_password');
+            $form->remove('confirm_new_password');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $password = $app['security.encoder.digest']
+                /*$password = $app['security.encoder.digest']
                     ->encodePassword("{$data['password']}", '');
-                if ($password == $user['password']) {
+                if ($password == $user['password']) {*/
                     try {
-                        $model = $this->_model->editUser($data);
+                        //$model = $this->_model->editUser($data);
+                        $usersModel = new UsersModel($app);
+                        $usersModel->saveUser($data);
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'success',
@@ -317,7 +322,7 @@ class UsersController implements ControllerProviderInterface
                     'form' => $form->createView()
                 )
             );
-        } else {
+        /*} else {
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
@@ -328,8 +333,8 @@ class UsersController implements ControllerProviderInterface
                 $app['url_generator']->generate(
                     '/users/view'
                 ), 301
-            );
-        }
+            );*/
+
     }
 
     /**

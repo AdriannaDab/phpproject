@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Application;
 use Model\UsersModel;
+use Model\InformationModel;
 
 /**
  * Class UserForm.
@@ -97,45 +98,7 @@ class UserForm extends AbstractType
                     )
                 )
             )
-            ->add(
-                'password', 'password', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 6,
-                                'minMessage' => 'Minimalna ilość znaków to 6',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Hasło nie jest poprawne',
-                            )
-                        )
-                    )
-                )
-            )
-            ->add(
-                'confirm_password', 'password', array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(
-                            array(
-                                'min' => 6,
-                                'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
-                            )
-                        ),
-                        new Assert\Type(
-                            array(
-                                'type' => 'string',
-                                'message' => 'Hasło nie jest poprawne',
-                            )
-                        )
-                    )
-                )
-            )
+
             ->add(
                 'email', 'email', array(
                     'constraints' => array(
@@ -157,6 +120,30 @@ class UserForm extends AbstractType
             )
 
             ->add(
+                'street', 'text', array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(
+                            array(
+                                'min' => 1,
+                                'max' => 45,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 1',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to 45',
+                            )
+                        ),
+                        new Assert\Type(
+                            array(
+                                'type' => 'string',
+                                'message' => 'Ulica nie jest poprawna',
+                            )
+                        )
+                    )
+                )
+            )
+
+            ->add(
                 'password', 'password', array(
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -165,6 +152,26 @@ class UserForm extends AbstractType
                                 'min' => 1,
                                 'minMessage' =>
                                     'Minimalna ilość znaków to 1',
+                            )
+                        ),
+                        new Assert\Type(
+                            array(
+                                'type' => 'string',
+                                'message' => 'Hasło nie jest poprawne',
+                            )
+                        )
+                    )
+                )
+            )
+            ->add(
+                'confirm_password', 'password', array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(
+                            array(
+                                'min' => 6,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(
@@ -215,6 +222,36 @@ class UserForm extends AbstractType
                         ),
                     )
                 )
+            )
+            ->add(
+                'idcity',
+                'choice',
+                array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'choices' => $this->getCities($this->app)
+                )
+            )
+            ->add(
+                'idprovince',
+                'choice',
+                array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'choices' => $this->getProvinces($this->app)
+                )
+            )
+            ->add(
+                'idcountry',
+                'choice',
+                array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'choices' => $this->getCountries($this->app)
+                )
             );
     }
 
@@ -228,6 +265,63 @@ class UserForm extends AbstractType
     public function getName()
     {
         return 'user';
+    }
+
+    /**
+     * Form builder for cities list.
+     *
+     * @access public
+     * @param FormBuilderInterface $builder
+     * @param array $dict
+     *
+     * @return FormBuilderInterface
+     */
+    private function getCities($app)
+    {
+        $citiesModel = new InformationModel($app);
+        $cities = $citiesModel ->getAllCities();
+        $dict = array();
+        foreach ($cities as  $city){
+            $dict [ $city ['idcity']] = $city['city_name'];
+        }return $dict;
+    }
+
+    /**
+     * Form builder for provinces list.
+     *
+     * @access public
+     * @param FormBuilderInterface $builder
+     * @param array $dict
+     *
+     * @return FormBuilderInterface
+     */
+    private function getProvinces($app)
+    {
+        $provincesModel = new InformationModel($app);
+        $provinces = $provincesModel ->getAllProvinces();
+        $dict = array();
+        foreach ($provinces as  $province){
+            $dict [ $province ['idprovince']] = $province['province_name'];
+        }return $dict;
+    }
+
+    /**
+     * Form builder for countries list.
+     *
+     * @access public
+     * @param FormBuilderInterface $builder
+     * @param array $dict
+     *
+     * @return FormBuilderInterface
+     */
+    private function getCountries($app)
+    {
+        $countriesModel = new InformationModel($app);
+        $countries = $countriesModel ->getAllCountries();
+        $dict = array();
+        foreach ($countries as  $country){
+            $dict [ $country ['idcountry']] = $country['country_name'];
+        }return $dict;
     }
 
 }

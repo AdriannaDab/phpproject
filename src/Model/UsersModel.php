@@ -288,7 +288,7 @@ class UsersModel
      * Save user.
      *
      * @access public
-     * @param array $category Category data
+     * @param array $user User data
      * @retun mixed Result
      */
     public function saveUser($user)

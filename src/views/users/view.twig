@@ -8,9 +8,13 @@
         <h2 class="intro-text text-center">{{ user.login|capitalize }}</h2>
         <hr>
         <ul class="list-group center-block">
+            <li class="list-group-item">{{ 'Login'|trans|upper }}:   <b> {{ user.login|capitalize }} </b></li>
+            <li class="list-group-item">{{ 'Email'|trans|upper }}:   <b> {{ user.email|e}} </b></li>
+            <hr>
             <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ user.name|capitalize }} </b></li>
             <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b></li>
             <li class="list-group-item">{{ 'Email'|trans|upper }}:   <b> {{ user.email|e }}</b></li>
+            <li class="list-group-item">{{ 'Street'|trans|upper }}:   <b> {{ user.street|e }}</b></li>
             <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b></li>
             <li class="list-group-item">{{ 'Province'|trans|upper }}: <b>{{ user.province_name|e }}</b></li>
             <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b></li>
@@ -19,6 +23,9 @@
         <a href="{{ url('users_edit', {'id': user.iduser}) }}"
            title="{{ 'Edit user'|trans }}"
            class="btn btn-default">{{ 'Edit user'|trans }}</a>
+        <a href="{{ url('users_password', {'id': user.iduser}) }}"
+           title="{{ 'Change password'|trans }}"
+           class="btn btn-warning">{{ 'Change password'|trans }}</a>
         <a href="{{ url('users_delete', {'id': user.iduser}) }}"
            title="{{ 'Delete user'|trans }}"
            class="btn btn-danger">{{ 'Delete user'|trans }}</a>
