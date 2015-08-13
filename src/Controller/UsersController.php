@@ -215,7 +215,8 @@ class UsersController implements ControllerProviderInterface
                         = $app['security.encoder.digest']
                         ->encodePassword("{$data['password']}", '');
                     try {
-                        $model = $this->_model->register($data);
+                        $usersModel = new UsersModel($app);
+                        $usersModel->register($data);
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'success',
@@ -224,7 +225,7 @@ class UsersController implements ControllerProviderInterface
                         );
                         return $app->redirect(
                             $app['url_generator']->generate(
-                                '/auth/login'
+                                'auth_login'
                             ), 301
                         );
                     } catch (\Exception $e) {
@@ -282,6 +283,8 @@ class UsersController implements ControllerProviderInterface
             $data = array(
                 'iduser' => $id,
                 'login' => $user['login'],
+                'firstname' => $user['firstname'],
+                'surname' => $user['surname'],
                 'email' => $user['email'],
                 'street' => $user['street']
             );
@@ -357,6 +360,8 @@ class UsersController implements ControllerProviderInterface
                 $form = $app['form.factory']
                     ->createBuilder(new UserForm($app), $user)->getForm();
                 $form->remove('login');
+                $form->remove('firstname');
+                $form->remove('surname');
                 $form->remove('email');
                 $form->remove('password');
                 $form->remove('confirm_password');
@@ -407,6 +412,8 @@ class UsersController implements ControllerProviderInterface
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
             $form->remove('login');
+            $form->remove('firstname');
+            $form->remove('surname');
             $form->remove('email');
             $form->remove('street');
             $form->remove('idcity');

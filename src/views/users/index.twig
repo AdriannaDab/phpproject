@@ -26,7 +26,7 @@
                         {{ user.surname }}
                     </td>
                     <td>
-                        {{ user.name }}
+                        {{ user.firstname }}
                     </td>
                     <td>
                         {{ user.role_name }}
@@ -47,9 +47,7 @@
             </tbody>
         </table>
 
-        <a href="{{ url('users_register') }}" class="btn btn-default" title="{{ 'Add user'|trans }}">
-            {{ 'Add user'|trans }}
-        </a>
+
     {% else %}
         <div class="alert alert-danger" role="alert">
             {{ 'Users not found'|trans }}.

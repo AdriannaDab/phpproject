@@ -388,9 +388,9 @@ class UsersModel
         if (!$check) {
             $users = "
               INSERT INTO
-                `ad_users` (`login`, `email`, `password`)
+                `ad_users` (`login`, `email`, `password`),
               VALUES
-                (?,?,?);
+                (?,?,?)
             ";
             $this->_db
                 ->executeQuery(
@@ -400,11 +400,30 @@ class UsersModel
                         $data['email'],
                         $data['password'])
                 );
+            $users2 = "
+            INSERT INTO
+                `ad_user_data` (`firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
+              VALUES
+              (?,?,?,?,?,?)
+            ";
+            $this->_db
+                ->executeQuery(
+                    $users2,
+                    array(
+                        $data['firstname'],
+                        $data['surname'],
+                        $data['street'],
+                        $data['idcity'],
+                        $data['idprovince'],
+                        $data['idcountry'])
+                );
             $query = "
               SELECT
                 *
               FROM
                 ad_users
+              NATURAL JOIN
+                ad_user_data
               WHERE
                 login ='" . $data['login'] . "';
             ";
@@ -414,7 +433,7 @@ class UsersModel
                 ad_users ( iduser, idrole )
               VALUES
                 (?, ?)';
-            $this->_db->executeQuery($addRole, array($user['iduser'], 2));
+            $this->_db->executeQuery($addRole, array($user['iduser'], 1));
         }
     }
 

@@ -98,7 +98,52 @@ class UserForm extends AbstractType
                     )
                 )
             )
-
+            ->add(
+                'firstname', 'text', array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(
+                            array(
+                                'min' => 1,
+                                'max' => 45,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 1',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to 45',
+                            )
+                        ),
+                        new Assert\Type(
+                            array(
+                                'type' => 'string',
+                                'message' => 'Nick nie jest poprawny',
+                            )
+                        )
+                    )
+                )
+            )
+            ->add(
+                'surname', 'text', array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(
+                            array(
+                                'min' => 1,
+                                'max' => 45,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 1',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to 45',
+                            )
+                        ),
+                        new Assert\Type(
+                            array(
+                                'type' => 'string',
+                                'message' => 'Nick nie jest poprawny',
+                            )
+                        )
+                    )
+                )
+            )
             ->add(
                 'email', 'email', array(
                     'constraints' => array(
