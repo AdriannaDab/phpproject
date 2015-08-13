@@ -149,9 +149,9 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 1,
+                                'min' => 6,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 1',
+                                    'Minimalna ilość znaków to 6',
                             )
                         ),
                         new Assert\Type(

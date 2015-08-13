@@ -398,7 +398,7 @@ class UsersController implements ControllerProviderInterface
      * @access public
      * @return mixed Generates page or redirect.
      */
-    public function password(Application $app, Request $request)
+    public function passwordAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
         $user = $this->_model->getUserById($id);
@@ -406,6 +406,12 @@ class UsersController implements ControllerProviderInterface
             $data = array();
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
+            $form->remove('login');
+            $form->remove('email');
+            $form->remove('street');
+            $form->remove('idcity');
+            $form->remove('idprovince');
+            $form->remove('idcountry');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -422,12 +428,12 @@ class UsersController implements ControllerProviderInterface
                             $app['session']->getFlashBag()->add(
                                 'message', array(
                                     'type' => 'success',
-                                    'content' => 'Hasło zostałoz mienione'
+                                    'content' => 'Hasło zostało zmienione'
                                 )
                             );
                             return $app->redirect(
                                 $app['url_generator']->generate(
-                                    '/auth/login'
+                                    'auth_login'
                                 ), 301
                             );
                         } catch (\Exception $e) {
@@ -464,12 +470,12 @@ class UsersController implements ControllerProviderInterface
             );
             return $app->redirect(
                 $app['url_generator']->generate(
-                    '/auth/login'
+                    'auth_login'
                 ), 301
             );
         }
         return $app['twig']->render(
-            'users/edit.twig', array(
+            'users/password.twig', array(
                 'form' => $form->createView()
             )
         );
