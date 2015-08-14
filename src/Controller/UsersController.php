@@ -147,12 +147,12 @@ class UsersController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => 'Nie znaleziono użytkownika'
+                    'content' => 'Nie znaleziono danych użytkownika'
                 )
             );
             return $app->redirect(
                 $app['url_generator']->generate(
-                    '/'
+                    'users_data'
                 ), 301
             );
         }

@@ -353,6 +353,7 @@ class UsersModel
     {
 
         try {
+
             $query = "
               SELECT
                 *
