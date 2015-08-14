@@ -434,6 +434,10 @@ class UsersController implements ControllerProviderInterface
                 $form->remove('confirm_password');
                 $form->remove('new_password');
                 $form->remove('confirm_new_password');
+                $form->remove('street');
+                $form->remove('idcity');
+                $form->remove('idprovince');
+                $form->remove('idcountry');
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                     $data = $form->getData();
