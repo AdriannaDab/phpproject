@@ -206,8 +206,10 @@ class UsersModel
             *
           FROM
             ad_users
-          NATURAL JOIN
+          LEFT JOIN
             ad_user_data
+          ON
+            ad_users.iduser=ad_user_data.iduser
           NATURAL JOIN
             ad_roles
           LIMIT :start, :limit
@@ -349,6 +351,7 @@ class UsersModel
      */
     public function getUser($id)
     {
+
         try {
             $query = "
               SELECT
@@ -366,7 +369,16 @@ class UsersModel
               WHERE
                 iduser=?
             ";
+            if($query){
             return $this->_db->fetchAssoc($query, array((int)$id));
+        }else{
+                $users2 = "
+            SELECT login, email FROM
+                `ad_users`
+            ";
+                $this->_db
+                    ->fetchAssoc($users2, array((int)$id));
+            }
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
@@ -388,9 +400,9 @@ class UsersModel
         if (!$check) {
             $users = "
               INSERT INTO
-                `ad_users` (`login`, `email`, `password`)
+                `ad_users` (`login`, `email`, `password`, `idrole`)
               VALUES
-                (?,?,?)
+                (?,?,?,1)
             ";
             $this->_db
                 ->executeQuery(
@@ -398,18 +410,33 @@ class UsersModel
                     array(
                         $data['login'],
                         $data['email'],
-                        $data['password'])
+                        $data['password'],
+                        )
                 );
+        }
+    }
+
+    /**
+     * Puts one user data to database.
+     *
+     * @param  Array $data Associative array contains all necessary information
+     *
+     * @access public
+     * @return Void
+     */
+    public function registerData($data)
+    {
             $users2 = "
             INSERT INTO
-                `ad_user_data` (`firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
+                `ad_user_data` (`iduser`, `firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
               VALUES
-              (?,?,?,?,?,?)
+              (?,?,?,?,?,?,?)
             ";
             $this->_db
                 ->executeQuery(
                     $users2,
                     array(
+                        $data['iduser'],
                         $data['firstname'],
                         $data['surname'],
                         $data['street'],
@@ -417,24 +444,8 @@ class UsersModel
                         $data['idprovince'],
                         $data['idcountry'])
                 );
-            $query = "
-              SELECT
-                *
-              FROM
-                ad_users
-              NATURAL JOIN
-                ad_user_data
-              WHERE
-                login ='" . $data['login'] . "';
-            ";
-            $user = $this->_db->fetchAssoc($query);
-            $addRole = '
-              INSERT INTO
-                ad_users (  idrole )
-              VALUES
-                (?)';
-            $this->_db->executeQuery($addRole, array($user['iduser'], 1));
-        }
+
+
     }
 
     /**
@@ -455,6 +466,8 @@ class UsersModel
                 ad_user_data
               SET
                 login = ?,
+                firstname = ?,
+                surname = ?,
                 email = ?,
                 street = ?,
                 idcity = ?,
@@ -466,6 +479,8 @@ class UsersModel
             $this->_db->executeQuery(
                 $query, array(
                     $data['login'],
+                    $data['firstname'],
+                    $data['surname'],
                     $data['email'],
                     $data['street'],
                     $data['idcity'],
@@ -477,16 +492,15 @@ class UsersModel
         } else {
             $query = '
               INSERT INTO
-                `ad_users` (`login`,`email`, `password`,`street`,`idcity`,`idprovince`,`idcountry`)
-              VALUES (?,?,?,?,?,?,?);
+                `ad_user_data` (`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
+              VALUES (?,?,?,?,?,?);
             ';
             $this->_db
                 ->executeQuery(
                     $query,
                     array(
-                        $data['login'],
-                        $data['email'],
-                        $data['password'],
+                        $data['firstname'],
+                        $data['surname'],
                         $data['street'],
                         $data['idcity'],
                         $data['idprovince'],

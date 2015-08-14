@@ -35,7 +35,7 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li><a href="{{ url('users_index') }}" title="{{ 'Admin panel'|trans }}">
+                    <li><a href="{{ url('admin_index') }}" title="{{ 'Admin panel'|trans }}">
                         {{ 'Admin panel'|trans }}</a></li>
                     {% endif %}
                 </ul>
