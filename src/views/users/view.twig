@@ -5,6 +5,7 @@
 
     <div>
         <hr>
+    {% if user|length > 0 %}
         <h2 class="intro-text text-center">{{ user.login|capitalize }}</h2>
         <hr>
         <ul class="list-group center-block">
@@ -29,6 +30,9 @@
         <a href="{{ url('users_delete', {'id': user.iduser}) }}"
            title="{{ 'Delete profile'|trans }}"
            class="btn btn-danger">{{ 'Delete profile'|trans }}</a>
-
+        {% else %}
+            <p class="text-center"><a href="{{ url('users_data') }}" class="btn btn-lg btn-primary text-center">
+                    {{ 'Finish the registration'|trans }}</a></p>
+        {% endif %}
     </div>
 {% endblock %}
