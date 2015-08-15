@@ -34,8 +34,8 @@
                     <li><a href="{{ url('users_show') }}" title="{{ 'Your ads'|trans }}">{{ 'Your ads'|trans }}</a>
                     </li>
                     <li role="separator" class="divider"></li>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li><a href="{{ url('admin_index') }}" title="{{ 'Admin panel'|trans }}">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ url('admins_index') }}" title="{{ 'Admin panel'|trans }}">
                         {{ 'Admin panel'|trans }}</a></li>
                     {% endif %}
                 </ul>

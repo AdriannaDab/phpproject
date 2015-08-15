@@ -10,7 +10,7 @@
     <form role="form" action="{{ url ('ads_edit', {'id': id}  )  }}" method="post">
         {{ form_widget(form) }}
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
-        <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
+        <a href="{{ url ('ads_view', {'id': id} )}}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
     </form>
 
 {% endblock %}

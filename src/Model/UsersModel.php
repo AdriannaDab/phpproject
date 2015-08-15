@@ -591,27 +591,7 @@ class UsersModel
     }
 
 
-    /**
-     * Connected user with his role.
-     *
-     * @param  Integer $iduser
-     *
-     * @access public
-     * @return Void
-     */
-    public function addRole($iduser)
-    {
-        try{
-            $query = '
-              INSERT INTO
-                `ad_users` (`iduser`, `idrole`)
-              VALUES (?,?);
-            ';
-            $this->_db->executeQuery($query, array($iduser, '2'));
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
+
 
     /**
      * Confirm user. Change his role
@@ -650,6 +630,50 @@ class UsersModel
         $login = $this->getCurrentUser($app);
         $iduser = $this->getUserByLogin($login);
         return $iduser['iduser'];
+    }
+
+    /**
+     * Get current logged user id data
+     *
+     * @param $app
+     *
+     * @access public
+     * @return mixed
+     */
+    public function getIdDataCurrentUser($app)
+    {
+        $iduser_data = $this->getCurrentUser($app);
+        $iduser_data = $this->getUserByIdData($iduser_data);
+        return $iduser_data['iduser_data'];
+    }
+
+    /**
+     * Gets user data by login.
+     *
+     * @access public
+     * @param string $login User login
+     *
+     * @return array Result
+     */
+    public function getUserByIdData($iduser_data)
+    {
+        try {
+            $query = '
+              SELECT
+                *
+              FROM
+                `ad_user_data`
+              WHERE
+                `iduser_data` = :iduser_data
+            ';
+            $statement = $this->_db->prepare($query);
+            $statement->bindValue('iduser_data', $iduser_data, \PDO::PARAM_STR);
+            $statement->execute();
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            return !$result ? array() : current($result);
+        } catch (\PDOException $e) {
+            return array();
+        }
     }
 
     /**

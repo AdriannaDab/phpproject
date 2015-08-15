@@ -5,7 +5,9 @@
 <div class="thumbnail">
     {% if ad|length > 0 %}
         <h3 class="text-center">{{ ad.ad_name|upper }}</h3>
-        <p class="text-center"><small>{{ ad.ad_date|e }}</small></p>
+        <p class="text-center"><small>{{ ad.ad_date|e }} {{ 'by'|trans }}
+                <a href="{{ url('users_index', {'id': ad.iduser|e}) }}" title="{{ 'View profile'|trans }}">
+                    {{ ad.login|e }}</a></small></p>
         <hr>
         <h4 class="text-center">{{ ad.ad_contence|e }}</h4>
         <p>
@@ -15,7 +17,8 @@
         {{ 'Invalid data.'|trans }}
     {% endif %}
  </div>
- {% if is_granted('ROLE_ADMIN') %}
+
+ {% if ad.iduser|e == access|e %}
     <p>
         <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
            class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
@@ -29,7 +32,8 @@
         <a href="{{ url('photos_manager')}}" title="{{ 'Photos Manager'|trans }}"
            class="btn btn-info" role="button">{{ 'Photos Manager'|trans }}</a>
     </p>
- {% endif %}
+
+{% endif %}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 <br><br>
 {% block comments %}

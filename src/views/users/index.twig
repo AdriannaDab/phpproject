@@ -1,62 +1,31 @@
-{# Index action template for Users controller #}
+{# View action template for Users controller #}
 {% extends 'base.twig' %}
-{% block title %}{{  'Users list'|trans }}{% endblock %}
+
 {% block content %}
-    <div class="thumbnail">
-    {%  if users|length > 0 %}
-        <table class="table table-hover ">
-            <thead>
-            <tr class="active">
-                <th class="text-center">{{ 'Login'|trans }}</th>
-                <th class="text-center">{{ 'Surname'|trans }}</th>
-                <th class="text-center">{{ 'Firstname'|trans }}</th>
-                <th class="text-center">{{ 'Role'|trans }}</th>
-                <th class="text-center">{{ 'Email'|trans }}</th>
-                <th colspan="4">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr class="text-center">
-                    <td>
-                        <a href="{{ url('users_view', {'id': user.iduser}) }}"
-                           title="{{ 'View user'|trans }}">{{ user.login|e }}</a>
-                    </td>
-                    <td>
-                        {{ user.surname }}
-                    </td>
-                    <td>
-                        {{ user.firstname }}
-                    </td>
-                    <td>
-                        {{ user.role_name }}
-                    </td>
-                    <td>
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <a href="#"
-                           title="{{ 'Add users role'|trans }}"
-                           class="btn btn-default">{{ 'Add users role'|trans }}</a>
-                        <a href="#"
-                           title="{{ 'Delete user'|trans }}"
-                           class="btn btn-danger">{{ 'Delete user'|trans }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
+    <div>
+        <hr>
+    {% if user|length > 0 %}
+        <h2 class="intro-text text-center">{{ user.login|capitalize }}</h2>
+        <hr>
+        <ul class="list-group center-block">
+            <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ user.firstname|capitalize }} </b></li>
+            <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b></li>
+            <hr>
+            <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b></li>
+            <li class="list-group-item">{{ 'Province'|trans|upper }}: <b>{{ user.province_name|e }}</b></li>
+            <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b></li>
+        </ul>
+
+        <a href="{{ url('users_more', {'id': user.iduser|e}) }}"
+           title="{{ 'See more users ads'|trans }}"
+           class="btn btn-primary ">{{ 'See more users ads'|trans }}</a>
+
+        <a href="#"
+           title="{{ 'Delete profile'|trans }}"
+           class="btn btn-danger">{{ 'Delete profile'|trans }}</a>
 
 
-    {% else %}
-        <div class="alert alert-danger" role="alert">
-            {{ 'Users not found'|trans }}.
-        </div>
-    {% endif %}
-    {% for flashMessage in app.session.getFlashBag.get('message') %}
-        <div class="alert alert-{{ flashMessage.type }}" role="alert">
-            {{ flashMessage.content }}
-        </div>
-        </div>
-    {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -24,7 +24,7 @@
                         <a href="{{ url('ads_view', {'id': ad.idad}) }}" title="{{ 'View ad'|trans }}"
                             class="btn btn-primary" role="button">{{ 'View ad'|trans }}</a>
 
-                        {% if is_granted('ROLE_USER') %}
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
                             class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
                         <br><br>

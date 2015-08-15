@@ -154,14 +154,23 @@ class AdsController implements ControllerProviderInterface
         try {
             $id = (int)$request->get('id', 0);
             $adsModel = new AdsModel($app);
-            $this->_view['ad'] = $adsModel->getAd($id);
+            $ad=$this->_view['ad'] = $adsModel->getAdView($id);
+            $_isLogged = $this->_user->_isLoggedIn($app);
+            if ($_isLogged) {
+                $access = $this->_user->getIdCurrentUser($app);
+            } else {
+                $access = 0;
+            }
             if (!($this->_view['ad'])) {
                 throw new NotFoundHttpException("Ad not found");
             }
         } catch (PDOException $e) {
             $app->abort($app['translator']->trans('Ad not found'), 404);
         }
-        return $app['twig']->render('ads/view.twig', $this->_view);
+        return $app['twig']->render('ads/view.twig', array(
+            'access' => $access,
+            'ad' => $ad
+        ));
     }
 
     /**
@@ -175,10 +184,19 @@ class AdsController implements ControllerProviderInterface
     public function addAction(Application $app, Request $request)
     {
         try {
+            $id = $this->_user->getIdCurrentUser($app);
+            $user = $this->_user->getUser($id);
+            if ($user) {
+            if ($this->_user->_isLoggedIn($app)) {
+                $iduser = $this->_user->getIdCurrentUser($app);
+            } else {
+                $iduser = 0;
+            }
             $data = array(
                 'ad_name' => 'Title',
                 'ad_contence' => 'Contence',
                 'ad_date' => date('Y-m-d'),
+                'iduser'=>$iduser
             );
             $form = $app['form.factory']
                 ->createBuilder(new AdForm($app), $data)->getForm();
@@ -192,7 +210,7 @@ class AdsController implements ControllerProviderInterface
                     'message', array(
                         'type' => 'success',
                         'content' => $app['translator']
-                            ->trans('New ad added.')
+                            ->trans('New ad added')
                     )
                 );
                 return $app->redirect(
@@ -200,7 +218,20 @@ class AdsController implements ControllerProviderInterface
                 );
             }
             $this->_view['form'] = $form->createView();
-        } catch (AdException $e) {
+        } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => 'User data not found'
+                    )
+                );
+                return $app->redirect(
+                    $app['url_generator']->generate(
+                        'users_data'
+                    ), 301
+                );
+            }
+    } catch (AdException $e) {
               echo $app['translator']->trans('Caught Add Exception: ') .  $e->getMessage() . "\n";
         } return $app['twig']->render('ads/add.twig', $this->_view);
     }
@@ -231,7 +262,7 @@ class AdsController implements ControllerProviderInterface
                         'message', array(
                             'type' => 'success',
                             'content' => $app['translator']
-                                ->trans('Ad edited.')
+                                ->trans('Ad edited')
                         )
                     );
                     return $app->redirect(
@@ -291,7 +322,7 @@ class AdsController implements ControllerProviderInterface
                         'message', array(
                             'type' => 'danger',
                             'content' => $app['translator']
-                                ->trans('Ad deleted.')
+                                ->trans('Ad deleted')
                         )
                     );
                     return $app->redirect(

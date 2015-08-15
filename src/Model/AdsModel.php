@@ -104,6 +104,41 @@ class AdsModel
     }
 
     /**
+     * Gets single ad data.
+     *
+     * @access public
+     * @param integer $id Record Id
+     * @return array Array contains information about single ad
+     */
+    public function getAdView($id)
+    {
+        try {
+            if (($id != '') && ctype_digit((string)$id)) {
+                $query = '
+                  SELECT
+                    idad, ad_name, ad_contence, ad_date, idcategory, iduser, login
+                  FROM
+                    ads
+                  NATURAL JOIN
+                    ad_users
+                  WHERE
+                    idad= ?
+                ';
+                $result = $this->_db->fetchAssoc($query, array((int)$id));
+                if (!$result) {
+                    return array();
+                } else {
+                    return $result;
+                }
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Get all ads on page
      *
      * @access public

@@ -61,9 +61,11 @@ class CommentsModel
         try {
             $query = '
               SELECT
-                *
+                idcomment, contence, comment_date, idad, iduser, login
               FROM
                 ad_comments
+              NATURAL JOIN
+                ad_users
               WHERE
                 idad = ?
             ';

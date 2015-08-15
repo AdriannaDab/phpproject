@@ -46,6 +46,14 @@ class UsersController implements ControllerProviderInterface
     protected $_model;
 
     /**
+     * UsersModel object.
+     *
+     * @var $_user
+     * @access protected
+     */
+    protected $_user;
+
+    /**
      * Data for view.
      *
      * @access protected
@@ -82,47 +90,43 @@ class UsersController implements ControllerProviderInterface
         $usersController->get('/show', array($this, 'showAction'));
         $usersController->get('/show/', array($this, 'showAction'))
             ->bind('users_show');
+        $usersController->get('/more/{id}', array($this, 'moreAction'));
+        $usersController->get('/more/{id}/', array($this, 'moreAction'))
+            ->bind('users_more');
         $usersController->get('/view', array($this, 'viewAction'));
         $usersController->get('/view/', array($this, 'viewAction'))
             ->bind('users_view');
-        $usersController->get('/admin', array($this, 'indexAction'));
-        $usersController->get('/admin/', array($this, 'indexAction'));
-        $usersController->get('/{page}', array($this, 'indexAction'))
-            ->value('page', 1)
-            ->bind('admin_index');
+        $usersController->get('/index/{id}', array($this, 'indexAction'));
+        $usersController->get('/index/{id}/', array($this, 'indexAction'))
+            ->bind('users_index');
         return $usersController;
     }
 
     /**
-     * Index action.
+     * Index user's profile
+     *
+     * @param Application $app     application object
+     * @param Request     $request request
      *
      * @access public
-     * @param Silex\Application $app Silex application
-     * @param Symfony\Component\HttpFoundation\Request $request Request object
-     * @return string Output
+     * @return mixed Generates page or redirect.
      */
     public function indexAction(Application $app, Request $request)
     {
-        $pageLimit = 20;
-        $page = (int) $request->get('page', 1);
-        try {
+            try {
+            $id = (int)$request->get('id', 0);
             $usersModel = new UsersModel($app);
-            $this->_view = array_merge(
-                $this->_view, $usersModel->getPaginatedUsers($page, $pageLimit)
-
-            );
-        } catch (\PDOException $e) {
-            $app['session']->getFlashBag()->add(
-                'message',
-                array(
-                    'type' => 'error',
-                    'content' => $app['translator']
-                        ->trans('Error code: '.$e->getCode())
-                )
-            );
+            $this->_view['user'] = $usersModel->getUser($id);
+            if (!($this->_view['user'])) {
+                throw new NotFoundHttpException("User not found");
+            }
+        } catch (PDOException $e) {
+            $app->abort($app['translator']->trans('User not found'), 404);
         }
-        return $app['twig']->render('admin/index.twig', $this->_view);
+        return $app['twig']->render('users/index.twig', $this->_view);
     }
+
+
 
     /**
      * View user's profile
@@ -147,13 +151,44 @@ class UsersController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => 'Nie znaleziono danych użytkownika'
+                    'content' => 'User data not found'
                 )
             );
             return $app->redirect(
                 $app['url_generator']->generate(
                     'users_data'
                 ), 301
+            );
+        }
+    }
+
+    /**
+     * More action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    public function moreAction(Application $app, Request $request)
+    {
+        $id = (int)$request->get('id', 0);
+        $usersModel = new UsersModel($app);
+        $user = $this->_model->getUser($id);
+        if ($user) {
+            $this->_view = $usersModel->getAdsListByIduser($id);
+            return $app['twig']
+                ->render('users/show.twig', array('ads' => $this->_view));
+        } else {
+            $app['session']->getFlashBag()->add(
+                'message', array(
+                    'type' => 'danger',
+                    'content' => $app['translator']
+                        ->trans('User not found')
+                )
+            );
+            return $app->redirect(
+                $app['url_generator']->generate('users_view'), 301
             );
         }
     }
@@ -180,7 +215,7 @@ class UsersController implements ControllerProviderInterface
                 'message', array(
                     'type' => 'danger',
                     'content' => $app['translator']
-                        ->trans('User not found')
+                        ->trans('User data not found')
                 )
             );
             return $app->redirect(

@@ -50,6 +50,7 @@ $app->register(
     )
 );
 
+
 //Url Generator
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
@@ -82,9 +83,9 @@ $app->register(
         ),
         'security.access_rules' => array(
 
-            array('^/auth/.+$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
+            array('^/auth/.+$|^/users/register/.*$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
                     ^/users/add|^/comments/view/.*$|^/about/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*', 'ROLE_USER'),
+            array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*$|^/photos.*$', 'ROLE_USER'),
             array('^/.+$', 'ROLE_ADMIN')
         ),
         'security.role_hierarchy' => array(
@@ -105,7 +106,7 @@ $app->mount('/categories/', new Controller\CategoriesController());
 $app->mount('/comments/', new Controller\CommentsController());
 $app->mount('/photos/', new Controller\PhotosController());
 $app->mount('/users', new Controller\UsersController());
-//$app->mount('/admin', new Controller\AdminController());
+$app->mount('/admin', new Controller\AdminsController());
 $app->mount('auth', new Controller\AuthController());
 $app->mount('/about', new Controller\AboutsController());
 

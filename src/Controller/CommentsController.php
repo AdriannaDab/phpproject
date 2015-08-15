@@ -116,16 +116,16 @@ class CommentsController implements ControllerProviderInterface
                 if ($checkAd) {
                     $commentsModel = new CommentsModel($app);
                     $comments = $this->_model = $commentsModel->getCommentsList($idad);
-            //$_isLogged = $this->_user->_isLoggedIn($app);
-            //if ($_isLogged) {
-            //    $access = $this->_user->getIdCurrentUser($app);
-            //} else {
-            //   $access = 0;
-            //}
+            $_isLogged = $this->_user->_isLoggedIn($app);
+            if ($_isLogged) {
+                $access = $this->_user->getIdCurrentUser($app);
+            } else {
+               $access = 0;
+            }
             return $app['twig']->render('comments/index.twig', array(
                     'comments' => $comments,
-                    'idad' => $idad
-                    //, 'access' => $access
+                    'idad' => $idad,
+                    'access' => $access
                 )
             );
         } else {
@@ -156,11 +156,11 @@ class CommentsController implements ControllerProviderInterface
         $adsModel = new AdsModel($app);
         $check = $this->_ads = $adsModel->checkAdsId($idad);
         if ($check) {
-            //if ($this->_user->_isLoggedIn($app)) {
-            //    $iduser = $this->_user->getIdCurrentUser($app);
-            //} else {
+            if ($this->_user->_isLoggedIn($app)) {
+                $iduser = $this->_user->getIdCurrentUser($app);
+            } else {
              $iduser = 0;
-            //}
+            }
             $data = array(
                 'comment_date' => date('Y-m-d'),
                 'contence' => 'Contence',
