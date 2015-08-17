@@ -94,9 +94,9 @@ class AdminsModel
     {
         $pagesCount = $this->countUsersPages($limit);
         $page = $this->getCurrentPageNumber($page, $pagesCount);
-        $users = $this->getUsersPage($page, $limit);
+        $admins = $this->getUsersPage($page, $limit);
         return array(
-            'users' => $users,
+            'admins' => $admins,
             'paginator' => array(
                 'page' => $page,
                 'pagesCount' => $pagesCount)
@@ -176,7 +176,97 @@ class AdminsModel
         return $statement->fetchAll();
     }
 
+    /**
+     *
+     * Get information about user
+     *
+     * @param $id user id
+     *
+     * @access public
+     * @return array Associative array with information about user
+     */
+    public function getUser($id)
+    {
+        try {
+            if (($id != '') && ctype_digit((string)$id)) {
+                $query = "
+              SELECT
+                *
+              FROM
+                ad_users
+              NATURAL JOIN
+                ad_user_data
+              NATURAL JOIN
+                ad_cities
+              NATURAL JOIN
+                 ad_provinces
+              NATURAL JOIN
+                 ad_countries
+              WHERE
+                iduser=?
+                ";
+                $result = $this->_db->fetchAssoc($query, array((int)$id));
+                if (!$result) {
+                    return array();
+                } else {
+                    return $result;
+                }
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
 
+
+    /**
+     * Check if users id exists
+     *
+     * @param $idcategory id category from request
+     *
+     * @access public
+     * @return bool True if exists.
+     */
+    public function checkUserId($iduser)
+    {
+        $sql = '
+          SELECT
+            *
+          FROM
+            ad_users
+          WHERE
+            iduser=?
+        ';
+        $result = $this->_db->fetchAll($sql, array($iduser));
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets ads from one user
+     *
+     * @access public
+     * @param array $ads ads data
+     * @return array Result
+     */
+    public function getAdsListByIduser($id)
+    {
+        $sql = '
+            SELECT
+              *
+            FROM
+              ads
+            NATURAL JOIN
+             ad_users
+            WHERE
+              iduser = ?
+        ';
+        return $this->_db->fetchAll($sql, array($id));
+    }
 
 
 

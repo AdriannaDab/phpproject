@@ -17,7 +17,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Model\AdminsModel;
-use Form\UserForm;
+use Model\UsersModel;
 
 /**
  * Class AdminsController
@@ -70,8 +70,11 @@ class AdminsController implements ControllerProviderInterface
         $adminsController->match('/role', array($this, 'roleAction'));
         $adminsController->match('/role/', array($this, 'roleAction'))
             ->bind('admins_role');
-        $adminsController->get('/admin', array($this, 'indexAction'));
-        $adminsController->get('/admin/', array($this, 'indexAction'));
+        $adminsController->get('/view/{id}', array($this, 'viewAction'));
+        $adminsController->get('/view/{id}/', array($this, 'viewAction'))
+            ->bind('admins_view');
+        $adminsController->get('/admins', array($this, 'indexAction'));
+        $adminsController->get('/admins/', array($this, 'indexAction'));
         $adminsController->get('/{page}', array($this, 'indexAction'))
             ->value('page', 1)
             ->bind('admins_index');
@@ -107,5 +110,40 @@ class AdminsController implements ControllerProviderInterface
             );
         }
         return $app['twig']->render('admin/index.twig', $this->_view);
+    }
+
+    /**
+     * View user's profile
+     *
+     * @param Application $app     application object
+     * @param Request     $request request
+     *
+     * @access public
+     * @return mixed Generates page or redirect.
+     */
+    public function viewAction(Application $app, Request $request)
+    {
+
+            $id = (int)$request->get('id', 0);
+            $adminsModel = new AdminsModel($app);
+            $this->_view['admin'] = $adminsModel->getUser($id);
+            $this->_view['admin'] = $adminsModel->checkUserId($id);
+            if ($this->_view['admin']) {
+                $this->_view['admin'] = $adminsModel->getAdsListByIduser($id);
+                return $app['twig']
+                    ->render('admins/view.twig', array('ads' => $this->_view['admin']));
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Category not found')
+                    )
+                );
+                return $app->redirect(
+                    $app['url_generator']->generate('admins_index'), 301
+                );
+            }
+
     }
 }

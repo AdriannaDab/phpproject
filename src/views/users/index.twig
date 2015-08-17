@@ -12,6 +12,10 @@
             <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ user.firstname|capitalize }} </b></li>
             <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b></li>
             <hr>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="list-group-item">{{ 'Email'|trans|upper }}:    <b>{{ user.email|capitalize }} </b></li>
+                <li class="list-group-item">{{ 'Street'|trans|upper }}:    <b>{{ user.street|capitalize }} </b></li>
+            {% endif %}
             <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b></li>
             <li class="list-group-item">{{ 'Province'|trans|upper }}: <b>{{ user.province_name|e }}</b></li>
             <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b></li>

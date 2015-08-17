@@ -1,9 +1,9 @@
-{# Index action template for Users controller #}
+{# Index action template for Admins controller #}
 {% extends 'base.twig' %}
 {% block title %}{{  'Users list'|trans }}{% endblock %}
 {% block content %}
     <div class="thumbnail">
-    {%  if users|length > 0 %}
+    {%  if admins|length > 0 %}
         <table class="table table-hover ">
             <thead>
             <tr class="active">
@@ -16,23 +16,24 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in users %}
+            {% for admin in admins %}
                 <tr class="text-center">
                     <td>
-                        <a href="{{ url('users_view', {'id': user.iduser}) }}"
-                           title="{{ 'View user'|trans }}">{{ user.login|e }}</a>
+                       <a href="{{ url('admins_view', {'id': admin.iduser}) }}"
+                           title="{{ 'View admin'|trans }}">{{ admin.login|e }} </a>
+
                     </td>
                     <td>
-                        {{ user.surname }}
+                        {{ admin.surname }}
                     </td>
                     <td>
-                        {{ user.firstname }}
+                        {{ admin.firstname }}
                     </td>
                     <td>
-                        {{ user.role_name }}
+                        {{ admin.role_name }}
                     </td>
                     <td>
-                        {{ user.email }}
+                        {{ admin.email }}
                     </td>
                     <td>
                         <a href="#"
@@ -46,7 +47,22 @@
             {% endfor %}
             </tbody>
         </table>
-
+        <div>
+            <ul class="pager">
+                {% if paginator.page > 1 %}
+                    {% set previous = (paginator.page - 1) %}
+                    <li class="previous">
+                        <a href="{{ url('admins_index', {'page': previous}) }}" title="{{ 'Previous page'|trans }}">
+                            <span aria-hidden="true">&larr;</span> {{ 'Previous page'|trans }} </a></li>
+                {%  endif %}
+                {% if paginator.page < paginator.pagesCount %}
+                    {% set next = (paginator.page + 1) %}
+                    <li class="next">
+                        <a href="{{ url('admins_index', {'page': next}) }}" title="{{ 'Next page'|trans }}">
+                            {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span></a></li>
+                {% endif  %}
+            </ul>
+        </div>
 
     {% else %}
         <div class="alert alert-danger" role="alert">
