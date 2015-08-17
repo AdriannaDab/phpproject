@@ -1,28 +1,33 @@
 {# View action template for Admins controller #}
 {% extends 'base.twig' %}
+
 {% block content %}
-    {% if ads|length > 0 %}
-        <div>
-        {% for ad in ads %}
-            <div class="thumbnail">
-                <h2>
-                    <h2 >
-                        <a href="{{ url('ads_view', {'id': ad.idad|e}) }}" title="View ad">
-                            {{ ad.ad_name|e }}
-                        </a>
-                    </h2>
-                    <small>{{ ad.ad_date|e }}</small>
-                    <hr>
-                </h2>
-                <p>{{ ad.ad_contence|slice(0,20) }}...</p>
-            </div>
-        {% endfor %}
-        <a href="{{ url('admins_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
-    {% else %}
-        <div class="thumbnail">
-            <p>{{ 'Did not found any ads. Sorry.'|trans }}</p>
-            <a href="{{ url('admins_index') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
-        </div>
-        </div>
-    {% endif %}
+
+    <div>
+        <hr>
+        {% if admin|length > 0 %}
+            <h2 class="intro-text text-center">{{ admin.login|capitalize }}</h2>
+            <hr>
+            <ul class="list-group center-block">
+                <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ admin.firstname|capitalize }} </b></li>
+                <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ admin.surname|capitalize }}</b></li>
+                <hr>
+                <li class="list-group-item">{{ 'Email'|trans|upper }}:    <b>{{ admin.email|capitalize }} </b></li>
+                <li class="list-group-item">{{ 'Street'|trans|upper }}:    <b>{{ admin.street|capitalize }} </b></li>
+                <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ admin.city_name|capitalize }} </b></li>
+                <li class="list-group-item">{{ 'Province'|trans|upper }}: <b>{{ admin.province_name|e }}</b></li>
+                <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ admin.country_name|capitalize }}</b></li>
+            </ul>
+
+            <a href="#"
+               title="{{ 'See more users ads'|trans }}"
+               class="btn btn-primary ">{{ 'See more users ads'|trans }}</a>
+
+            <a href="#"
+               title="{{ 'Delete profile'|trans }}"
+               class="btn btn-danger">{{ 'Delete profile'|trans }}</a>
+
+
+        {% endif %}
+    </div>
 {% endblock %}
