@@ -219,6 +219,40 @@ class AdminsModel
         }
     }
 
+    /**
+     *
+     * Get information about user
+     *
+     * @param $id user id
+     *
+     * @access public
+     * @return array Associative array with information about user
+     */
+    public function getDeleteUser($id)
+    {
+        try {
+            if (($id != '') && ctype_digit((string)$id)) {
+                $query = "
+              SELECT
+                *
+              FROM
+                ad_users
+              WHERE
+                iduser=?
+                ";
+                $result = $this->_db->fetchAssoc($query, array((int)$id));
+                if (!$result) {
+                    return array();
+                } else {
+                    return $result;
+                }
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
 
     /**
      * Check if users id exists
@@ -268,6 +302,42 @@ class AdminsModel
         return $this->_db->fetchAll($sql, array($id));
     }
 
+    /**
+     * Delete user
+     *
+     * @param Integer $id user id
+     *
+     * @access public
+     * @return bool true if deleted
+     */
+    public function deleteUser($id)
+    {
+        if (isset($id) && ctype_digit((string)$id)) {
+            $query = '
+              DELETE FROM
+                ad_users
+              WHERE
+                iduser = ?
+            ';
+            $success = $this->_db->executeQuery($query, array($id));
+            if ($success) {
+                $queryTwo = '
+                  DELETE FROM
+                    ad_user_data
+                  WHERE
+                    iduser_data = ?
+                ';
+                $successTwo = $this->_db->executeQuery($queryTwo, array($id));
+                if ($successTwo) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+    }
 
 
 

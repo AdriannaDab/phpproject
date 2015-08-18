@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Model\AdminsModel;
 use Model\UsersModel;
+use Form\UserForm;
 
 /**
  * Class AdminsController
@@ -134,9 +135,99 @@ class AdminsController implements ControllerProviderInterface
         } catch (PDOException $e) {
             $app->abort($app['translator']->trans('User not found'), 404);
         }
-        return $app['twig']->render('admins/view.twig', array(
+        return $app['twig']->render('admin/view.twig', array(
             'admin' => $admin
         ));
 
+    }
+
+    /**
+     * Delete action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    public function deleteAction(Application $app, Request $request)
+    {
+        try {
+            $adminsModel = new AdminsModel($app);
+            $id = (int) $request->get('id', 0);
+            $this->_view['admin']= $adminsModel->checkUserId($id);
+            if ($this->_view['admin']) {
+                $this->_view['admin']= $adminsModel->getAdsListByIduser($id);
+                if (!$this->_view['admin']) {
+                    $this->_view['admin']= $adminsModel->getDeleteUser($id);
+                    $admin = $adminsModel->getDeleteUser($id);
+                    $this->_view['admin'] = $admin;
+                    if (count($admin)) {
+                        $form = $app['form.factory']
+                            ->createBuilder(new UserForm($app), $admin)->getForm();
+                        $form->remove('login');
+                        $form->remove('firstname');
+                        $form->remove('surname');
+                        $form->remove('email');
+                        $form->remove('password');
+                        $form->remove('confirm_password');
+                        $form->remove('new_password');
+                        $form->remove('confirm_new_password');
+                        $form->remove('street');
+                        $form->remove('idcity');
+                        $form->remove('idprovince');
+                        $form->remove('idcountry');
+                        $form->handleRequest($request);
+                        if ($form->isValid()) {
+                            $data = $form->getData();
+                            $adminsModel = new AdminsModel($app);
+                            $adminsModel->deleteUser($data['iduser']);
+                            $app['session']->getFlashBag()->add(
+                                'message', array(
+                                    'type' => 'danger',
+                                    'content' => $app['translator']
+                                        ->trans('User deleted.')
+                                )
+                            );
+                            return $app->redirect(
+                                $app['url_generator']->generate('admins_index'), 301
+                            );
+                        }
+                        $this->_view['form'] = $form->createView();
+                    } else {
+                        return $app->redirect(
+                            $app['url_generator']->generate('admins_index'), 301
+                        );
+                    }
+                } else {
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'danger',
+                            'content' => $app['translator']
+                                ->trans('Can not delete user with ads')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate(
+                            'admins_index'
+                        ), 301
+                    );
+                }
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Did not found user')
+                    )
+                );
+                return $app->redirect(
+                    $app['url_generator']->generate(
+                        'admins_index'
+                    ), 301
+                );
+            }
+        } catch (Exception $e) {
+            echo $app['translator']->trans('Caught Delete Exception: ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('admin/delete.twig', $this->_view);
     }
 }

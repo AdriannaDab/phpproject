@@ -39,7 +39,7 @@
                         <a href="#"
                            title="{{ 'Add users role'|trans }}"
                            class="btn btn-default">{{ 'Add users role'|trans }}</a>
-                        <a href="#"
+                        <a href="{{ url('admins_delete', {'id': admin.iduser}) }}"
                            title="{{ 'Delete user'|trans }}"
                            class="btn btn-danger">{{ 'Delete user'|trans }}</a>
                     </td>

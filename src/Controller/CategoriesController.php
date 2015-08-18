@@ -18,7 +18,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Model\CategoriesModel;
 use Form\CategoryForm;
-
+use Model\UsersModel;
 
 /**
  * Class CategoriesController.
@@ -34,7 +34,7 @@ use Form\CategoryForm;
  * @uses Symfony\Component\Validator\Constraints
  * @uses Model\CategoriesModel
  * @uses Form\CategoryForm;
- *
+ * @uses Model\UsersModel
  */
 class CategoriesController implements ControllerProviderInterface
 {
@@ -47,7 +47,13 @@ class CategoriesController implements ControllerProviderInterface
     */
     protected $_view = array();
 
-
+    /**
+     * UsersModel object.
+     *
+     * @var $_user
+     * @access protected
+     */
+    protected $_user;
 
 
    /**
@@ -59,7 +65,7 @@ class CategoriesController implements ControllerProviderInterface
     */
     public function connect(Application $app)
     {
-
+        $this->_user = new UsersModel($app);
         $categoriesController = $app['controllers_factory'];
         $categoriesController->match('/add', array($this, 'addAction'))
             ->bind('categories_add');
@@ -125,11 +131,17 @@ class CategoriesController implements ControllerProviderInterface
         $categoriesModel = new CategoriesModel($app);
         $this->_view['category'] = $categoriesModel->getCategory($id);
         $this->_view['category'] = $categoriesModel->checkCategoryId($id);
-
+        //$_isLogged = $this->_user->_isLoggedIn($app);
+        //if ($_isLogged) {
+        //    $access = $this->_user->getIdModCurrentUser($app);
+        //} else {
+        //    $access = 0;
+        //}
         if ($this->_view['category']) {
             $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
             return $app['twig']
-                ->render('categories/view.twig', array('ads' => $this->_view['category']));
+                ->render('categories/view.twig', array(//'access' => $access,
+                'ads' => $this->_view['category']));
         } else {
             $app['session']->getFlashBag()->add(
                 'message', array(

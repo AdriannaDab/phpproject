@@ -658,7 +658,7 @@ class UsersModel
     public function getIdModCurrentUser($app)
     {
         $iduser = $this->getCurrentUser($app);
-        $iduser = $this->getUserByRoles($iduser);
+        $iduser = $this->getUserRoles($iduser);
         return $iduser['iduser'];
     }
 
