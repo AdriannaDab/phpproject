@@ -130,7 +130,7 @@ class UsersModel
      *
      * @return array Result
      */
-    public function getUserRoles($iduser)
+    public function getUserRoles($userId)
     {
         $roles = array();
         try {
@@ -146,7 +146,7 @@ class UsersModel
                     `ad_users`.`iduser` = :user_id
                 ';
             $statement = $this->_db->prepare($query);
-            $statement->bindValue('iduser', $iduser, \PDO::PARAM_INT);
+            $statement->bindValue('user_id', $userId, \PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             if ($result && count($result)) {

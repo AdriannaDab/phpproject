@@ -18,7 +18,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Model\CategoriesModel;
 use Form\CategoryForm;
-use Model\UsersModel;
+
 
 /**
  * Class CategoriesController.
