@@ -245,6 +245,7 @@ class UsersController implements ControllerProviderInterface
         $form->remove('firstname');
         $form->remove('surname');
         $form->remove('street');
+        $form->remove('idrole');
         $form->remove('idcity');
         $form->remove('idprovince');
         $form->remove('idcountry');
@@ -331,6 +332,7 @@ class UsersController implements ControllerProviderInterface
             );
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
+            $form->remove('idrole');
             $form->remove('password');
             $form->remove('confirm_password');
             $form->remove('login');
@@ -392,6 +394,7 @@ class UsersController implements ControllerProviderInterface
             );
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
+            $form->remove('idrole');
             $form->remove('password');
             $form->remove('confirm_password');
             $form->remove('new_password');
@@ -470,6 +473,7 @@ class UsersController implements ControllerProviderInterface
                 $form->remove('new_password');
                 $form->remove('confirm_new_password');
                 $form->remove('street');
+                $form->remove('idrole');
                 $form->remove('idcity');
                 $form->remove('idprovince');
                 $form->remove('idcountry');
@@ -521,6 +525,7 @@ class UsersController implements ControllerProviderInterface
             $form->remove('firstname');
             $form->remove('surname');
             $form->remove('email');
+            $form->remove('idrole');
             $form->remove('street');
             $form->remove('idcity');
             $form->remove('idprovince');

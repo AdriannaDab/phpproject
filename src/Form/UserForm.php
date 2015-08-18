@@ -269,6 +269,16 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
+                'idrole',
+                'choice',
+                array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'choices' => $this->getRole($this->app)
+                )
+            )
+            ->add(
                 'idcity',
                 'choice',
                 array(
@@ -310,6 +320,25 @@ class UserForm extends AbstractType
     public function getName()
     {
         return 'user';
+    }
+
+    /**
+     * Form builder for cities list.
+     *
+     * @access public
+     * @param FormBuilderInterface $builder
+     * @param array $dict
+     *
+     * @return FormBuilderInterface
+     */
+    private function getRole($app)
+    {
+        $rolesModel = new InformationModel($app);
+        $roles = $rolesModel ->getAllRoles();
+        $dict = array();
+        foreach ($roles as  $role){
+            $dict [ $role ['idrole']] = $role['role_name'];
+        }return $dict;
     }
 
     /**

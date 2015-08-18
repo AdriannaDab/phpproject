@@ -142,6 +142,67 @@ class AdminsController implements ControllerProviderInterface
     }
 
     /**
+     * Role action.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return string Output
+     */
+    public function roleAction(Application $app, Request $request)
+    {
+        try {
+            $adminsModel = new AdminsModel($app);
+            $id = (int) $request->get('id', 0);
+            $admin = $adminsModel->getUserId($id);
+            if (count($admin)) {
+                $data = array(
+                    'iduser' => $id,
+                    'idrole' => $admin['idrole'],
+                );
+                $form = $app['form.factory']
+                    ->createBuilder(new UserForm($app), $data)->getForm();
+                $form->remove('login');
+                $form->remove('firstname');
+                $form->remove('surname');
+                $form->remove('email');
+                $form->remove('password');
+                $form->remove('confirm_password');
+                $form->remove('new_password');
+                $form->remove('confirm_new_password');
+                $form->remove('street');
+                $form->remove('idcity');
+                $form->remove('idprovince');
+                $form->remove('idcountry');
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $adminsModel = new AdminsModel($app);
+                    $adminsModel->changeRole($data);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Role changed')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate('admins_index', array('id' => $admin['iduser'])), 301
+                    );
+                }
+            } else {
+                return $app->redirect(
+                    $app['url_generator']->generate('admins_index'), 301
+                );
+            }
+        } catch (AdException $e) {
+            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('admin/role.twig', array(
+        'form' => $form->createView()));
+    }
+
+
+    /**
      * Delete action.
      *
      * @access public
@@ -154,7 +215,7 @@ class AdminsController implements ControllerProviderInterface
         try {
             $adminsModel = new AdminsModel($app);
             $id = (int) $request->get('id', 0);
-            $this->_view['admin']= $adminsModel->checkUserId($id);
+            $this->_view['admin']= $adminsModel->getUserId($id);
             if ($this->_view['admin']) {
                 $this->_view['admin']= $adminsModel->getAdsListByIduser($id);
                 if (!$this->_view['admin']) {

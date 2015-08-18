@@ -97,7 +97,7 @@ class AdForm extends AbstractType
             )
             ->add(
                 'ad_contence',
-                'text',
+                'textarea',
                 array(
                     'constraints' => array(
                         new Assert\NotBlank(),

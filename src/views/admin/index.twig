@@ -19,7 +19,7 @@
             {% for admin in admins %}
                 <tr class="text-center">
                     <td>
-                       <a href="{{ url('admins_view', {'id': admin.iduser}) }}"
+                       <a href="{#{{ url('admins_view', {'id': admin.iduser}) }}#}#"
                            title="{{ 'View admin'|trans }}">{{ admin.login|e }} </a>
 
                     </td>
@@ -36,9 +36,9 @@
                         {{ admin.email }}
                     </td>
                     <td>
-                        <a href="#"
-                           title="{{ 'Add users role'|trans }}"
-                           class="btn btn-default">{{ 'Add users role'|trans }}</a>
+                        <a href="{{ url('admins_role', {'id': admin.iduser}) }}"
+                           title="{{ 'Change users role'|trans }}"
+                           class="btn btn-default">{{ 'Change users role'|trans }}</a>
                         <a href="{{ url('admins_delete', {'id': admin.iduser}) }}"
                            title="{{ 'Delete user'|trans }}"
                            class="btn btn-danger">{{ 'Delete user'|trans }}</a>

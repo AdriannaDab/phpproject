@@ -44,6 +44,27 @@ class InformationModel
     }
 
     /**
+     * Gets all roles.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAllRoles()
+    {
+        try {
+            $query = '
+              SELECT
+                idrole, role_name
+              FROM
+                ad_roles
+            ';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Gets all cities.
      *
      * @access public

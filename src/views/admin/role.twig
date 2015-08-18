@@ -1,0 +1,16 @@
+{# Role action template for Admins controller #}
+{% extends 'base.twig' %}
+{% block title %}{{  'Change users role'|trans }}{% endblock %}
+{% block content %}
+    <hr>
+    <h1  class="intro-text text-center">
+        {{ 'Change users role'|trans }}
+    </h1>
+    <hr>
+    <form action="" method="post">
+        {{ form_widget(form) }}
+        <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
+        <a href="{{ url ('admins_index' )}}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
+    </form>
+
+{% endblock %}

@@ -82,6 +82,46 @@ class AdminsModel
     }
 
     /**
+     * Connected user with his role.
+     *
+     * @param  Integer $iduser
+     *
+     * @access public
+     * @return Void
+     */
+    public function changeRole($data)
+    {
+        try {
+            if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
+                $query = '
+              UPDATE
+                ad_users
+              SET
+               idrole=?
+              WHERE
+                iduser = ?;
+              ';
+                $this->_db->executeQuery($query, array($data['idrole'], $data['iduser']));
+            } else {
+                $query = '
+              INSERT INTO
+                `ad_users` (`idrole`)
+              VALUES (?);
+            ';
+                $this->_db
+                    ->executeQuery(
+                        $query,
+                        array(
+                            $data['idrole'])
+                    );
+
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Gets users for pagination.
      *
      * @access public
@@ -228,6 +268,41 @@ class AdminsModel
      * @access public
      * @return array Associative array with information about user
      */
+    public function getUserId($id)
+    {
+        try {
+            if (($id != '') && ctype_digit((string)$id)) {
+                $query = "
+              SELECT
+                *
+              FROM
+                ad_users
+              WHERE
+                iduser=?
+                ";
+                $result = $this->_db->fetchAssoc($query, array((int)$id));
+                if (!$result) {
+                    return array();
+                } else {
+                    return $result;
+                }
+            } else {
+                return array();
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
+    /**
+     *
+     * Get information about user
+     *
+     * @param $id user id
+     *
+     * @access public
+     * @return array Associative array with information about user
+     */
     public function getDeleteUser($id)
     {
         try {
@@ -338,6 +413,8 @@ class AdminsModel
             }
         }
     }
+
+
 
 
 
