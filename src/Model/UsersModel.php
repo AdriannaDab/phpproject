@@ -130,7 +130,7 @@ class UsersModel
      *
      * @return array Result
      */
-    public function getUserRoles($userId)
+    public function getUserRoles($iduser)
     {
         $roles = array();
         try {
@@ -146,7 +146,7 @@ class UsersModel
                     `ad_users`.`iduser` = :user_id
                 ';
             $statement = $this->_db->prepare($query);
-            $statement->bindValue('user_id', $userId, \PDO::PARAM_INT);
+            $statement->bindValue('iduser', $iduser, \PDO::PARAM_INT);
             $statement->execute();
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
             if ($result && count($result)) {
@@ -645,6 +645,21 @@ class UsersModel
         $iduser_data = $this->getCurrentUser($app);
         $iduser_data = $this->getUserByIdData($iduser_data);
         return $iduser_data['iduser_data'];
+    }
+
+    /**
+     * Get current logged user id data
+     *
+     * @param $app
+     *
+     * @access public
+     * @return mixed
+     */
+    public function getIdModCurrentUser($app)
+    {
+        $iduser = $this->getCurrentUser($app);
+        $iduser = $this->getUserByRoles($iduser);
+        return $iduser['iduser'];
     }
 
     /**

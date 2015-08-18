@@ -18,7 +18,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Model\CategoriesModel;
 use Form\CategoryForm;
-use Model\UserModel;
+use Model\UsersModel;
 
 /**
  * Class CategoriesController.
@@ -34,7 +34,7 @@ use Model\UserModel;
  * @uses Symfony\Component\Validator\Constraints
  * @uses Model\CategoriesModel
  * @uses Form\CategoryForm;
- * @uses Model\UsersModel
+ *
  */
 class CategoriesController implements ControllerProviderInterface
 {
@@ -48,6 +48,8 @@ class CategoriesController implements ControllerProviderInterface
     protected $_view = array();
 
 
+
+
    /**
     * Routing settings.
     *
@@ -57,6 +59,7 @@ class CategoriesController implements ControllerProviderInterface
     */
     public function connect(Application $app)
     {
+
         $categoriesController = $app['controllers_factory'];
         $categoriesController->match('/add', array($this, 'addAction'))
             ->bind('categories_add');
@@ -122,6 +125,7 @@ class CategoriesController implements ControllerProviderInterface
         $categoriesModel = new CategoriesModel($app);
         $this->_view['category'] = $categoriesModel->getCategory($id);
         $this->_view['category'] = $categoriesModel->checkCategoryId($id);
+
         if ($this->_view['category']) {
             $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
             return $app['twig']

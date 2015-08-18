@@ -70,8 +70,8 @@ class AdminsController implements ControllerProviderInterface
         $adminsController->match('/role', array($this, 'roleAction'));
         $adminsController->match('/role/', array($this, 'roleAction'))
             ->bind('admins_role');
-        $adminsController->get('/view/{id}', array($this, 'viewAction'));
-        $adminsController->get('/view/{id}/', array($this, 'viewAction'))
+        $adminsController->get('/view/{id}/', array($this, 'viewAction'));
+        $adminsController->get('/view/{id}', array($this, 'viewAction'))
             ->bind('admins_view');
         $adminsController->get('/admins', array($this, 'indexAction'));
         $adminsController->get('/admins/', array($this, 'indexAction'));
@@ -124,26 +124,19 @@ class AdminsController implements ControllerProviderInterface
     public function viewAction(Application $app, Request $request)
     {
 
+        try {
             $id = (int)$request->get('id', 0);
             $adminsModel = new AdminsModel($app);
-            $this->_view['admin'] = $adminsModel->getUser($id);
-            $this->_view['admin'] = $adminsModel->checkUserId($id);
-            if ($this->_view['admin']) {
-                $this->_view['admin'] = $adminsModel->getAdsListByIduser($id);
-                return $app['twig']
-                    ->render('admins/view.twig', array('ads' => $this->_view['admin']));
-            } else {
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'danger',
-                        'content' => $app['translator']
-                            ->trans('Category not found')
-                    )
-                );
-                return $app->redirect(
-                    $app['url_generator']->generate('admins_index'), 301
-                );
+            $admin=$this->_view['admin'] = $adminsModel->getUser($id);
+            if (!($this->_view['admin'])) {
+                throw new NotFoundHttpException("User not found");
             }
+        } catch (PDOException $e) {
+            $app->abort($app['translator']->trans('User not found'), 404);
+        }
+        return $app['twig']->render('admins/view.twig', array(
+            'admin' => $admin
+        ));
 
     }
 }
