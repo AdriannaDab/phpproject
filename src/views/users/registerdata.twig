@@ -9,7 +9,14 @@
     <hr>
     <form action="" method="post">
         {{ form_widget(form) }}
+
+
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Register'|trans }}" />
 
     </form>
+    <br>
+    <a href="{{ url('users_newdata') }}"
+       title="{{ 'There is no your city? Click here'|trans }}"
+       >{{ 'There is no your city? Click here'|trans }}</a>
+
 {% endblock %}

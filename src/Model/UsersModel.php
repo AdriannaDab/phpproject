@@ -450,6 +450,34 @@ class UsersModel
     }
 
     /**
+     * Puts one user data to database.
+     *
+     * @param  Array $data Associative array contains all necessary information
+     *
+     * @access public
+     * @return Void
+     */
+    public function registerNewData($data)
+    {
+
+        $users2 = "
+            INSERT INTO
+                `ad_cities` (`city_name`)
+              VALUES
+              (?)
+            ";
+        $this->_db
+            ->executeQuery(
+                $users2,
+                array(
+                    $data['city_name'],
+                    )
+            );
+
+
+    }
+
+    /**
      * Updates information about user.
      *
      * @param Array $data Associative array contains all necessary information

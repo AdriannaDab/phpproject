@@ -78,6 +78,9 @@ class UsersController implements ControllerProviderInterface
         $usersController->match('/data', array($this, 'dataAction'));
         $usersController->match('/data/', array($this, 'dataAction'))
             ->bind('users_data');
+        $usersController->match('/newdata', array($this, 'newdataAction'));
+        $usersController->match('/newdata/', array($this, 'newdataAction'))
+            ->bind('users_newdata');
         $usersController->match('/edit', array($this, 'editAction'));
         $usersController->match('/edit/', array($this, 'editAction'))
             ->bind('users_edit');
@@ -245,6 +248,9 @@ class UsersController implements ControllerProviderInterface
         $form->remove('firstname');
         $form->remove('surname');
         $form->remove('street');
+        $form->remove('city_name');
+        $form->remove('province_name');
+        $form->remove('country_name');
         $form->remove('idrole');
         $form->remove('idcity');
         $form->remove('idprovince');
@@ -337,6 +343,9 @@ class UsersController implements ControllerProviderInterface
             $form->remove('confirm_password');
             $form->remove('login');
             $form->remove('email');
+            $form->remove('city_name');
+            $form->remove('province_name');
+            $form->remove('country_name');
             $form->remove('new_password');
             $form->remove('confirm_new_password');
             $form->handleRequest($request);
@@ -364,6 +373,70 @@ class UsersController implements ControllerProviderInterface
         }
         return $app['twig']->render(
             'users/registerdata.twig', array(
+                'form' => $form->createView()
+            )
+        );
+    }
+
+    /**
+     * Register new user data
+     *
+     * @param Application $app     application object
+     * @param Request     $request request
+     *
+     * @access public
+     * @return mixed Generates page or redirect.
+     */
+    public function newdataAction(Application $app, Request $request)
+    {
+        $id = $this->_model->getIdCurrentUser($app);
+        $user = $this->_model->getUser($id);
+        if (count($user)) {
+            $data = array(
+                'iduser' => $id,
+                'city_name' => $user['city_name'],
+            );
+            $form = $app['form.factory']
+                ->createBuilder(new UserForm($app), $data)->getForm();
+            $form->remove('idrole');
+            $form->remove('firstname');
+            $form->remove('surname');
+            $form->remove('street');
+            $form->remove('password');
+            $form->remove('confirm_password');
+            $form->remove('login');
+            $form->remove('email');
+            $form->remove('new_password');
+            $form->remove('confirm_new_password');
+            $form->remove('idcity');
+            $form->remove('idprovince');
+            $form->remove('idcountry');
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                try {
+
+                    $usersModel = new UsersModel($app);
+                    $usersModel->registerNewData($data);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Data saved')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate(
+                            'users_data'
+                        ), 301
+                    );
+                } catch (\Exception $e) {
+                    $errors[] = 'Coś poszło niezgodnie z planem';
+                }
+            }
+        }
+        return $app['twig']->render(
+            'users/registernewdata.twig', array(
                 'form' => $form->createView()
             )
         );
@@ -399,6 +472,9 @@ class UsersController implements ControllerProviderInterface
             $form->remove('confirm_password');
             $form->remove('new_password');
             $form->remove('confirm_new_password');
+            $form->remove('city_name');
+            $form->remove('province_name');
+            $form->remove('country_name');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -474,6 +550,9 @@ class UsersController implements ControllerProviderInterface
                 $form->remove('confirm_new_password');
                 $form->remove('street');
                 $form->remove('idrole');
+                $form->remove('city_name');
+                $form->remove('province_name');
+                $form->remove('country_name');
                 $form->remove('idcity');
                 $form->remove('idprovince');
                 $form->remove('idcountry');
@@ -527,6 +606,9 @@ class UsersController implements ControllerProviderInterface
             $form->remove('email');
             $form->remove('idrole');
             $form->remove('street');
+            $form->remove('city_name');
+            $form->remove('province_name');
+            $form->remove('country_name');
             $form->remove('idcity');
             $form->remove('idprovince');
             $form->remove('idcountry');
