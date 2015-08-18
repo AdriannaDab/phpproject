@@ -92,7 +92,7 @@ class AdminsController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $pageLimit = 20;
+        $pageLimit = 10;
         $page = (int) $request->get('page', 1);
         try {
             $adminsModel = new AdminsModel($app);
@@ -234,6 +234,8 @@ class AdminsController implements ControllerProviderInterface
                         $form->remove('new_password');
                         $form->remove('confirm_new_password');
                         $form->remove('street');
+                        $form->remove('city_name');
+                        $form->remove('idrole');
                         $form->remove('idcity');
                         $form->remove('idprovince');
                         $form->remove('idcountry');
