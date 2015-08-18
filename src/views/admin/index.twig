@@ -19,7 +19,7 @@
             {% for admin in admins %}
                 <tr class="text-center">
                     <td>
-                       <a href="{#{{ url('admins_view', {'id': admin.iduser}) }}#}#"
+                       <a href="{{ url('admins_view', {'id': admin.iduser}) }}"
                            title="{{ 'View admin'|trans }}">{{ admin.login|e }} </a>
 
                     </td>

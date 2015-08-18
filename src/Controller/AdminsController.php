@@ -141,6 +141,8 @@ class AdminsController implements ControllerProviderInterface
 
     }
 
+
+
     /**
      * Role action.
      *
@@ -171,6 +173,7 @@ class AdminsController implements ControllerProviderInterface
                 $form->remove('new_password');
                 $form->remove('confirm_new_password');
                 $form->remove('street');
+                $form->remove('city_name');
                 $form->remove('idcity');
                 $form->remove('idprovince');
                 $form->remove('idcountry');
