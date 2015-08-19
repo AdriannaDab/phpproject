@@ -77,9 +77,11 @@ class CategoriesModel
             if (($id != '') && ctype_digit((string)$id)) {
                 $query = '
                   SELECT
-                    idcategory, category_name
+                    idcategory, category_name, iduser
                   FROM
                     ad_categories
+                  NATURAL JOIN
+                    ad_moderator_category
                   WHERE
                     idcategory= ?
                 ';
@@ -95,6 +97,100 @@ class CategoriesModel
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
+    }
+
+    /**
+     * Edit category.
+     *
+     * @param  Integer $iduser
+     *
+     * @access public
+     * @return Void
+     */
+    public function edit($data)
+    {
+        if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
+                $query = '
+              UPDATE
+                ad_moderator_category
+              NATURAL JOIN
+                ad_categories
+              SET
+                category_name=?
+                iduser=?
+              WHERE
+                idcategory= ?;
+              ';
+                $this->_db->executeQuery(
+                    $query, array(
+                    $data['category_name'],
+                    $data['iduser']
+                )
+                );
+
+        } else {
+            $query = '
+              INSERT INTO
+                `ad_user_data` (`iduser`,`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
+              VALUES (?,?,?,?,?,?,?);
+            ';
+            $this->_db
+                ->executeQuery(
+                    $query,
+                    array(
+                        $data['iduser'],
+                        $data['firstname'],
+                        $data['surname'],
+                        $data['street'],
+                        $data['idcity'],
+                        $data['idprovince'],
+                        $data['idcountry'])
+                );
+        }
+
+
+    }
+
+    /**
+     * Puts category to database.
+     *
+     * @param  Array $data Associative array contains all necessary information
+     *
+     * @access public
+     * @return Void
+     */
+    public function add($data)
+    {
+            $categories = "
+              INSERT INTO
+                `ad_categories` ( `category_name`)
+              VALUES
+                (?)
+            ";
+            $this->_db
+                ->executeQuery(
+                    $categories,
+                    array(
+                        $data['category_name'],
+                    )
+                );
+
+            $sql = "SELECT
+                      idcategory,category_name
+                    FROM
+                      ad_categories
+                    WHERE
+                      category_name ='" . $data['category_name'] . "';";
+
+            $category = $this->_db->fetchAssoc($sql);
+
+
+            $addid = 'INSERT INTO
+                          ad_moderator_category ( idcategory )
+                      VALUES
+                        (?)';
+            $this->_db->executeQuery($addid, array($category['idcategory']));
+
     }
 
     /**
@@ -183,25 +279,6 @@ class CategoriesModel
         );
     }
 
-    /**
-     * Save category.
-     *
-     * @access public
-     * @param array $category Category data
-     * @retun mixed Result
-     */
-    public function saveCategory($category)
-    {
-        if (isset($category['idcategory'])
-            && ($category['idcategory'] != '')
-            && ctype_digit((string)$category['idcategory'])) {
-            $id = $category['idcategory'];
-            unset($category['idcategory']);
-            return $this->_db->update('ad_categories', $category, array('idcategory' => $id));
-        } else {
-            return $this->_db->insert('ad_categories', $category);
-        }
-    }
 
     /**
      * Delete single category data.
@@ -212,23 +289,33 @@ class CategoriesModel
      */
     public function deleteCategory($id)
     {
-        try {
-            if (($id != '') && ctype_digit((string)$id) ) {
-                $query = '
-                  DELETE
-                    *
-                  FROM
-                    ad_categories
+        if (isset($id) && ctype_digit((string)$id)) {
+            $query = '
+              DELETE FROM
+                ad_categories
+              WHERE
+                idcategory= ?
+            ';
+            $success = $this->_db->executeQuery($query, array($id));
+            if ($success) {
+                $queryTwo = '
+                  DELETE FROM
+                    ad_moderator_category
                   WHERE
-                    idcategory= ?
+                    idcategory = ?
                 ';
-                return $this->_db->delete('ad_categories', array('idcategory' => $id));
+                $successTwo = $this->_db->executeQuery($queryTwo, array($id));
+                if ($successTwo) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
-                return array();
+                return true;
             }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
+
+
     }
 
     /**

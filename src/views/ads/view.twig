@@ -18,17 +18,22 @@
     {% endif %}
  </div>
 
- {% if ad.iduser|e == access|e %}
+ {% if (ad.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) %}
+
     <p>
-        <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+     {% if (ad.iduser|e == access|e) %}
+     <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
            class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
+     {% endif %}
         <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
-           class="btn btn-danger">{{ 'Delete ad'|trans }}</a></p>
+           class="btn btn-danger">{{ 'Delete ad'|trans }}</a>
 
     </p>
     <p>
+        {% if (ad.iduser|e == access|e) %}
         <a href="{{ url('photos_upload', {'idad': ad.idad|e}) }}" title="{{ 'Add Photos'|trans }}"
            class="btn btn-success" role="button">{{ 'Add Photos'|trans }}</a>
+        {% endif %}
         <a href="{{ url('photos_manager')}}" title="{{ 'Photos Manager'|trans }}"
            class="btn btn-info" role="button">{{ 'Photos Manager'|trans }}</a>
     </p>

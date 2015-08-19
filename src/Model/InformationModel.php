@@ -44,6 +44,31 @@ class InformationModel
     }
 
     /**
+     * Gets all moderators.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAllModerators()
+    {
+        try {
+            $query = '
+              SELECT
+                iduser, login
+              FROM
+                ad_users
+              NATURAL JOIN
+                ad_roles
+              WHERE
+                idrole=2
+            ';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Gets all roles.
      *
      * @access public

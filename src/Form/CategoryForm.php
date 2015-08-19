@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Model\InformationModel;
 
 /**
  * Class CategoryForm.
@@ -33,6 +34,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CategoryForm extends AbstractType
 {
+    /**
+     * AdsForm object.
+     *
+     * @var $app
+     * @access protected
+     */
+    protected $app;
+
+    /**
+     * Object constructor.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     */
+    public function __construct($app)
+    {
+        $this-> app = $app;
+    }
+
     /**
      * Form builder.
      *
@@ -70,6 +90,16 @@ class CategoryForm extends AbstractType
                         ))
                     )
                 )
+            )
+            ->add(
+                'iduser',
+                'choice',
+                array(
+                    'constraints' => array(
+                        new Assert\NotBlank()
+                    ),
+                    'choices' => $this->getUser($this->app)
+                )
             );
 
     }
@@ -84,6 +114,25 @@ class CategoryForm extends AbstractType
     public function getName()
     {
         return 'category';
+    }
+
+    /**
+     * Form builder for moderators list.
+     *
+     * @access public
+     * @param FormBuilderInterface $builder
+     * @param array $dict
+     *
+     * @return FormBuilderInterface
+     */
+    private function getUser($app)
+    {
+        $usersModel = new InformationModel($app);
+        $users = $usersModel ->getAllModerators();
+        $dict = array();
+        foreach ($users as  $user){
+            $dict [ $user ['iduser']] = $user['login'];
+        }return $dict;
     }
 
 }

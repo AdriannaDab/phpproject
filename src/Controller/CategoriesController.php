@@ -171,13 +171,13 @@ class CategoriesController implements ControllerProviderInterface
             'category_name' => 'Name',
             );
             $form = $app['form.factory']
-                ->createBuilder(new CategoryForm(), $data)->getForm();
-            $form->remove('id');
+                ->createBuilder(new CategoryForm($app), $data)->getForm();
+            $form->remove('iduser');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
                 $categoriesModel = new CategoriesModel($app);
-                $categoriesModel->saveCategory($data);
+                $categoriesModel->add($data);
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'success',
@@ -211,12 +211,12 @@ class CategoriesController implements ControllerProviderInterface
             $category = $categoriesModel->getCategory($id);
             if (count($category)) {
                 $form = $app['form.factory']
-                    ->createBuilder(new CategoryForm(), $category)->getForm();
+                    ->createBuilder(new CategoryForm($app), $category)->getForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                     $data = $form->getData();
                     $categoriesModel = new CategoriesModel($app);
-                    $categoriesModel->saveCategory($data);
+                    $categoriesModel->edit($data);
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'success',
@@ -262,8 +262,9 @@ class CategoriesController implements ControllerProviderInterface
                     $this->_view['category'] = $category;
                     if (count($category)) {
                         $form = $app['form.factory']
-                            ->createBuilder(new CategoryForm(), $category)->getForm();
+                            ->createBuilder(new CategoryForm($app), $category)->getForm();
                         $form->remove('category_name');
+                        $form->remove('iduser');
                         $form->handleRequest($request);
                         if ($form->isValid()) {
                             $data = $form->getData();

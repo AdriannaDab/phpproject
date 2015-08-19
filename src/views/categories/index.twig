@@ -28,12 +28,9 @@
                 <td>
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"
-                       title="{{ 'Edit category'|trans }}"
-                       class="btn btn-default">{{ 'Edit category'|trans }}</a>
+                       title="{{ 'Set moderator and edit category'|trans }}"
+                       class="btn btn-default">{{ 'Set moderator and edit category'|trans }}</a>
 
-                    <a href="#"
-                       title="{{ 'Set moderator'|trans }}"
-                       class="btn btn-default">{{ 'Set moderator'|trans }}</a>
 
                     <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"
                        title="{{ 'Delete category'|trans }}"
