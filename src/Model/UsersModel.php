@@ -414,6 +414,22 @@ class UsersModel
                         $data['password'],
                         )
                 );
+
+            $sql = "SELECT
+                      iduser,login,email
+                    FROM
+                      ad_users
+                    WHERE
+                      email ='" . $data['email'] . "';";
+
+            $user = $this->_db->fetchAssoc($sql);
+
+
+            $addid = 'INSERT INTO
+                          ad_user_data ( iduser )
+                      VALUES
+                        (?)';
+            $this->_db->executeQuery($addid, array($user['iduser']));
         }
     }
 
@@ -427,11 +443,12 @@ class UsersModel
      */
     public function registerData($data)
     {
+        if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
             $users2 = "
-            INSERT INTO
-                `ad_user_data` (`iduser`, `firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
+            UPDATE
+                `ad_user_data` SET ( `firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
               VALUES
-              (?,?,?,?,?,?,?)
+              (?,?,?,?,?,?)
             ";
             $this->_db
                 ->executeQuery(
@@ -445,6 +462,25 @@ class UsersModel
                         $data['idprovince'],
                         $data['idcountry'])
                 );
+        } else {
+            $query = '
+              INSERT INTO
+                `ad_user_data` (`iduser`,`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
+              VALUES (?,?,?,?,?,?,?);
+            ';
+            $this->_db
+                ->executeQuery(
+                    $query,
+                    array(
+                        $data['iduser'],
+                        $data['firstname'],
+                        $data['surname'],
+                        $data['street'],
+                        $data['idcity'],
+                        $data['idprovince'],
+                        $data['idcountry'])
+                );
+        }
 
 
     }
@@ -521,13 +557,14 @@ class UsersModel
         } else {
             $query = '
               INSERT INTO
-                `ad_user_data` (`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
-              VALUES (?,?,?,?,?,?);
+                `ad_user_data` (`iduser`,`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
+              VALUES (?,?,?,?,?,?,?);
             ';
             $this->_db
                 ->executeQuery(
                     $query,
                     array(
+                        $data['iduser'],
                         $data['firstname'],
                         $data['surname'],
                         $data['street'],

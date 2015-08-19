@@ -125,19 +125,30 @@ class AdminsController implements ControllerProviderInterface
     public function viewAction(Application $app, Request $request)
     {
 
-        try {
+
             $id = (int)$request->get('id', 0);
             $adminsModel = new AdminsModel($app);
-            $admin=$this->_view['admin'] = $adminsModel->getUser($id);
-            if (!($this->_view['admin'])) {
-                throw new NotFoundHttpException("User not found");
+            $admin = $this->_view['admin'] = $adminsModel->getUser($id);
+            if (count($admin)) {
+                return $app['twig']->render(
+                    'admin/view.twig', array(
+                        'admin' => $admin
+                    )
+                );
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => 'User data not found'
+                    )
+                );
+                return $app->redirect(
+                    $app['url_generator']->generate(
+                        'admins_index'
+                    ), 301
+                );
             }
-        } catch (PDOException $e) {
-            $app->abort($app['translator']->trans('User not found'), 404);
-        }
-        return $app['twig']->render('admin/view.twig', array(
-            'admin' => $admin
-        ));
+
 
     }
 

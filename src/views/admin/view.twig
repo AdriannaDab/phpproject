@@ -19,16 +19,18 @@
                 <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ admin.country_name|capitalize }}</b></li>
             </ul>
 
-            <a href="#"
-               title="{{ 'See more users ads'|trans }}"
-               class="btn btn-primary ">{{ 'See more users ads'|trans }}</a>
+            <a href="{{ url('users_more', {'id': admin.iduser|e}) }}"
+               title="{{ 'See users ads'|trans }}"
+               class="btn btn-primary ">{{ 'See users ads'|trans }}</a>
 
-            <a href="#"
+            <a href="{{ url('admins_delete', {'id': admin.iduser}) }}"
                title="{{ 'Delete profile'|trans }}"
                class="btn btn-danger">{{ 'Delete profile'|trans }}</a>
 
 
+
         {% endif %}
+
 
         {% for flashMessage in app.session.getFlashBag.get('message') %}
             <div class="alert alert-{{ flashMessage.type }}" role="alert">
