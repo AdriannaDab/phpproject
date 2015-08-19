@@ -109,7 +109,7 @@ class CategoriesModel
      */
     public function edit($data)
     {
-        if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
+        if (isset($data['idcategory']) && ctype_digit((string)$data['idcategory'])) {
                 $query = '
               UPDATE
                 ad_moderator_category
@@ -131,20 +131,14 @@ class CategoriesModel
         } else {
             $query = '
               INSERT INTO
-                `ad_user_data` (`iduser`,`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
-              VALUES (?,?,?,?,?,?,?);
+                `ad_moderator_category` (`idcategory`)
+              VALUES (?);
             ';
             $this->_db
                 ->executeQuery(
                     $query,
                     array(
-                        $data['iduser'],
-                        $data['firstname'],
-                        $data['surname'],
-                        $data['street'],
-                        $data['idcity'],
-                        $data['idprovince'],
-                        $data['idcountry'])
+                        $data['idcategory'])
                 );
         }
 
