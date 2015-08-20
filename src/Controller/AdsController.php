@@ -154,10 +154,20 @@ class AdsController implements ControllerProviderInterface
         try {
             $id = (int)$request->get('id', 0);
             $adsModel = new AdsModel($app);
+
+            $category = $this->_user->getCategory($id);
+
             $ad=$this->_view['ad'] = $adsModel->getAdView($id);
             $_isLogged = $this->_user->_isLoggedIn($app);
             if ($_isLogged) {
+                $access1 = $this->_user->getIdCurrentUser($app);
+                $moderator = $this->_user->getModeratorById($access1,$category);
+            } else {
+                $moderator = 0;
+            }
+            if ($_isLogged) {
                 $access = $this->_user->getIdCurrentUser($app);
+
             } else {
                 $access = 0;
             }
@@ -169,6 +179,7 @@ class AdsController implements ControllerProviderInterface
         }
         return $app['twig']->render('ads/view.twig', array(
             'access' => $access,
+            'moderator' => $moderator,
             'ad' => $ad
         ));
     }

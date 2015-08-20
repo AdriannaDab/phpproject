@@ -109,7 +109,7 @@ class CategoriesModel
      */
     public function edit($data)
     {
-        //if (isset($data['idcategory']) && ctype_digit((string)$data['idcategory'])) {
+        if (isset($data['idcategory']) && ctype_digit((string)$data['idcategory'])) {
                 $query = '
               UPDATE
                 ad_moderator_category
@@ -129,7 +129,7 @@ class CategoriesModel
                 )
                 );
 
-       /* } else {
+        } else {
             $query = '
               INSERT INTO
                 `ad_moderator_category` (`idcategory`)
@@ -141,7 +141,7 @@ class CategoriesModel
                     array(
                         $data['idcategory'])
                 );
-        }*/
+        }
 
 
     }
@@ -171,9 +171,10 @@ class CategoriesModel
                 );
 
             $sql = "SELECT
-                      idcategory,category_name
+                      idcategory, category_name
                     FROM
                       ad_categories
+
                     WHERE
                       category_name ='" . $data['category_name'] . "';";
 
@@ -186,7 +187,10 @@ class CategoriesModel
                         (?)';
             $this->_db->executeQuery($addid, array($category['idcategory']));
 
+
     }
+
+
 
     /**
      * Get all categories on page
@@ -210,6 +214,9 @@ class CategoriesModel
             ad_users
           ON
             ad_moderator_category.iduser=ad_users.iduser
+          ORDER BY
+            login
+          DESC
           LIMIT :start, :limit
         ';
         $statement = $this->_db->prepare($sql);

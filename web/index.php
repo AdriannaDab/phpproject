@@ -46,6 +46,7 @@ $app->register(
             'user'      => 'nazwa!',
             'password'  => 'haslo!',
             'charset'   => 'utf8',
+
         ),
     )
 );
@@ -86,9 +87,11 @@ $app->register(
             array('^/auth/.+$|^/users/register/.*$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
                     ^/users/add|^/comments/view/.*$|^/about/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*$|^/photos.*$', 'ROLE_USER'),
+            array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*$|^/photos.*$', 'ROLE_MODERATOR'),
             array('^/.+$', 'ROLE_ADMIN')
         ),
         'security.role_hierarchy' => array(
+            'ROLE_MODERATOR' => array('ROLE_USER'),
             'ROLE_ADMIN' => array('ROLE_USER'),
         ),
     )
@@ -105,8 +108,8 @@ $app->mount('/ads/', new Controller\AdsController());
 $app->mount('/categories/', new Controller\CategoriesController());
 $app->mount('/comments/', new Controller\CommentsController());
 $app->mount('/photos/', new Controller\PhotosController());
-$app->mount('/users', new Controller\UsersController());
-$app->mount('/admin', new Controller\AdminsController());
+$app->mount('/users/', new Controller\UsersController());
+$app->mount('/admin/', new Controller\AdminsController());
 $app->mount('auth', new Controller\AuthController());
 $app->mount('/about', new Controller\AboutsController());
 

@@ -655,6 +655,61 @@ class UsersModel
         }
     }
 
+    /**
+     * Gets category .
+     *
+     * @param Integer $id
+     *
+     * @access public
+     * @return Array Information about searching user.
+     */
+    public function getCategory($idad)
+    {
+        try{
+            $query = '
+              SELECT
+                idcategory
+              FROM
+                ads
+              WHERE
+                idad=?
+            ';
+            return $this->_db->fetchAssoc($query, array((int)$idad));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+
+
+    }
+
+    /**
+     * Gets moderator by id.
+     *
+     * @param Integer $id
+     *
+     * @access public
+     * @return Array Information about moderator.
+     */
+    public function getModeratorById($id,$category)
+    {
+        try{
+            $query = '
+              SELECT
+                *
+              FROM
+                ad_moderator_category
+              WHERE
+                `iduser` = ?
+              AND
+                `idcategory`=?
+                Limit 1
+            ';
+            return $this->_db->fetchAssoc($query, array((int)$id,(int)$category));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
 
 
 
@@ -697,64 +752,7 @@ class UsersModel
         return $iduser['iduser'];
     }
 
-    /**
-     * Get current logged user id data
-     *
-     * @param $app
-     *
-     * @access public
-     * @return mixed
-     */
-    public function getIdDataCurrentUser($app)
-    {
-        $iduser_data = $this->getCurrentUser($app);
-        $iduser_data = $this->getUserByIdData($iduser_data);
-        return $iduser_data['iduser_data'];
-    }
 
-    /**
-     * Get current logged user id data
-     *
-     * @param $app
-     *
-     * @access public
-     * @return mixed
-     */
-    public function getIdModCurrentUser($app)
-    {
-        $iduser = $this->getCurrentUser($app);
-        $iduser = $this->getUserRoles($iduser);
-        return $iduser['iduser'];
-    }
-
-    /**
-     * Gets user data by login.
-     *
-     * @access public
-     * @param string $login User login
-     *
-     * @return array Result
-     */
-    public function getUserByIdData($iduser_data)
-    {
-        try {
-            $query = '
-              SELECT
-                *
-              FROM
-                `ad_user_data`
-              WHERE
-                `iduser_data` = :iduser_data
-            ';
-            $statement = $this->_db->prepare($query);
-            $statement->bindValue('iduser_data', $iduser_data, \PDO::PARAM_STR);
-            $statement->execute();
-            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-            return !$result ? array() : current($result);
-        } catch (\PDOException $e) {
-            return array();
-        }
-    }
 
     /**
      * Get information about actual logged user

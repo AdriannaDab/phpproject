@@ -18,7 +18,7 @@
     {% endif %}
  </div>
 
- {% if (ad.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) %}
+ {% if (ad.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) or (ad.iduser|e == moderator|e)%}
 
     <p>
      {% if (ad.iduser|e == access|e) %}
