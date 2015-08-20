@@ -324,6 +324,33 @@ class AdsModel
     }
 
     /**
+     * Gets category .
+     *
+     * @param Integer $id
+     *
+     * @access public
+     * @return Array Information about searching user.
+     */
+    public function getCategory($idad)
+    {
+        try{
+            $query = '
+              SELECT
+                idcategory
+              FROM
+                ads
+              WHERE
+                idad=?
+            ';
+            return $this->_db->fetchAssoc($query, array((int)$idad));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+
+
+    }
+
+    /**
     * Check if ad id exists
     *
     * @param $idad id comment

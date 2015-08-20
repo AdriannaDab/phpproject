@@ -155,7 +155,7 @@ class AdsController implements ControllerProviderInterface
             $id = (int)$request->get('id', 0);
             $adsModel = new AdsModel($app);
 
-            $category = $this->_user->getCategory($id);
+            $category = $this->_view['ad'] = $adsModel->getCategory($id);
 
             $ad=$this->_view['ad'] = $adsModel->getAdView($id);
             $_isLogged = $this->_user->_isLoggedIn($app);

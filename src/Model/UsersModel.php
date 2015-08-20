@@ -655,32 +655,7 @@ class UsersModel
         }
     }
 
-    /**
-     * Gets category .
-     *
-     * @param Integer $id
-     *
-     * @access public
-     * @return Array Information about searching user.
-     */
-    public function getCategory($idad)
-    {
-        try{
-            $query = '
-              SELECT
-                idcategory
-              FROM
-                ads
-              WHERE
-                idad=?
-            ';
-            return $this->_db->fetchAssoc($query, array((int)$idad));
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
 
-
-    }
 
     /**
      * Gets moderator by id.
