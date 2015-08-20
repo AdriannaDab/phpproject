@@ -77,7 +77,7 @@ class CategoriesModel
             if (($id != '') && ctype_digit((string)$id)) {
                 $query = '
                   SELECT
-                    idcategory, category_name, iduser
+                    *
                   FROM
                     ad_categories
                   NATURAL JOIN
@@ -109,14 +109,14 @@ class CategoriesModel
      */
     public function edit($data)
     {
-        if (isset($data['idcategory']) && ctype_digit((string)$data['idcategory'])) {
+        //if (isset($data['idcategory']) && ctype_digit((string)$data['idcategory'])) {
                 $query = '
               UPDATE
                 ad_moderator_category
               NATURAL JOIN
                 ad_categories
               SET
-                category_name=?
+                category_name=?,
                 iduser=?
               WHERE
                 idcategory= ?;
@@ -124,11 +124,12 @@ class CategoriesModel
                 $this->_db->executeQuery(
                     $query, array(
                     $data['category_name'],
-                    $data['iduser']
+                    $data['iduser'],
+                    $data['idcategory']
                 )
                 );
 
-        } else {
+       /* } else {
             $query = '
               INSERT INTO
                 `ad_moderator_category` (`idcategory`)
@@ -140,7 +141,7 @@ class CategoriesModel
                     array(
                         $data['idcategory'])
                 );
-        }
+        }*/
 
 
     }
@@ -200,9 +201,15 @@ class CategoriesModel
     {
         $sql = '
           SELECT
-            idcategory, category_name
+            *
           FROM
             ad_categories
+          NATURAL JOIN
+            ad_moderator_category
+           LEFT join
+            ad_users
+          ON
+            ad_moderator_category.iduser=ad_users.iduser
           LIMIT :start, :limit
         ';
         $statement = $this->_db->prepare($sql);

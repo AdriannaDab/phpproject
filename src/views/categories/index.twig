@@ -13,7 +13,10 @@
             <tr class="active">
                 <th></th>
                 <th class="text-center"><h4><b>{{ 'Name'|trans }}</b></h4></th>
-                <th colspan="4">&nbsp;</th>
+        {% if is_granted('ROLE_ADMIN') %}
+            <th colspan="4" class="text-center"><h4><b>{{ 'Moderator login'|trans }}</b></h4></th>
+                <th colspan="4" class="text-center"></th>
+            {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -25,8 +28,12 @@
                        title="{{ 'View category'|trans }}"
                        class="btn btn-primary btn-lg">{{ category.category_name|e }}</a></h4>
                 </td>
-                <td>
+
                 {% if is_granted('ROLE_ADMIN') %}
+                <td colspan="3" ></td>
+                <td>   <b>{{ category.login|upper }}</b>
+                </td>
+                <td>
                     <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"
                        title="{{ 'Set moderator and edit category'|trans }}"
                        class="btn btn-default">{{ 'Set moderator and edit category'|trans }}</a>
