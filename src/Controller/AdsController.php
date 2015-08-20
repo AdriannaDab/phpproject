@@ -151,7 +151,6 @@ class AdsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        try {
             $id = (int)$request->get('id', 0);
             $adsModel = new AdsModel($app);
 
@@ -160,29 +159,25 @@ class AdsController implements ControllerProviderInterface
             $ad=$this->_view['ad'] = $adsModel->getAdView($id);
             $_isLogged = $this->_user->_isLoggedIn($app);
             if ($_isLogged) {
-                $access1 = $this->_user->getIdCurrentUser($app);
-                $moderator = $this->_user->getModeratorById($access1,$category);
-            } else {
-                $moderator = 0;
-            }
-            if ($_isLogged) {
                 $access = $this->_user->getIdCurrentUser($app);
-
+                $moderator = $this->_user->getModeratorById($access, $category);
             } else {
+                $moderator = false;
                 $access = 0;
             }
             if (!($this->_view['ad'])) {
                 throw new NotFoundHttpException("Ad not found");
             }
-        } catch (PDOException $e) {
-            $app->abort($app['translator']->trans('Ad not found'), 404);
-        }
+
         return $app['twig']->render('ads/view.twig', array(
             'access' => $access,
             'moderator' => $moderator,
             'ad' => $ad
         ));
     }
+
+    //checkmoderatoraccess
+//retorn true false
 
     /**
      * Add action.

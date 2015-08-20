@@ -679,7 +679,13 @@ class UsersModel
                 `idcategory`=?
                 Limit 1
             ';
-            return $this->_db->fetchAssoc($query, array((int)$id,(int)$category));
+            $result=  $this->_db->fetchAssoc($query, array((int)$id,(int)$category));
+            if ($result){
+                return true;
+            }else{
+                return false;
+            }
+
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
