@@ -668,6 +668,7 @@ class UsersModel
     public function getModeratorById($id,$category)
     {
         try{
+
             $query = '
               SELECT
                 *
@@ -680,10 +681,11 @@ class UsersModel
                 Limit 1
             ';
             $result=  $this->_db->fetchAssoc($query, array((int)$id,(int)$category));
-            if ($result){
-                return true;
-            }else{
+            //var_dump($result);
+            if (!$result){
                 return false;
+            }else{
+                return true;
             }
 
         } catch (Exception $e) {

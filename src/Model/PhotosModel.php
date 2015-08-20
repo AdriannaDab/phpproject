@@ -135,9 +135,9 @@ class PhotosModel
         try{
             $query = '
               INSERT INTO
-                `ad_photos` (`photo_name`, `photo_alt`, `idad`, `iduser`, `idcategory`, `photo_date`)
+                `ad_photos` (`photo_name`, `photo_alt`, `idad`, `iduser`)
               VALUES
-                (?,?,?,?,?,?)
+                (?,?,?,?)
             ';
             $this->_db->executeQuery(
                 $query, array(
@@ -145,8 +145,6 @@ class PhotosModel
                     $data['photo_alt'],
                     $data['idad'],
                     $data['iduser'],
-                    $data['idcategory'],
-                    $data['photo_date'],
                 )
             );
         } catch (Exception $e) {

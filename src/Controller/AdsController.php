@@ -152,15 +152,19 @@ class AdsController implements ControllerProviderInterface
     public function viewAction(Application $app, Request $request)
     {
             $id = (int)$request->get('id', 0);
+        //var_dump($id);
             $adsModel = new AdsModel($app);
 
-            $category = $this->_view['ad'] = $adsModel->getCategory($id);
+            $category = $adsModel->getCategory($id);
 
             $ad=$this->_view['ad'] = $adsModel->getAdView($id);
             $_isLogged = $this->_user->_isLoggedIn($app);
             if ($_isLogged) {
                 $access = $this->_user->getIdCurrentUser($app);
-                $moderator = $this->_user->getModeratorById($access, $category);
+               // var_dump($access);
+               // var_dump($category);
+               //die;
+                $moderator = $this->_user->getModeratorById($access, $category['idcategory']);
             } else {
                 $moderator = false;
                 $access = 0;

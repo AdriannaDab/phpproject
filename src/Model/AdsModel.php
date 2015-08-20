@@ -331,7 +331,7 @@ class AdsModel
      * @access public
      * @return Array Information about searching user.
      */
-    public function getCategory($idad)
+    public function getCategory($idcategory)
     {
         try{
             $query = '
@@ -342,7 +342,7 @@ class AdsModel
               WHERE
                 idad=?
             ';
-            return $this->_db->fetchAssoc($query, array((int)$idad));
+            return $this->_db->fetchAssoc($query, array((int)$idcategory));
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
