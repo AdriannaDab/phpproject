@@ -21,22 +21,25 @@
             <p>
                 {{ comment.login|raw}}: <b>{{ comment.contence|raw }}</b>
             </p>
-        {% if is_granted('ROLE_USER') %}
-               {% if comment.iduser|e == access|e %}
+
+               {% if (comment.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) or (moderator)%}
                     <p>
+                        {% if comment.iduser|e == access|e %}
                         <a href="{{ url('comments_edit', {'id': comment.idcomment|e}) }}"
                            title="{{ 'Edit comment'|trans }}">
                             <button type="button" class="btn btn-warning" >{{ 'Edit comment'|trans }}
                             </button>
                         </a>
+                        {% endif %}
                         <a href="{{ url('comments_delete', {'id': comment.idcomment|e}) }}"
                            title="{{ 'Delete comment'|trans }}">
                             <button type="button" class="btn btn-danger">{{ 'Delete comment'|trans }}
                             </button>
                         </a>
+
                     </p>
         {% endif %}
-            {% endif %}
+
 
         </div>
         </div>

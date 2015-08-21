@@ -112,6 +112,7 @@ class CommentsController implements ControllerProviderInterface
     {
             $idad = (int)$request->get('idad', 0);
             $adsModel = new AdsModel($app);
+            $category = $adsModel->getCategory($idad);
             $checkAd = $this->_ads = $adsModel->checkAdsId($idad);
                 if ($checkAd) {
                     $commentsModel = new CommentsModel($app);
@@ -119,13 +120,16 @@ class CommentsController implements ControllerProviderInterface
             $_isLogged = $this->_user->_isLoggedIn($app);
             if ($_isLogged) {
                 $access = $this->_user->getIdCurrentUser($app);
+                $moderator = $this->_user->getModeratorById($access, $category['idcategory']);
             } else {
                $access = 0;
+                $moderator= false;
             }
             return $app['twig']->render('comments/index.twig', array(
                     'comments' => $comments,
                     'idad' => $idad,
-                    'access' => $access
+                    'access' => $access,
+                    'moderator' => $moderator
                 )
             );
         } else {

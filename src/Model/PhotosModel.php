@@ -251,6 +251,33 @@ class PhotosModel
         }
     }
 
+    public function getPhotosMod($idModerator = null)
+    {
+
+        $select = 'SELECT * FROM ad_photos';
+        
+        if($idModerator){
+
+            $select .= 'LEFT JOIN
+                            ads
+                        ON
+                            ad_photos.idad = ads.idad
+                        JOIN
+                            ad_moderator_category
+                        ON
+                            ads.idcategory = ad_moderator_category.idcategory
+                        WHERE
+                            ad_moderator_category.id_user  = ? ';
+            $result = $this->_db->fetchALl($select, array($idModerator));
+
+        }else{
+            $result = $this->_db->fetchALl($select);
+        }
+
+        return $result;
+
+    }
+
     /**
      * Get random string
      *
