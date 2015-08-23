@@ -330,7 +330,7 @@ class PhotosController implements ControllerProviderInterface
             $photos = $photosModel ->  getPhotosUser($iduser);
         } else {
             $idModerator = $photosModel->getMod($iduser);
-            $photos = $photosModel->getPhotosMod($idModerator);
+            $photos = $photosModel->getPhotosMod($idModerator['iduser']);
         }
             return $app['twig']->render(
                 'photos/manager.twig', array(
