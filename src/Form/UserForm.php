@@ -81,10 +81,10 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 1,
+                                'min' => 6,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 1',
+                                    'Minimalna ilość znaków to 6',
                                 'maxMessage' =>
                                     'Maksymalna ilość znaków to 45',
                             )
@@ -104,10 +104,10 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 1,
+                                'min' => 2,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 1',
+                                    'Minimalna ilość znaków to 2',
                                 'maxMessage' =>
                                     'Maksymalna ilość znaków to 45',
                             )
@@ -127,10 +127,10 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 1,
+                                'min' => 2,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 1',
+                                    'Minimalna ilość znaków to 2',
                                 'maxMessage' =>
                                     'Maksymalna ilość znaków to 45',
                             )
@@ -274,7 +274,7 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 0,
+                                'min' => 1,
                                 'max' => 45,
                                 'minMessage' =>
                                     'Minimalna ilość znaków to 1',
