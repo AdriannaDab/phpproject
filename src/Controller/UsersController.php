@@ -119,7 +119,7 @@ class UsersController implements ControllerProviderInterface
             try {
             $id = (int)$request->get('id', 0);
             $usersModel = new UsersModel($app);
-            $this->_view['user'] = $usersModel->getUser($id);
+            $this->_view['user'] = $usersModel->CheckUser($id);
             if (!($this->_view['user'])) {
                 throw new NotFoundHttpException("User not found");
             }
@@ -143,7 +143,7 @@ class UsersController implements ControllerProviderInterface
     public function viewAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUser($id);
+        $user = $this->_model->CheckUser($id);
         if (count($user)) {
             return $app['twig']->render(
                 'users/view.twig', array(
@@ -177,7 +177,7 @@ class UsersController implements ControllerProviderInterface
     {
         $id = (int)$request->get('id', 0);
         $usersModel = new UsersModel($app);
-        $user = $this->_model->getUser($id);
+        $user = $this->_model->CheckUser($id);
         if ($user) {
             $this->_view = $usersModel->getAdsListByIduser($id);
             return $app['twig']
@@ -208,7 +208,7 @@ class UsersController implements ControllerProviderInterface
     {
         $usersModel = new UsersModel($app);
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUser($id);
+        $user = $this->_model->CheckUser($id);
         if ($user) {
             $this->_view = $usersModel->getAdsListByIduser($id);
             return $app['twig']
@@ -326,7 +326,8 @@ class UsersController implements ControllerProviderInterface
     public function dataAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUser($id);
+
+        $user = $this->_model->CheckUser($id);
         var_dump($user);
         if (count($user)) {
             $data = array(
@@ -388,7 +389,7 @@ class UsersController implements ControllerProviderInterface
     public function newdataAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUser($id);
+        $user = $this->_model->CheckUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -453,7 +454,7 @@ class UsersController implements ControllerProviderInterface
     public function editAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->getUser($id);
+        $user = $this->_model->CheckUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,

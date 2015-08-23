@@ -416,6 +416,20 @@ class UsersModel
     }
 
 
+    public function CheckUser($id)
+    {
+        $user = $this ->getUser($id);
+        if($user){
+            if($user['firstname'] && $user['surname']){
+                return $user;
+        } else {
+                return false;
+            }
+        return false;
+        }
+    }
+
+
 
     /**
      * Puts one user to database.

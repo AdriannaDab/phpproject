@@ -195,7 +195,7 @@ class AdsController implements ControllerProviderInterface
     {
         try {
             $id = $this->_user->getIdCurrentUser($app);
-            $user = $this->_user->getUser($id);
+            $user = $this->_user->CheckUser($id);
             if ($user) {
             if ($this->_user->_isLoggedIn($app)) {
                 $iduser = $this->_user->getIdCurrentUser($app);
