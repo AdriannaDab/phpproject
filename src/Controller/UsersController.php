@@ -248,9 +248,7 @@ class UsersController implements ControllerProviderInterface
         $form->remove('firstname');
         $form->remove('surname');
         $form->remove('street');
-        $form->remove('city_name');
-        $form->remove('province_name');
-        $form->remove('country_name');
+        $form->remove('city_name');;
         $form->remove('idrole');
         $form->remove('idcity');
         $form->remove('idprovince');
@@ -329,6 +327,7 @@ class UsersController implements ControllerProviderInterface
     {
         $id = $this->_model->getIdCurrentUser($app);
         $user = $this->_model->getUser($id);
+        var_dump($user);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -344,8 +343,6 @@ class UsersController implements ControllerProviderInterface
             $form->remove('login');
             $form->remove('email');
             $form->remove('city_name');
-            $form->remove('province_name');
-            $form->remove('country_name');
             $form->remove('new_password');
             $form->remove('confirm_new_password');
             $form->handleRequest($request);
@@ -371,6 +368,7 @@ class UsersController implements ControllerProviderInterface
                 }
             }
         }
+
         return $app['twig']->render(
             'users/registerdata.twig', array(
                 'form' => $form->createView()
@@ -473,8 +471,6 @@ class UsersController implements ControllerProviderInterface
             $form->remove('new_password');
             $form->remove('confirm_new_password');
             $form->remove('city_name');
-            $form->remove('province_name');
-            $form->remove('country_name');
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -551,8 +547,6 @@ class UsersController implements ControllerProviderInterface
                 $form->remove('street');
                 $form->remove('idrole');
                 $form->remove('city_name');
-                $form->remove('province_name');
-                $form->remove('country_name');
                 $form->remove('idcity');
                 $form->remove('idprovince');
                 $form->remove('idcountry');
@@ -607,8 +601,6 @@ class UsersController implements ControllerProviderInterface
             $form->remove('idrole');
             $form->remove('street');
             $form->remove('city_name');
-            $form->remove('province_name');
-            $form->remove('country_name');
             $form->remove('idcity');
             $form->remove('idprovince');
             $form->remove('idcountry');

@@ -391,25 +391,25 @@ class UsersModel
                 ad_users
               NATURAL JOIN
                 ad_user_data
-              NATURAL JOIN
+              LEFT JOIN
                 ad_cities
-              NATURAL JOIN
+              ON
+                ad_user_data.idcity=ad_cities.idcity
+              LEFT JOIN
                  ad_provinces
-              NATURAL JOIN
+              ON
+                ad_user_data.idprovince=ad_provinces.idprovince
+              LEFT JOIN
                  ad_countries
+              ON
+                ad_user_data.idcountry=ad_countries.idcountry
               WHERE
                 iduser=?
             ";
-            if($query){
+
+
             return $this->_db->fetchAssoc($query, array((int)$id));
-        }else{
-                $users2 = "
-            SELECT login, email FROM
-                `ad_users`
-            ";
-                $this->_db
-                    ->fetchAssoc($users2, array((int)$id));
-            }
+
         } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
