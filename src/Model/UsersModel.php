@@ -180,7 +180,7 @@ class UsersModel
                 ON
                   `ad_users`.`idrole` = `ad_roles`.`idrole`
                 WHERE
-                    `ad_users`.`iduser` = :user_id
+                    `ad_users`.`iduser` = ?
                 ';
 
              return $this->_db->fetchAssoc($query,array((int)$iduser));
