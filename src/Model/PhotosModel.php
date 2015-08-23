@@ -298,6 +298,18 @@ class PhotosModel
     }
 
 
+
+    public function getPhotosUser($iduser)
+    {
+
+        $query = 'SELECT * FROM ad_photos WHERE iduser=?';
+
+        return $this->_db->fetchAll ($query,array($iduser));
+
+
+    }
+
+
     /**
      * Get random string
      *

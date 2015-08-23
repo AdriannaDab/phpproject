@@ -324,16 +324,26 @@ class PhotosController implements ControllerProviderInterface
 
         $userModel = new UsersModel($app);
         $iduser = $userModel->getIdCurrentUser($app);
-            $photosModel = new PhotosModel($app);
+        $user = $userModel->getUser($iduser);
+        $photosModel = new PhotosModel($app);
+        if ($user) {
+            $photos = $photosModel ->  getPhotosUser($iduser);
+            return $app['twig']->render(
+                'photos/manager.twig', array(
+                    'photos' => $photos
+                )
+            );
+        } else {
             $idModerator = $photosModel->getMod($iduser);
             $photos = $photosModel->getPhotosMod($idModerator);
-
 
             return $app['twig']->render(
                 'photos/manager.twig', array(
                     'photos' => $photos
                 )
             );
+        }
+
         }
 
 
