@@ -325,9 +325,8 @@ class PhotosController implements ControllerProviderInterface
         $userModel = new UsersModel($app);
         $iduser = $userModel->getIdCurrentUser($app);
         $user = $userModel->getRole($iduser);
-        var_dump($user);
         $photosModel = new PhotosModel($app);
-        if ($user=='1') {
+        if ($user['role']==1) {
             $photos = $photosModel ->  getPhotosUser($iduser);
         } else {
             $idModerator = $photosModel->getMod($iduser);
