@@ -479,18 +479,21 @@ class UsersModel
                 `ad_user_data` SET ( `firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
               VALUES
               (?,?,?,?,?,?)
+              WHERE
+              iduser=?
             ";
             $this->_db
                 ->executeQuery(
                     $users2,
                     array(
-                        $data['iduser'],
+
                         $data['firstname'],
                         $data['surname'],
                         $data['street'],
                         $data['idcity'],
                         $data['idprovince'],
-                        $data['idcountry'])
+                        $data['idcountry'],
+                        $data['iduser'])
                 );
         } else {
             $query = '
