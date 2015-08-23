@@ -251,23 +251,24 @@ class PhotosModel
         }
     }
 
+
     public function getPhotosMod($idModerator = null)
     {
 
         $select = 'SELECT * FROM ad_photos';
-        
+
         if($idModerator){
 
-            $select .= 'LEFT JOIN
+            $select .= ' LEFT JOIN
                             ads
                         ON
                             ad_photos.idad = ads.idad
-                        JOIN
+                        LEFT JOIN
                             ad_moderator_category
                         ON
                             ads.idcategory = ad_moderator_category.idcategory
                         WHERE
-                            ad_moderator_category.id_user  = ? ';
+                            ad_moderator_category.iduser  = ? ';
             $result = $this->_db->fetchALl($select, array($idModerator));
 
         }else{
@@ -277,6 +278,25 @@ class PhotosModel
         return $result;
 
     }
+
+    public function getMod($iduser)
+    {
+        try{
+            $query = '
+              SELECT
+                *
+              FROM
+                ad_moderator_category
+              WHERE
+                iduser=?
+            ';
+
+            return $this->_db->fetchAssoc($query, array((int)$iduser));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
+
 
     /**
      * Get random string

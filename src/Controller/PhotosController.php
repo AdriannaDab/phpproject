@@ -22,6 +22,7 @@ use Form\PhotoForm;
 use Model\PhotosModel;
 use Model\AdsModel;
 
+
 /**
  * Class PhotosController
  *
@@ -55,6 +56,14 @@ class PhotosController implements ControllerProviderInterface
      * @access protected
      */
     protected $_ads;
+
+    /**
+     * UsersModel object.
+     *
+     * @var $_user
+     * @access protected
+     */
+    protected $_user;
 
 
     /**
@@ -312,13 +321,20 @@ class PhotosController implements ControllerProviderInterface
      */
     public function managerAction(Application $app, Request $request)
     {
-        $photosModel = new PhotosModel($app);
-        $photos = $photosModel->getPhotosMod();
 
-        return $app['twig']->render(
-            'photos/manager.twig', array(
-                'photos' => $photos
-            )
-        );
-    }
+        $userModel = new UsersModel($app);
+        $iduser = $userModel->getIdCurrentUser($app);
+            $photosModel = new PhotosModel($app);
+            $idModerator = $photosModel->getMod($iduser);
+            $photos = $photosModel->getPhotosMod($idModerator);
+
+
+            return $app['twig']->render(
+                'photos/manager.twig', array(
+                    'photos' => $photos
+                )
+            );
+        }
+
+
 }
