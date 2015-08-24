@@ -39,9 +39,9 @@ View ad: Zobacz ogłoszenie
 Edit ad: Edytuj ogłoszenie
 Ad edited: Zmieniono ogłoszenie
 Delete ad: Usuń ogłoszenie
-Ad deleted: Usunięto ogłoszenie.
-New ad added: Dodano ogłoszenie.
-Ad edited: Zmieniono ogłoszenie.
+Ad deleted: Usunięto ogłoszenie
+New ad added: Dodano ogłoszenie
+Ad edited: Zmieniono ogłoszenie
 Ads not found: Nie znaleziono ogłoszenia.
 Project: Projekt
 Main advertisement site: Strona główna z ogłoszeniami
@@ -67,7 +67,7 @@ View category: Zobacz kategorię
 Categories list: Lista kategorii
 Name: Nazwa
 Categories not found: Nie znaleziono kategorii
-Did not found any ads. Sorry.: Nie znaleziono żadnych ogłoszeń. Przepraszamy.
+Did not found any ads. Sorry.: Przepraszamy, nie znaleziono żadnych ogłoszeń
 Add comment: Dodaj komentarz
 Delete comment: Usuń komentarz
 Edit comment: Edytuj komentarz
@@ -137,5 +137,19 @@ City name: Nazwa miasta
 New password: Nowe hasło
 Confirm new password: Potwierdź nowe hasło
 Confirm password: Potwierdź hasło
+User: Użytkownik
+About changed: "O mnie" zostało zmienione
+About not found: Nie znaleziono "o mnie"
+User deleted: Użytkownik został usunięty
+Can not delete user with ads: Nie można usunąć użytkownika,który zamiescił ogłoszeniami
+Did not found user: Nie znaleziono użytkownika
+Category not found: Nie znaleziono kategorii
+New category added: Dodano nową kategorię
+Category edited: Zmieniono kategorię
+Category deleted: Usunięto kategorię
+Can not delete category with ads: Nie można usunąć kategorii z ogłoszeniami
+Comment not found: Nie znaleziono komentarza
+
+
 
 

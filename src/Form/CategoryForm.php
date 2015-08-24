@@ -27,7 +27,7 @@ use Model\InformationModel;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert
@@ -81,12 +81,17 @@ class CategoryForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(array(
                             'min' => 2,
-                            'minMessage' => 'Minimalna ilość znaków to 2'
+                            'max' => 45,
+                            'minMessage' =>
+                                'Minimalna ilość znaków to 2',
+                            'maxMessage' =>
+                                'Maksymalna ilość znaków to {{ limit }}',
                         )),
                         new Assert\Regex(array(
                             'pattern' => '/^(([A-ZĄĆĘŁŚŻŹ])+|[0-9]).*/',
                             'match'   => true,
-                            'message' => 'Kategoria musi zaczynać się od wielkiej litery lub cyfry',
+                            'message' =>
+                                'Kategoria musi zaczynać się od wielkiej litery lub cyfry',
                         ))
                     ),
                     'attr' => array(

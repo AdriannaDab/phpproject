@@ -1,34 +1,48 @@
-{# View action template for Users controller #}
+{# Index action template for Users controller #}
 {% extends 'base.twig' %}
-
+{% block title %}{{  'User'|trans }}{% endblock %}
 {% block content %}
-
     <div>
         <hr>
     {% if user|length > 0 %}
-        <h2 class="intro-text text-center">{{ user.login|capitalize }}</h2>
+        <h2 class="intro-text text-center">
+            {{ user.login|capitalize }}
+        </h2>
         <hr>
         <ul class="list-group center-block">
-            <li class="list-group-item">{{ 'Firstname'|trans|upper }}:   <b> {{ user.firstname|capitalize }} </b></li>
-            <li class="list-group-item">{{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b></li>
+            <li class="list-group-item">
+                {{ 'Firstname'|trans|upper }}:   <b> {{ user.firstname|capitalize }} </b>
+            </li>
+            <li class="list-group-item">
+                {{ 'Surname'|trans|upper }}: <b> {{ user.surname|capitalize }}</b>
+            </li>
             <hr>
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="list-group-item">{{ 'Email'|trans|upper }}:    <b>{{ user.email|capitalize }} </b></li>
-                <li class="list-group-item">{{ 'Street'|trans|upper }}:    <b>{{ user.street|capitalize }} </b></li>
+                <li class="list-group-item">
+                    {{ 'Email'|trans|upper }}:    <b>{{ user.email|capitalize }} </b>
+                </li>
+                <li class="list-group-item">
+                    {{ 'Street'|trans|upper }}:    <b>{{ user.street|capitalize }} </b>
+                </li>
             {% endif %}
-            <li class="list-group-item">{{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b></li>
-            <li class="list-group-item">{{ 'Province'|trans|upper }}: <b>{{ user.province_name|e }}</b></li>
-            <li class="list-group-item">{{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b></li>
+            <li class="list-group-item">
+                {{ 'City'|trans|upper }}:    <b>{{ user.city_name|capitalize }} </b>
+            </li>
+            <li class="list-group-item">
+                {{ 'Province'|trans|upper }}: <b>{{ user.province_name|e }}</b>
+            </li>
+            <li class="list-group-item">
+                {{ 'Country'|trans|upper }}:  <b>{{ user.country_name|capitalize }}</b>
+            </li>
         </ul>
-
         <a href="{{ url('users_more', {'id': user.iduser|e}) }}"
            title="{{ 'See more users ads'|trans }}"
            class="btn btn-primary ">{{ 'See more users ads'|trans }}</a>
-
-        <a href="#"
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url ('admins_delete', {'id': user.iduser}) }}"
            title="{{ 'Delete profile'|trans }}"
            class="btn btn-danger">{{ 'Delete profile'|trans }}</a>
-
+        {% endif %}
 
         {% endif %}
     </div>

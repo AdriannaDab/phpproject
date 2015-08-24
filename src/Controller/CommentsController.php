@@ -110,20 +110,20 @@ class CommentsController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-            $idad = (int)$request->get('idad', 0);
-            $adsModel = new AdsModel($app);
-            $category = $adsModel->getCategory($idad);
-            $checkAd = $this->_ads = $adsModel->checkAdsId($idad);
-                if ($checkAd) {
-                    $commentsModel = new CommentsModel($app);
-                    $comments = $this->_model = $commentsModel->getCommentsList($idad);
+        $idad = (int)$request->get('idad', 0);
+        $adsModel = new AdsModel($app);
+        $category = $adsModel->getCategory($idad);
+        $checkAd = $this->_ads = $adsModel->checkAdsId($idad);
+        if ($checkAd) {
+            $commentsModel = new CommentsModel($app);
+            $comments = $this->_model = $commentsModel->getCommentsList($idad);
             $_isLogged = $this->_user->_isLoggedIn($app);
             if ($_isLogged) {
                 $access = $this->_user->getIdCurrentUser($app);
                 $moderator = $this->_user->getModeratorById($access, $category['idcategory']);
             } else {
                $access = 0;
-                $moderator= false;
+               $moderator= false;
             }
             return $app['twig']->render('comments/index.twig', array(
                     'comments' => $comments,
@@ -155,7 +155,6 @@ class CommentsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        //var_dump('add');die();
         $idad = (int)$request->get('idad', 0);
         $adsModel = new AdsModel($app);
         $check = $this->_ads = $adsModel->checkAdsId($idad);

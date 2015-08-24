@@ -2,16 +2,13 @@
 {% block comments %}
     <h2>{{ 'Comments'|trans }}:</h2>
     <hr>
-
     <p>
         <a href="{{ url('comments_add', {'idad': idad|e}) }}" title="{{ 'Add comment'|trans }}">
             <button type="button" class="btn btn-success">{{ 'Add comment'|trans }}</button>
         </a>
     </p>
-
     {% for comment in comments %}
-
-        <div class="well">
+    <div class="well">
         <div class="media">
         <a class="pull-left" href="#">
             <img class="media-object" data-src="holder.js/64x64">
@@ -19,31 +16,28 @@
         <div class="media-body">
             <h5 class="media-heading">{{ comment.comment_date|e }}</h5>
             <p>
-                {{ comment.login|raw}}: <b>{{ comment.contence|raw }}</b>
+                <a href="{{ url('users_index', {'id': comment.iduser|e}) }}" title="{{ 'View profile'|trans }}">
+                    {{ comment.login|raw}}</a>: <b>{{ comment.contence|raw }}</b>
             </p>
+            {% if (comment.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) or (moderator)%}
+            <p>
+                {% if comment.iduser|e == access|e %}
+                    <a href="{{ url('comments_edit', {'id': comment.idcomment|e}) }}"
+                        title="{{ 'Edit comment'|trans }}">
+                        <button type="button" class="btn btn-warning" >{{ 'Edit comment'|trans }}
+                        </button>
+                    </a>
+                {% endif %}
+                    <a href="{{ url('comments_delete', {'id': comment.idcomment|e}) }}"
+                        title="{{ 'Delete comment'|trans }}">
+                        <button type="button" class="btn btn-danger">{{ 'Delete comment'|trans }}
+                        </button>
+                    </a>
 
-               {% if (comment.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) or (moderator)%}
-                    <p>
-                        {% if comment.iduser|e == access|e %}
-                        <a href="{{ url('comments_edit', {'id': comment.idcomment|e}) }}"
-                           title="{{ 'Edit comment'|trans }}">
-                            <button type="button" class="btn btn-warning" >{{ 'Edit comment'|trans }}
-                            </button>
-                        </a>
-                        {% endif %}
-                        <a href="{{ url('comments_delete', {'id': comment.idcomment|e}) }}"
-                           title="{{ 'Delete comment'|trans }}">
-                            <button type="button" class="btn btn-danger">{{ 'Delete comment'|trans }}
-                            </button>
-                        </a>
-
-                    </p>
-        {% endif %}
-
-
+            </p>
+            {% endif %}
         </div>
         </div>
-        </div>
-
+    </div>
     {% endfor %}
 {% endblock %}

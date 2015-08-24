@@ -10,6 +10,7 @@ $app['debug']=true;
 // Twig
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => dirname(dirname(__FILE__)) . '/src/views',
+
 ));
 
 // Translator
@@ -35,7 +36,7 @@ $app->register(new Silex\Provider\ValidatorServiceProvider());
 // Session
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-// Doctride
+// Doctrine
 $app->register(
     new Silex\Provider\DoctrineServiceProvider(),
     array(
@@ -110,7 +111,7 @@ $app->mount('/comments/', new Controller\CommentsController());
 $app->mount('/photos/', new Controller\PhotosController());
 $app->mount('/users/', new Controller\UsersController());
 $app->mount('/admin/', new Controller\AdminsController());
-$app->mount('auth', new Controller\AuthController());
 $app->mount('/about', new Controller\AboutsController());
+$app->mount('auth', new Controller\AuthController());
 
 $app->run();

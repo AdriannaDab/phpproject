@@ -7,13 +7,13 @@
     <p class="text-center">{{  'What are you looking for'|trans }}?</p>
 </div>
     {%  if ads|length > 0 %}
-        <h2>{{ 'Newest advertisements'|trans }}:</h2>
-<div class="row">
-
+        <h2>
+            {{ 'Newest advertisements'|trans }}:
+        </h2>
+        <div class="row">
         {% for ad in ads %}
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
-
                 <div class="caption">
                     <h3>
                         <a href="{{ url('ads_view', {'id': ad.idad|e}) }}" title="{{ 'View ad'|trans }}">
@@ -33,11 +33,11 @@
                         {% endif %}
                 </div>
             </div>
-
         </div>
         {% endfor %}
         <br>
-        <div class="row">
+        <div class="container">
+            <div class="row">
             <ul class="pager">
                 {% if paginator.page > 1 %}
                     {% set previous = (paginator.page - 1) %}
@@ -52,7 +52,9 @@
                             {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span> </a> </li>
                 {% endif  %}
             </ul>
+            </div>
         </div>
+
     {% else %}
     <div class="alert alert-danger" role="alert">
         {{ 'Ads not found'|trans }}
@@ -62,6 +64,6 @@
     <div class="alert alert-{{ flashMessage.type }}" role="alert">
         {{ flashMessage.content }}
     </div>
-</div>
+    </div>
     {% endfor %}
 {% endblock %}

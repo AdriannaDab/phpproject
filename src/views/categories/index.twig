@@ -3,8 +3,12 @@
 {% block title %}{{  'Categories list'|trans }}{% endblock %}
 {% block content %}
 <div class="jumbotron">
-    <h1 class="text-center">{{ 'Advertising service'|trans }}</h1>
-        <p class="text-center">{{ 'What are you looking for'|trans }}?</p>
+    <h1 class="text-center">
+        {{ 'Advertising service'|trans }}
+    </h1>
+    <p class="text-center">
+        {{ 'What are you looking for'|trans }}?
+    </p>
 </div>
 <div class="thumbnail">
     {%  if categories|length > 0 %}
@@ -13,9 +17,9 @@
             <tr class="active">
                 <th></th>
                 <th class="text-center"><h4><b>{{ 'Name'|trans }}</b></h4></th>
-        {% if (is_granted('ROLE_MODERATOR')) or (is_granted('ROLE_ADMIN')) %}
-            <th colspan="4" class="text-center"><h4><b>{{ 'Moderator login'|trans }}</b></h4></th>
-            {% endif %}
+                {% if (is_granted('ROLE_MODERATOR')) or (is_granted('ROLE_ADMIN')) %}
+                    <th colspan="4" class="text-center"><h4><b>{{ 'Moderator login'|trans }}</b></h4></th>
+                {% endif %}
                 <th colspan="4" class="text-center"></th>
             </tr>
         </thead>
@@ -24,9 +28,11 @@
             <tr class="text-center bg-info">
                 <td></td>
                 <td >
-                    <h4><a href="{{ url('categories_view', {'id': category.idcategory}) }}"
+                    <h4>
+                        <a href="{{ url('categories_view', {'id': category.idcategory}) }}"
                        title="{{ 'View category'|trans }}"
-                       class="btn btn-primary btn-lg">{{ category.category_name|e }}</a></h4>
+                       class="btn btn-primary btn-lg">{{ category.category_name|e }}</a>
+                    </h4>
                 </td>
                 <td colspan="3" ></td>
                 {% if (is_granted('ROLE_MODERATOR')) or (is_granted('ROLE_ADMIN'))%}
@@ -36,14 +42,14 @@
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                    <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"
-                       title="{{ 'Set moderator and edit category'|trans }}"
-                       class="btn btn-default">{{ 'Set moderator and edit category'|trans }}</a>
+                        <a href="{{ url('categories_edit', {'id': category.idcategory}) }}"
+                            title="{{ 'Set moderator and edit category'|trans }}"
+                            class="btn btn-default">{{ 'Set moderator and edit category'|trans }}</a>
 
 
-                    <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"
-                       title="{{ 'Delete category'|trans }}"
-                       class="btn btn-danger">{{ 'Delete category'|trans }}</a>
+                        <a href="{{ url('categories_delete', {'id': category.idcategory}) }}"
+                           title="{{ 'Delete category'|trans }}"
+                           class="btn btn-danger">{{ 'Delete category'|trans }}</a>
                 {% endif %}
                 </td>
                 <td></td>
@@ -51,7 +57,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <div>
+    <div class="container">
+        <div class="row">
         <ul class="pager">
             {% if paginator.page > 1 %}
                 {% set previous = (paginator.page - 1) %}
@@ -66,12 +73,13 @@
                         {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span></a></li>
             {% endif  %}
         </ul>
+        </div>
     </div>
-        {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ url('categories_add') }}" class="btn btn-default" title="{{ 'Add category'|trans }}">
         {{ 'Add category'|trans }}
     </a>
-            {% endif %}
+    {% endif %}
     {% else %}
     <div class="alert alert-danger" role="alert">
         {{ 'Categories not found'|trans }}.

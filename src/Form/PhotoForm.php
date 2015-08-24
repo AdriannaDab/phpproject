@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Application;
-use Model\PhotosModel;
 
 /**
  * Class AdForm.
@@ -28,7 +27,7 @@ use Model\PhotosModel;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert

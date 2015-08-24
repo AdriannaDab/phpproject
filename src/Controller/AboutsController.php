@@ -88,7 +88,6 @@ class AboutsController implements ControllerProviderInterface
     {
 
         $about = $this->_model->getAbout();
-
         return $app['twig']->render(
             'about/view.twig', array(
                 'about' => $about
@@ -109,7 +108,6 @@ class AboutsController implements ControllerProviderInterface
         $aboutsModel = new AboutsModel($app);
         $idabout = (int) $request->get('idabout', 0);
         $about = $aboutsModel->getAbout();
-
         $data = array(
             'firstname' => $about['firstname'],
             'surname' => $about['surname'],
@@ -123,13 +121,13 @@ class AboutsController implements ControllerProviderInterface
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                     $data = $form->getData();
-
                     try {
                         $model = $this->_model->editAbout($data);
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'success',
-                                'content' => 'Kategoria została zmieniona'
+                                'content' => $app['translator']
+                                    ->trans('About changed')
                             )
                         );
                         return $app->redirect(
@@ -147,7 +145,8 @@ class AboutsController implements ControllerProviderInterface
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'danger',
-                        'content' => 'Nie znaleziono kategorii'
+                        'content' => $app['translator']
+                            ->trans('About not found')
                     )
                 );
                 return $app->redirect(

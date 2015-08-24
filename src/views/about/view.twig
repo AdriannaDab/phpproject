@@ -6,22 +6,34 @@
         {{ 'About project'|trans }}
     </h2>
     <hr>
-
-        <p><h4 class="text-center"><b>{{ about.content|capitalize }}</b></h4><br>
-           <hr>
-           <h2 class="intro-text text-center">
-            {{ 'About author'|trans }}
-           </h2><hr>
-           <h4 class="text-center">{{ 'Firstname'|trans }}:<b>{{ about.firstname|raw }}</b></h4>
-           <h4 class="text-center"> {{ 'Surname'|trans }}: <b>{{ about.surname|raw}}</b></h4>
-           <h4 class="text-center"> {{ 'Contact'|trans }}:<b> {{ about.email|raw}}</b></h4>
-           </p>
-
+        <p>
+            <h4 class="text-center">
+                <b>{{ about.content|capitalize }}</b>
+            </h4>
+            <br>
+            <hr>
+            <h2 class="intro-text text-center">
+                {{ 'About author'|trans }}
+            </h2>
+            <hr>
+            <h4 class="text-center">
+                {{ 'Firstname'|trans }}:<b>{{ about.firstname|raw }}</b>
+            </h4>
+            <h4 class="text-center">
+                {{ 'Surname'|trans }}: <b>{{ about.surname|raw}}</b>
+            </h4>
+            <h4 class="text-center">
+                {{ 'Contact'|trans }}:<b> {{ about.email|raw}}</b>
+            </h4>
+        </p>
     {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ url('abouts_edit') }}" class="btn btn btn-default">
-        {{ 'Edit'|trans }}</a></p>
-        {% endif %}
+        <a href="{{ url('abouts_edit') }}" class="btn btn btn-default">
+            {{ 'Edit'|trans }}
+        </a>
+    {% endif %}
     <br>
-    <p class="text-center"><a href="{{ url('/ads/') }}" class="btn btn-lg btn-primary text-center">
-        {{ 'Back to main site'|trans }}</a></p>
+    <p class="text-center">
+        <a href="{{ url('/ads/') }}" class="btn btn-lg btn-primary text-center">
+        {{ 'Back to main site'|trans }}</a>
+    </p>
 {% endblock %}

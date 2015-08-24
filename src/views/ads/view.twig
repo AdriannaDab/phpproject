@@ -4,12 +4,17 @@
 {% block content %}
 <div class="thumbnail">
     {% if ad|length > 0 %}
-        <h3 class="text-center">{{ ad.ad_name|upper }}</h3>
+        <h3 class="text-center">
+            {{ ad.ad_name|upper }}
+        </h3>
         <p class="text-center"><small>{{ ad.ad_date|e }} {{ 'by'|trans }}
                 <a href="{{ url('users_index', {'id': ad.iduser|e}) }}" title="{{ 'View profile'|trans }}">
-                    {{ ad.login|e }}</a></small></p>
+                    {{ ad.login|e }}</a></small>
+        </p>
         <hr>
-        <h4 class="text-center">{{ ad.ad_contence|e }}</h4>
+        <h4 class="text-center">
+            {{ ad.ad_contence|e }}
+        </h4>
         <p>
             {{ render( path('/photos/',{'idad': ad.idad|e})) }}
         </p>
@@ -19,15 +24,13 @@
  </div>
 
  {% if (ad.iduser|e == access|e) or (is_granted('ROLE_ADMIN')) or (moderator)%}
-
     <p>
      {% if (ad.iduser|e == access|e) %}
-     <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
+        <a href="{{ url('ads_edit', {'id': ad.idad}) }}" title="{{ 'Edit ad'|trans }}"
            class="btn btn-default" role="button">{{ 'Edit ad'|trans }}</a>
      {% endif %}
         <a href="{{ url('ads_delete', {'id': ad.idad}) }}" title="{{ 'Delete ad'|trans }}"
            class="btn btn-danger">{{ 'Delete ad'|trans }}</a>
-
     </p>
     <p>
         {% if (ad.iduser|e == access|e) %}
@@ -37,7 +40,6 @@
         <a href="{{ url('photos_manager')}}" title="{{ 'Photos Manager'|trans }}"
            class="btn btn-info" role="button">{{ 'Photos Manager'|trans }}</a>
     </p>
-
 {% endif %}
     <a href="{{ url('/ads/') }}" class="btn btn-default">{{ 'Back'|trans }}</a>
 <br><br>
@@ -49,8 +51,7 @@
 <div class="alert alert-{{ flashMessage.type }}" role="alert">
     {{ flashMessage.content }}
 </div>
-    {% endfor %}
-
+{% endfor %}
 {% endblock %}
 {% endblock %}
 

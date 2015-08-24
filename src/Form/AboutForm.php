@@ -27,7 +27,7 @@ use Silex\Application;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert
@@ -79,12 +79,12 @@ class AboutForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
+                                'min' => 2,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
-                                'maxMessage' => '
-                                Maksymalna ilość znaków to {{ limit }}',
+                                    'Minimalna ilość znaków to 2',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}',
                             )
                         ),
                         new Assert\Type(
@@ -106,10 +106,10 @@ class AboutForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 3,
+                                'min' => 2,
                                 'max' => 45,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 3',
+                                    'Minimalna ilość znaków to 2',
                                 'maxMessage' =>
                                     'Maksymalna ilość znaków to {{ limit }}',
                             )
@@ -134,7 +134,11 @@ class AboutForm extends AbstractType
                         new Assert\Length(
                             array(
                                 'min' => 5,
-                                'minMessage' => 'Minimalna ilość znaków to 5',
+                                'max' => 150,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 5',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}',
                             )
                         ),
                         new Assert\Type(
@@ -145,8 +149,10 @@ class AboutForm extends AbstractType
                         )
                     ),
                     'attr' => array(
-                        'class' => 'form-control',
-                        'placeholder' => 'Content'
+                        'class' =>
+                            'form-control',
+                        'placeholder' =>
+                            'Content'
                     ),
                 )
             )
@@ -156,14 +162,20 @@ class AboutForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 5
+                                'min' => 2,
+                                'max' => 45,
+                                'minMessage' =>
+                                    'Minimalna ilość znaków to 2',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}',
                             )
                         ),
                         new Assert\Regex(
                             array(
                                 'pattern' =>
                                     "/^[a-zA-Z0-9\.\-_]+\@[a-zA-Z0-9\.\-_]+\.[a-z]{2,4}/",
-                                'message' => 'Email niepoprawny'
+                                'message' =>
+                                    'Email niepoprawny'
                             )
                         )
                     ),

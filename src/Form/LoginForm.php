@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Silex\Application;
 
 /**
  * Class LoginForm.
@@ -26,13 +27,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert
  */
 class LoginForm extends AbstractType
 {
+
     /**
      * Form builder.
      *
@@ -51,10 +53,12 @@ class LoginForm extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 8,
-                        'max' => 16,
-                        'minMessage' => 'Minimalna ilość znaków to 6',
-                        'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}'
+                        'min' => 2,
+                        'max' => 20,
+                        'minMessage' =>
+                            'Minimalna ilość znaków to 2',
+                        'maxMessage' =>
+                            'Maksymalna ilość znaków to {{ limit }}'
                     ))
                 ),
                 'attr' => array(
@@ -70,8 +74,12 @@ class LoginForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 8,
-                            'minMessage' => 'Minimalna ilość znaków to 8'
+                            'min' => 5,
+                            'max' => 20,
+                            'minMessage' =>
+                                'Minimalna ilość znaków to 5',
+                            'maxMessage' =>
+                                'Maksymalna ilość znaków to {{ limit }}'
                         ))
                     ),
                     'attr' => array(

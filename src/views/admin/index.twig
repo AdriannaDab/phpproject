@@ -6,14 +6,14 @@
     {%  if admins|length > 0 %}
         <table class="table table-hover ">
             <thead>
-            <tr class="active">
-                <th class="text-center">{{ 'Login'|trans }}</th>
-                <th class="text-center">{{ 'Surname'|trans }}</th>
-                <th class="text-center">{{ 'Firstname'|trans }}</th>
-                <th class="text-center">{{ 'Role'|trans }}</th>
-                <th class="text-center">{{ 'Email'|trans }}</th>
-                <th colspan="4">&nbsp;</th>
-            </tr>
+                <tr class="active">
+                    <th class="text-center">{{ 'Login'|trans }}</th>
+                    <th class="text-center">{{ 'Surname'|trans }}</th>
+                    <th class="text-center">{{ 'Firstname'|trans }}</th>
+                    <th class="text-center">{{ 'Role'|trans }}</th>
+                    <th class="text-center">{{ 'Email'|trans }}</th>
+                    <th colspan="4">&nbsp;</th>
+                </tr>
             </thead>
             <tbody>
             {% for admin in admins %}
@@ -21,7 +21,6 @@
                     <td>
                        <a href="{{ url('admins_view', {'id': admin.iduser}) }}"
                            title="{{ 'View admin'|trans }}">{{ admin.login|e }} </a>
-
                     </td>
                     <td>
                         {{ admin.surname }}
@@ -49,7 +48,8 @@
         </table>
         </div>
         <br>
-        <div class="row">
+        <div class="container">
+            <div class="row">
             <ul class="pager">
                 {% if paginator.page > 1 %}
                     {% set previous = (paginator.page - 1) %}
@@ -64,8 +64,8 @@
                             {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span></a></li>
                 {% endif  %}
             </ul>
+            </div>
         </div>
-
     {% else %}
         <div class="alert alert-danger" role="alert">
             {{ 'Users not found'|trans }}.
@@ -75,6 +75,5 @@
         <div class="alert alert-{{ flashMessage.type }}" role="alert">
             {{ flashMessage.content }}
         </div>
-
     {% endfor %}
 {% endblock %}

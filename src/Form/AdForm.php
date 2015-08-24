@@ -28,7 +28,7 @@ use Model\CategoriesModel;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert
@@ -81,10 +81,12 @@ class AdForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 6,
+                            'min' => 2,
                             'max' => 45,
-                            'minMessage' => 'Minimalna ilość znaków to 6',
-                            'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}',
+                            'minMessage' =>
+                                'Minimalna ilość znaków to 2',
+                            'maxMessage' =>
+                                'Maksymalna ilość znaków to {{ limit }}',
                          )),
                         new Assert\Type(
                             array(
@@ -106,10 +108,12 @@ class AdForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 10,
-                            'max' => 150,
-                            'minMessage' => 'Minimalna ilość znaków to 10',
-                            'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}',
+                            'min' => 2,
+                            'max' => 250,
+                            'minMessage' =>
+                                'Minimalna ilość znaków to 2',
+                            'maxMessage' =>
+                                'Maksymalna ilość znaków to {{ limit }}',
                         )),
                         new Assert\Type(
                             array(
@@ -158,7 +162,6 @@ class AdForm extends AbstractType
      * @access public
      * @param FormBuilderInterface $builder
      * @param array $dict
-     *
      * @return FormBuilderInterface
      */
     private function getCategories($app)

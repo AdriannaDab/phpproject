@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Application;
-use Model\UsersModel;
 use Model\InformationModel;
 
 /**
@@ -29,10 +28,12 @@ use Model\InformationModel;
  * @author   Adrianna Dabkowska
  * @email    adrianna.dabkowska@uj.edu.pl
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
- * @uses use Symfony\Component\Form\AbstractType
+ * @uses Symfony\Component\Form\AbstractType
  * @uses Symfony\Component\Form\FormBuilderInterface
  * @uses Symfony\Component\OptionsResolver\OptionsResolverInterface
  * @uses Symfony\Component\Validator\Constraints as Assert
+ *
+ * @uses Model\InformationModel
  */
 class UserForm extends AbstractType
 {
@@ -81,12 +82,12 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 6,
-                                'max' => 45,
+                                'min' => 2,
+                                'max' => 20,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
+                                    'Minimalna ilość znaków to 2',
                                 'maxMessage' =>
-                                    'Maksymalna ilość znaków to 45',
+                                    'Maksymalna ilość znaków to 20',
                             )
                         ),
                         new Assert\Type(
@@ -165,13 +166,14 @@ class UserForm extends AbstractType
                                 'min' => 5
                             )
                         ),
-                       /* new Assert\Regex(
+                        new Assert\Regex(
                             array(
                                 'pattern' =>
-                                    "/^[a-żA-Ż0-9\.\-_]+\@[a-żA-Ż0-9\.\-_]+\.[a-ż]{2,}/",
-                                'message' => 'Email nie jest poprawny'
+                                    "/^[a-zA-Z0-9\.\-_]+\@[a-zA-Z0-9\.\-_]+\.[a-z]{2,4}/",
+                                'message' =>
+                                    'Email niepoprawny'
                             )
-                        )*/
+                        )
                     ),
                     'attr' => array(
                         'class' => 'form-control',
@@ -214,9 +216,12 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 6,
+                                'min' => 5,
+                                'max' => 20,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
+                                    'Minimalna ilość znaków to 5',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}'
                             )
                         ),
                         new Assert\Type(
@@ -238,9 +243,12 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 6,
+                                'min' => 5,
+                                'max' => 20,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
+                                    'Minimalna ilość znaków to 5',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}'
                             )
                         ),
                         new Assert\Type(
@@ -262,9 +270,12 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 6,
+                                'min' => 5,
+                                'max' => 20,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
+                                    'Minimalna ilość znaków to 5',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}'
                             )
                         ),
                         new Assert\Type(
@@ -286,9 +297,12 @@ class UserForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 6,
+                                'min' => 5,
+                                'max' => 20,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 6',
+                                    'Minimalna ilość znaków to 5',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}'
                             )
                         ),
                         new Assert\Type(
@@ -398,7 +412,7 @@ class UserForm extends AbstractType
     }
 
     /**
-     * Form builder for cities list.
+     * Form builder for roles list.
      *
      * @access public
      * @param FormBuilderInterface $builder
@@ -422,7 +436,6 @@ class UserForm extends AbstractType
      * @access public
      * @param FormBuilderInterface $builder
      * @param array $dict
-     *
      * @return FormBuilderInterface
      */
     private function getCities($app)

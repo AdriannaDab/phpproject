@@ -1,8 +1,7 @@
 {# Manager action template for Photos controller #}
 {% extends 'base.twig' %}
-
+{% block title %}{{  'Photos Manager'|trans }}{% endblock %}
 {% block content %}
-
     <div class="row">
         <h2 class="text-center">{{ 'Photos'|trans }}:</h2>
     {% for photo in photos %}
@@ -14,20 +13,16 @@
         <div class="col-lg-12 text-center">
             <p>
                 <img class="img-responsive img-full" src="{{ app.request.basepath }}/media/{{ photo.photo_name }}">
-
             </p>
             <a href="{{ url('photos_delete', {'photo_name': photo.photo_name|e}) }}"
                    title="{{ 'Delete Photo'|trans }}">
                 <button type="button" class="btn btn-danger">{{ 'Delete Photo'|trans }}
                 </button>
-            </a></p>
-
-            </p>
+            </a>
             <hr>
-
         </div>
         <div class="container">
-        <a href="{{ url('/ads/' ) }}" class="btn btn-lg btn-default ">{{ 'Cancel'|trans }}</a>
+            <a href="{{ url('/ads/' ) }}" class="btn btn-lg btn-default ">{{ 'Cancel'|trans }}</a>
         </div>
     {% endfor %}
 </div>

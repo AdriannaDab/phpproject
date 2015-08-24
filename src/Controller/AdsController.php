@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Model\AdsModel;
 use Form\AdForm;
-use Model\CategoriesModel;
 use Model\UsersModel;
 use Model\PhotosModel;
 
@@ -36,7 +35,6 @@ use Model\PhotosModel;
  * @uses Symfony\Component\HttpFoundation\Request
  * @uses Symfony\Component\Validator\Constraints
  * @uses Model\AdsModel
- * @uses Model\CategoriesModel
  * @uses Model\UsersModel
  * @uses Model\PhotosModel
  */
@@ -151,37 +149,27 @@ class AdsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-            $id = (int)$request->get('id', 0);
-        //var_dump($id);
-            $adsModel = new AdsModel($app);
-
-            $category = $adsModel->getCategory($id);
-
-            $ad=$this->_view['ad'] = $adsModel->getAdView($id);
-            $_isLogged = $this->_user->_isLoggedIn($app);
-            if ($_isLogged) {
-                $access = $this->_user->getIdCurrentUser($app);
-               // var_dump($access);
-               // var_dump($category);
-               //die;
-                $moderator = $this->_user->getModeratorById($access, $category['idcategory']);
-            } else {
-                $moderator = false;
-                $access = 0;
-            }
-            if (!($this->_view['ad'])) {
-                throw new NotFoundHttpException("Ad not found");
-            }
-
+        $id = (int)$request->get('id', 0);
+        $adsModel = new AdsModel($app);
+        $category = $adsModel->getCategory($id);
+        $ad=$this->_view['ad'] = $adsModel->getAdView($id);
+        $_isLogged = $this->_user->_isLoggedIn($app);
+        if ($_isLogged) {
+            $access = $this->_user->getIdCurrentUser($app);
+            $moderator = $this->_user->getModeratorById($access, $category['idcategory']);
+        } else {
+            $moderator = false;
+            $access = 0;
+        }
+        if (!($this->_view['ad'])) {
+            throw new NotFoundHttpException("Ad not found");
+        }
         return $app['twig']->render('ads/view.twig', array(
             'access' => $access,
             'moderator' => $moderator,
             'ad' => $ad
         ));
     }
-
-    //checkmoderatoraccess
-//retorn true false
 
     /**
      * Add action.
@@ -193,39 +181,38 @@ class AdsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        try {
-            $id = $this->_user->getIdCurrentUser($app);
-            $user = $this->_user->CheckUser($id);
-            if ($user) {
+        $id = $this->_user->getIdCurrentUser($app);
+        $user = $this->_user->CheckUser($id);
+        if ($user) {
             if ($this->_user->_isLoggedIn($app)) {
                 $iduser = $this->_user->getIdCurrentUser($app);
             } else {
                 $iduser = 0;
             }
-            $data = array(
-                'ad_date' => date('Y-m-d'),
-                'iduser'=>$iduser
+        $data = array(
+            'ad_date' => date('Y-m-d'),
+            'iduser'=>$iduser
+        );
+        $form = $app['form.factory']
+            ->createBuilder(new AdForm($app), $data)->getForm();
+        $form->remove('id');
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $adsModel = new AdsModel($app);
+            $adsModel->saveAd($data);
+            $app['session']->getFlashBag()->add(
+                'message', array(
+                    'type' => 'success',
+                    'content' => $app['translator']
+                        ->trans('New ad added')
+                )
             );
-            $form = $app['form.factory']
-                ->createBuilder(new AdForm($app), $data)->getForm();
-            $form->remove('id');
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $adsModel = new AdsModel($app);
-                $adsModel->saveAd($data);
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'success',
-                        'content' => $app['translator']
-                            ->trans('New ad added')
-                    )
-                );
-                return $app->redirect(
-                    $app['url_generator']->generate('/ads/'), 301
-                );
-            }
-            $this->_view['form'] = $form->createView();
+            return $app->redirect(
+                $app['url_generator']->generate('/ads/'), 301
+            );
+        }
+        $this->_view['form'] = $form->createView();
         } else {
                 $app['session']->getFlashBag()->add(
                     'message', array(
@@ -238,10 +225,8 @@ class AdsController implements ControllerProviderInterface
                         'users_data'
                     ), 301
                 );
-            }
-    } catch (AdException $e) {
-              echo $app['translator']->trans('Caught Add Exception: ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('ads/add.twig', $this->_view);
+        }
+        return $app['twig']->render('ads/add.twig', $this->_view);
     }
 
     /**
@@ -254,39 +239,36 @@ class AdsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        try {
-            $adsModel = new AdsModel($app);
-            $id = (int) $request->get('id', 0);
-            $ad = $adsModel->getAd($id);
-            if (count($ad)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new AdForm($app), $ad)->getForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $adsModel = new AdsModel($app);
-                    $adsModel->saveAd($data);
-                    $app['session']->getFlashBag()->add(
-                        'message', array(
-                            'type' => 'success',
-                            'content' => $app['translator']
-                                ->trans('Ad edited')
-                        )
-                    );
-                    return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id' => $ad['idad'])), 301
-                    );
-                }
-                $this->_view['form'] = $form->createView();
-                $this->_view['id'] = $id;
-            } else {
+        $adsModel = new AdsModel($app);
+        $id = (int) $request->get('id', 0);
+        $ad = $adsModel->getAd($id);
+        if (count($ad)) {
+            $form = $app['form.factory']
+                ->createBuilder(new AdForm($app), $ad)->getForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $adsModel = new AdsModel($app);
+                $adsModel->saveAd($data);
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'success',
+                        'content' => $app['translator']
+                            ->trans('Ad edited')
+                    )
+                );
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_add'), 301
+                    $app['url_generator']->generate('ads_view', array('id' => $ad['idad'])), 301
                 );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('ads/edit.twig', $this->_view);
+            $this->_view['form'] = $form->createView();
+            $this->_view['id'] = $id;
+        } else {
+            return $app->redirect(
+                $app['url_generator']->generate('ads_add'), 301
+            );
+        }
+        return $app['twig']->render('ads/edit.twig', $this->_view);
     }
 
     /**
@@ -299,53 +281,50 @@ class AdsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        try {
-            $adsModel = new AdsModel($app);
-            $id = (int) $request->get('id', 0);
-            $ad = $adsModel->getAd($id);
-            $this->_view['ad'] = $ad;
-            if (count($ad)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new AdForm($app), $ad)->getForm();
-                $form->remove('ad_name');
-                $form->remove('ad_contence');
-                $form->remove('idcategory');
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $adsModel = new AdsModel($app);
-                    $adsModel->deleteAd($data['idad']);
-                    $photosModel = new PhotosModel($app);
-                    $photos = $this->_photos = $photosModel
-                        ->getPhotosByAd($data['idad']);
-                    foreach ($photos as $photo) {
-                        $path
-                            = dirname(dirname(dirname(__FILE__))).
-                            '/web/media/'.$photo['photo_name'];
-                        unlink($path);
-                        $this->_photos = $photosModel
-                            ->removePhoto($photo['photo_name']);
-                    }
-                    $app['session']->getFlashBag()->add(
-                        'message', array(
-                            'type' => 'danger',
-                            'content' => $app['translator']
-                                ->trans('Ad deleted')
-                        )
-                    );
-                    return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
-                    );
+        $adsModel = new AdsModel($app);
+        $id = (int) $request->get('id', 0);
+        $ad = $adsModel->getAd($id);
+        $this->_view['ad'] = $ad;
+        if (count($ad)) {
+            $form = $app['form.factory']
+                ->createBuilder(new AdForm($app), $ad)->getForm();
+            $form->remove('ad_name');
+            $form->remove('ad_contence');
+            $form->remove('idcategory');
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $adsModel = new AdsModel($app);
+                $adsModel->deleteAd($data['idad']);
+                $photosModel = new PhotosModel($app);
+                $photos = $this->_photos = $photosModel
+                    ->getPhotosByAd($data['idad']);
+                foreach ($photos as $photo) {
+                    $path
+                        = dirname(dirname(dirname(__FILE__))).
+                        '/web/media/'.$photo['photo_name'];
+                    unlink($path);
+                    $this->_photos = $photosModel
+                        ->removePhoto($photo['photo_name']);
                 }
-                $this->_view['form'] = $form->createView();
-            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Ad deleted')
+                    )
+                );
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_add'), 301
+                    $app['url_generator']->generate('/ads/'), 301
                 );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('ads/delete.twig', $this->_view);
+            $this->_view['form'] = $form->createView();
+        } else {
+            return $app->redirect(
+                $app['url_generator']->generate('ads_add'), 301
+            );
+        }
+        return $app['twig']->render('ads/delete.twig', $this->_view);
     }
 
 }

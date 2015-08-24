@@ -2,9 +2,14 @@
 /**
  * Comment form.
  *
- * @author EPI <epi@uj.edu.pl>
- * @link http://epi.uj.edu.pl
- * @copyright 2015 EPI
+ *
+ * PHP version 5
+ *
+ * @category Form
+ * @package  Form
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  */
 
 namespace Form;
@@ -14,14 +19,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Application;
-use Model\CommentsModel;
 
 /**
  * Class CommentForm.
  *
  * @category Epi
  * @package Form
- * @extends AbstractType
+ * @author   Adrianna Dabkowska
+ * @email    adrianna.dabkowska@uj.edu.pl
+ * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  * @use Symfony\Component\Form\AbstractType
  * @use Symfony\Component\Form\FormBuilderInterface
  * @use Symfony\Component\OptionsResolver\OptionsResolverInterface
@@ -64,9 +70,12 @@ class CommentForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(
                             array(
-                                'min' => 5,
+                                'min' => 2,
+                                'max' => 150,
                                 'minMessage' =>
-                                    'Minimalna ilość znaków to 5',
+                                    'Minimalna ilość znaków to 2',
+                                'maxMessage' =>
+                                    'Maksymalna ilość znaków to {{ limit }}',
                             )
                         ),
                         new Assert\Type(
