@@ -95,7 +95,11 @@ class UserForm extends AbstractType
                                 'message' => 'Nick nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Login'
+                    ),
                 )
             )
             ->add(
@@ -118,7 +122,11 @@ class UserForm extends AbstractType
                                 'message' => 'Nick nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Firstname'
+                    ),
                 )
             )
             ->add(
@@ -141,7 +149,11 @@ class UserForm extends AbstractType
                                 'message' => 'Nick nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Surname'
+                    ),
                 )
             )
             ->add(
@@ -160,7 +172,11 @@ class UserForm extends AbstractType
                                 'message' => 'Email nie jest poprawny'
                             )
                         )*/
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Email'
+                    ),
                 )
             )
 
@@ -184,7 +200,11 @@ class UserForm extends AbstractType
                                 'message' => 'Ulica nie jest poprawna',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Street'
+                    ),
                 )
             )
 
@@ -205,7 +225,11 @@ class UserForm extends AbstractType
                                 'message' => 'Hasło nie jest poprawne',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Password'
+                    ),
                 )
             )
             ->add(
@@ -225,7 +249,11 @@ class UserForm extends AbstractType
                                 'message' => 'Hasło nie jest poprawne',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Confirm password'
+                    ),
                 )
             )
             ->add(
@@ -245,7 +273,11 @@ class UserForm extends AbstractType
                                 'message' => 'Hasło nie jest poprawne',
                             )
                         ),
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'New password'
+                    ),
                 )
             )
             ->add(
@@ -265,7 +297,11 @@ class UserForm extends AbstractType
                                 'message' => 'Hasło nie jest poprawne',
                             )
                         ),
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Confirm new password'
+                    ),
                 )
             )
             ->add(
@@ -288,7 +324,11 @@ class UserForm extends AbstractType
                                 'message' => 'Misto nie jest poprawne',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'City name'
+                    ),
                 )
             )
             ->add(
@@ -297,6 +337,9 @@ class UserForm extends AbstractType
                 array(
                     'constraints' => array(
                         new Assert\NotBlank()
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
                     ),
                     'choices' => $this->getRole($this->app)
                 )
@@ -308,6 +351,9 @@ class UserForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank()
                     ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                    ),
                     'choices' => $this->getCities($this->app)
                 )
             )
@@ -318,6 +364,9 @@ class UserForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank()
                     ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                    ),
                     'choices' => $this->getProvinces($this->app)
                 )
             )
@@ -327,6 +376,9 @@ class UserForm extends AbstractType
                 array(
                     'constraints' => array(
                         new Assert\NotBlank()
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
                     ),
                     'choices' => $this->getCountries($this->app)
                 )

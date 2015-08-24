@@ -93,7 +93,11 @@ class AboutForm extends AbstractType
                                 'message' => 'Tekst nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Firstname'
+                    ),
                 )
             )
             ->add(
@@ -116,11 +120,15 @@ class AboutForm extends AbstractType
                                 'message' => 'Tekst nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Surname'
+                    ),
                 )
             )
             ->add(
-                'content', 'textarea',array('required' => false), array(
+                'content', 'textarea', array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -135,7 +143,11 @@ class AboutForm extends AbstractType
                                 'message' => 'Tekst nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Content'
+                    ),
                 )
             )
             ->add(
@@ -154,7 +166,11 @@ class AboutForm extends AbstractType
                                 'message' => 'Email niepoprawny'
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Email'
+                    ),
                 )
             );
 

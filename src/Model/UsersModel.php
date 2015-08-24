@@ -487,46 +487,48 @@ class UsersModel
      */
     public function registerData($data)
     {
-        if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
-            $users2 = "
+        try {
+            if (isset($data['iduser']) && ctype_digit((string)$data['iduser'])) {
+                $users2 = "
             UPDATE
-                `ad_user_data` SET ( `firstname`, `surname`, `street`, `idcity`, `idprovince`, `idcountry`)
-              VALUES
-              (?,?,?,?,?,?)
+                ad_user_data SET firstname=?, surname=?, street=?, idcity=?, idprovince=?, idcountry=?
               WHERE
               iduser=?
             ";
-            $this->_db
-                ->executeQuery(
-                    $users2,
-                    array(
+                $this->_db
+                    ->executeQuery(
+                        $users2,
+                        array(
 
-                        $data['firstname'],
-                        $data['surname'],
-                        $data['street'],
-                        $data['idcity'],
-                        $data['idprovince'],
-                        $data['idcountry'],
-                        $data['iduser'])
-                );
-        } else {
-            $query = '
+                            $data['firstname'],
+                            $data['surname'],
+                            $data['street'],
+                            $data['idcity'],
+                            $data['idprovince'],
+                            $data['idcountry'],
+                            $data['iduser'])
+                    );
+            } else {
+                $query = '
               INSERT INTO
                 `ad_user_data` (`iduser`,`firstname`,`surname`,`street`,`idcity`,`idprovince`,`idcountry`)
               VALUES (?,?,?,?,?,?,?);
             ';
-            $this->_db
-                ->executeQuery(
-                    $query,
-                    array(
-                        $data['iduser'],
-                        $data['firstname'],
-                        $data['surname'],
-                        $data['street'],
-                        $data['idcity'],
-                        $data['idprovince'],
-                        $data['idcountry'])
-                );
+                $this->_db
+                    ->executeQuery(
+                        $query,
+                        array(
+                            $data['iduser'],
+                            $data['firstname'],
+                            $data['surname'],
+                            $data['street'],
+                            $data['idcity'],
+                            $data['idprovince'],
+                            $data['idcountry'])
+                    );
+            }
+        }catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
 
 

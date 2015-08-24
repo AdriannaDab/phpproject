@@ -131,16 +131,10 @@ class CategoriesController implements ControllerProviderInterface
         $categoriesModel = new CategoriesModel($app);
         $this->_view['category'] = $categoriesModel->getCategory($id);
         $this->_view['category'] = $categoriesModel->checkCategoryId($id);
-        //$_isLogged = $this->_user->_isLoggedIn($app);
-        //if ($_isLogged) {
-        //    $access = $this->_user->getIdModCurrentUser($app);
-        //} else {
-        //    $access = 0;
-        //}
         if ($this->_view['category']) {
             $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
             return $app['twig']
-                ->render('categories/view.twig', array(//'access' => $access,
+                ->render('categories/view.twig', array(
                 'ads' => $this->_view['category']));
         } else {
             $app['session']->getFlashBag()->add(
@@ -167,9 +161,7 @@ class CategoriesController implements ControllerProviderInterface
     public function addAction(Application $app, Request $request)
     {
         try {
-            $data = array(
-            'category_name' => 'Name',
-            );
+            $data = array();
             $form = $app['form.factory']
                 ->createBuilder(new CategoryForm($app), $data)->getForm();
             $form->remove('iduser');

@@ -18,9 +18,9 @@
         <div class="row">
             <div class="box">
                 <nav class="navbar navbar-inverse" role="navigation">
-                    {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+
                         {% include 'main_menu.twig' %}
-                    {#{% endif %}#}
+
                 </nav>
             <div>
                 {% for flashMessage in app.session.getFlashBag.get('message') %}
@@ -33,11 +33,13 @@
                     {% block content %}{% endblock %}</div>
 
             </div>
-            <br><br>
+
+        </div>
+        <br><br><br>
             <footer class="footer panel-footer">
                 {% include 'footer.twig' %}
             </footer>
-        </div>
+
     </div>
 </body>
 </html>

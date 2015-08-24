@@ -80,15 +80,19 @@ class CategoryForm extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'min' => 5,
-                            'minMessage' => 'Minimalna ilość znaków to 5'
+                            'min' => 2,
+                            'minMessage' => 'Minimalna ilość znaków to 2'
                         )),
                         new Assert\Regex(array(
                             'pattern' => '/^(([A-ZĄĆĘŁŚŻŹ])+|[0-9]).*/',
                             'match'   => true,
                             'message' => 'Kategoria musi zaczynać się od wielkiej litery lub cyfry',
                         ))
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Category name'
+                    ),
                 )
             )
             ->add(
@@ -97,6 +101,9 @@ class CategoryForm extends AbstractType
                 array(
                     'constraints' => array(
                         new Assert\NotBlank()
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
                     ),
                     'choices' => $this->getUser($this->app)
                 )

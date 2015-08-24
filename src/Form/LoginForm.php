@@ -56,7 +56,11 @@ class LoginForm extends AbstractType
                         'minMessage' => 'Minimalna ilość znaków to 6',
                         'maxMessage' => 'Maksymalna ilość znaków to {{ limit }}'
                     ))
-                )
+                ),
+                'attr' => array(
+                    'class' => 'form-control',
+                    'placeholder' => 'Login'
+                ),
             )
         )
             ->add(
@@ -69,7 +73,12 @@ class LoginForm extends AbstractType
                             'min' => 8,
                             'minMessage' => 'Minimalna ilość znaków to 8'
                         ))
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Password'
+                    ),
+
                 )
             );
     }

@@ -203,8 +203,6 @@ class AdsController implements ControllerProviderInterface
                 $iduser = 0;
             }
             $data = array(
-                'ad_name' => 'Title',
-                'ad_contence' => 'Contence',
                 'ad_date' => date('Y-m-d'),
                 'iduser'=>$iduser
             );

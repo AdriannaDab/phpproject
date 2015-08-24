@@ -149,14 +149,11 @@ class PhotosController implements ControllerProviderInterface
         $check = $this->_ads = $adsModel->checkAdsId($idad);
 
         if ($check) {
-            $ad = $adsModel->getAd($idad);
-            $idcategory = $ad['idcategory'];
 
             $date = date('Y-m-d H:i:s');
             $data = array(
                 'idad' => $idad,
                 'iduser' => $iduser,
-                'idcategory'=>$idcategory,
                 'photo_date'=>$date
             );
             $form = $app['form.factory']

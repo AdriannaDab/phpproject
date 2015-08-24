@@ -67,7 +67,10 @@ class PhotoForm extends AbstractType
                 'hidden', array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'digit'))
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                    ),
                 )
             )
             ->add(
@@ -85,7 +88,11 @@ class PhotoForm extends AbstractType
                                 ),
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'File'
+                    ),
                 )
             )
             ->add(
@@ -109,7 +116,11 @@ class PhotoForm extends AbstractType
                                 'message' => 'Tekst jest niepoprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Photo alt'
+                    ),
                 )
             );
 

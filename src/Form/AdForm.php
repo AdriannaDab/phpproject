@@ -92,7 +92,11 @@ class AdForm extends AbstractType
                                 'message' => 'Nazwa nie jest poprawna.',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Ad name'
+                    ),
                 )
             )
             ->add(
@@ -113,7 +117,11 @@ class AdForm extends AbstractType
                                 'message' => 'Treść nie jest poprawna.',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Ad contence'
+                    ),
                 )
             )
            ->add(
@@ -123,7 +131,10 @@ class AdForm extends AbstractType
                    'constraints' => array(
                        new Assert\NotBlank()
                    ),
-               'choices' => $this->getCategories($this->app)
+                   'attr' => array(
+                       'class' => 'form-control'
+                   ),
+                    'choices' => $this->getCategories($this->app)
                )
            );
 

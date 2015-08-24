@@ -167,7 +167,6 @@ class CommentsController implements ControllerProviderInterface
             }
             $data = array(
                 'comment_date' => date('Y-m-d'),
-                'contence' => 'Contence',
                 'idad' => $idad,
                 'iduser'=>$iduser
             );

@@ -7,13 +7,43 @@
         {{  'Edit user information'|trans }}
     </h2>
     <hr>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
     <form action="" method="post">
-        {{ form_widget(form) }}
+        {{ form_start(form)  }}
+        <div class="form-group">
+            {{ form_row(form.login) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.email) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.firstname) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.surname) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.street) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.idcity) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.idprovince) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.idcountry) }}
+        </div>
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
         <a href="{{ url('users_view') }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
+
+        {{ form_end(form) }}
+
     </form>
     <br>
     <a href="{{ url('users_newdata') }}"
        title="{{ 'There is no your city? Click here'|trans }}"
             >{{ 'There is no your city? Click here'|trans }}</a>
+    </div>
 {% endblock %}

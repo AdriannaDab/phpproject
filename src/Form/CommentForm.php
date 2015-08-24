@@ -58,7 +58,7 @@ class CommentForm extends AbstractType
         )
             ->add(
                 'contence',
-                'textarea', //array('required' => false),
+                'textarea',
                 array(
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -75,7 +75,11 @@ class CommentForm extends AbstractType
                                 'message' => 'Tekst nie jest poprawny',
                             )
                         )
-                    )
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Contence'
+                    ),
                 )
             );
 

@@ -29,6 +29,8 @@ content: Treść
 Content: Treść
 Contense: Treść
 contense: Treść
+contence: Treść
+Contence: Treść
 date: Data i godzina publikacji
 Date: Data i godzina publikacji
 Add ad: Dodaj ogłoszenie
@@ -82,6 +84,7 @@ Edit user information: Edytuj dane użytkownika
 View user: Zobacz użytkownika
 Users list: Lista użytkowników
 Login: Login
+login: Login
 Surname: Nazwisko
 Firstname: Imię
 Role: Rola
@@ -115,3 +118,24 @@ Role changed: Rola została zmieniona
 Set moderator: Ustaw moderatora
 Set moderator and edit category: Ustaw moderatora i edytuj kategorię
 Moderator login: Login moderatora
+Password: Hasło
+password: Hasło
+Ad name: Tytuł ogłoszenia
+Ad contence: Treść ogłoszenia
+Idcategory: Kategoria
+Category name: Nazwa kategorii
+Iduser: Moderator
+Choose file: Wybierz zdjęcie
+File: Plik
+Photo name: Nazwa linku zdjęcia
+Photo alt: Nazwa zdjęcia
+Idrole: Rola
+Idcity: Miasto
+Idprovince: Województwo
+Idcountry: Kraj
+City name: Nazwa miasta
+New password: Nowe hasło
+Confirm new password: Potwierdź nowe hasło
+Confirm password: Potwierdź hasło
+
+

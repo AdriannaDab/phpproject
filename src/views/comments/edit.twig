@@ -7,9 +7,17 @@
         {{ 'Edit comment'|trans }}
     </h2>
     <hr>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
     <form action="{{ url('comments_edit', {'id': id} ) }}" method="post">
-        {{ form_widget(form) }}
+        {{ form_start(form)  }}
+        <div class="form-group">
+            {{ form_row(form.contence) }}
+        </div>
         <input type="submit" name="submit" class="btn btn-primary" value="{{ 'Save'|trans }}" />
         <a href="{{ url('/ads/' ) }}" class="btn btn-default">{{ 'Cancel'|trans }}</a>
+
+        {{ form_end(form) }}
     </form>
+    </div>
 {% endblock %}

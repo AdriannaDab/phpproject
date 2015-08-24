@@ -238,9 +238,7 @@ class UsersController implements ControllerProviderInterface
      */
     public function registerAction(Application $app, Request $request)
     {
-        $data = array(
-            'login' => 'Login',
-        );
+        $data = array();
         $form = $app['form.factory']
             ->createBuilder(new UserForm($app), $data)->getForm();
         $form->remove('new_password');
@@ -328,7 +326,6 @@ class UsersController implements ControllerProviderInterface
         $id = $this->_model->getIdCurrentUser($app);
 
         $user = $this->_model->CheckUser($id);
-        var_dump($user);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -462,7 +459,10 @@ class UsersController implements ControllerProviderInterface
                 'firstname' => $user['firstname'],
                 'surname' => $user['surname'],
                 'email' => $user['email'],
-                'street' => $user['street']
+                'street' => $user['street'],
+                'idcity' => $user['idcity'],
+                'idprovince' => $user['idprovince'],
+                'idcountry' => $user['idcountry']
             );
             $form = $app['form.factory']
                 ->createBuilder(new UserForm($app), $data)->getForm();
