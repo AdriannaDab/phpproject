@@ -11,6 +11,7 @@
  * @link     wierzba.wzks.uj.edu.pl/~13_dabkowska
  **/
 namespace Controller;
+
 use Model\UsersModel;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
@@ -119,7 +120,8 @@ class PhotosController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => 'Ad not found'
+                    'content' => $app['translator']
+                        ->trans('Ad not found')
                 )
             );
             return $app->redirect(
@@ -142,14 +144,11 @@ class PhotosController implements ControllerProviderInterface
     public function uploadAction(Application $app, Request $request)
     {
         $idad = (int)$request->get('idad', 0);
-
         $userModel = new UsersModel($app);
         $iduser = $userModel->getIdCurrentUser($app);
         $adsModel = new AdsModel($app);
         $check = $this->_ads = $adsModel->checkAdsId($idad);
-
         if ($check) {
-
             $date = date('Y-m-d H:i:s');
             $data = array(
                 'idad' => $idad,
@@ -176,7 +175,8 @@ class PhotosController implements ControllerProviderInterface
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'success',
-                                'content' => 'Zdjecie zostało pobrane'
+                                'content' => $app['translator']
+                                    ->trans('Photo uploaded')
                             )
                         );
                         return $app->redirect(
@@ -188,7 +188,8 @@ class PhotosController implements ControllerProviderInterface
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'danger',
-                                'content' => 'Nie można pobrać zdjecia'
+                                'content' => $app['translator']
+                                    ->trans('Can not upload photo')
                             )
                         );
                     }
@@ -196,7 +197,8 @@ class PhotosController implements ControllerProviderInterface
                     $app['session']->getFlashBag()->add(
                         'message', array(
                             'type' => 'danger',
-                            'content' => 'Dane niepoprawne'
+                            'content' => $app['translator']
+                                ->trans('Wrong data')
                         )
                     );
                 }
@@ -211,7 +213,8 @@ class PhotosController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => 'Nie znaleziono zdjęcia'
+                    'content' => $app['translator']
+                        ->trans('Photo not found')
                 )
             );
             return $app->redirect(
@@ -257,8 +260,8 @@ class PhotosController implements ControllerProviderInterface
                                 $app['session']->getFlashBag()->add(
                                     'message', array(
                                         'type' => 'success',
-                                        'content' =>
-                                            'Zdjecie zostało usunięte'
+                                        'content' => $app['translator']
+                                            ->trans('Photo deleted')
                                     )
                                 );
                                 return $app->redirect(
@@ -270,7 +273,7 @@ class PhotosController implements ControllerProviderInterface
                                 $errors[] = 'Coś poszło niezgodnie z planem';
                             }
                         } catch (\Exception $e) {
-                            $errors[] = 'Plik nie zstał usuniety';
+                            $errors[] = 'Plik nie został usuniety';
                         }
 
                 }
@@ -283,7 +286,8 @@ class PhotosController implements ControllerProviderInterface
                 $app['session']->getFlashBag()->add(
                     'message', array(
                         'type' => 'danger',
-                        'content' => 'Nie znaleziono zdjęcia'
+                        'content' => $app['translator']
+                            ->trans('Photo not found')
                     )
                 );
                 return $app->redirect(
@@ -296,7 +300,8 @@ class PhotosController implements ControllerProviderInterface
             $app['session']->getFlashBag()->add(
                 'message', array(
                     'type' => 'danger',
-                    'content' => 'Nie znaleziono zdjęcia'
+                    'content' => $app['translator']
+                        ->trans('Photo not found')
                 )
             );
             return $app->redirect(

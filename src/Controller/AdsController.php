@@ -281,7 +281,6 @@ class AdsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        try{
         $adsModel = new AdsModel($app);
         $id = (int) $request->get('id', 0);
         $ad = $adsModel->getAd($id);
@@ -325,9 +324,7 @@ class AdsController implements ControllerProviderInterface
                 $app['url_generator']->generate('ads_add'), 301
                 );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('ads/delete.twig', $this->_view);
+        return $app['twig']->render('ads/delete.twig', $this->_view);
     }
 
 }

@@ -139,6 +139,7 @@ Confirm new password: Potwierdź nowe hasło
 Confirm password: Potwierdź hasło
 User: Użytkownik
 About changed: Informacje zostały zmienione
+Information changed: Informacje zostały zmienione
 About not found: Nie znaleziono informacji
 User deleted: Użytkownik został usunięty
 Can not delete user with ads: Nie można usunąć użytkownika,który zamiescił ogłoszeniami
@@ -149,3 +150,18 @@ Category edited: Zmieniono kategorię
 Category deleted: Usunięto kategorię
 Can not delete category with ads: Nie można usunąć kategorii z ogłoszeniami
 Comment not found: Nie znaleziono komentarza
+New comment added: Komentarz został dodany
+Comment edited: Zmieniono komentarz
+Comment deleted: Usunięto komentarz
+Photo uploaded: Zdjęcie zostało pobrane
+Can not upload photo: Nie można pobrać zdjęcia
+Wrong data: Złe dane
+Photo not found: Nie znaleziono zdjęcia
+Photo deleted: Usunięto zdjęcie
+User not found: Nie znaleziono użytkownika
+Account has been created: Konto zostało stworzone
+Passwords are the same: Hasła są takie same
+User with this login already exists: Użytkownik o tym loginie już istnieje
+Password changed: Hasło zostało zmienione
+Passwords are different: Hasła nie są takie same
+Password is wrong: Hasło jest niepoprawne
