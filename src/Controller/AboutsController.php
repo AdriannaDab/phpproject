@@ -147,6 +147,7 @@ class AboutsController implements ControllerProviderInterface
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('About not found')
+
                     )
                 );
                 return $app->redirect(
