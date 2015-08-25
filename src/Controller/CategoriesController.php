@@ -105,14 +105,7 @@ class CategoriesController implements ControllerProviderInterface
                 $this->_view, $categoriesModel->getPaginatedCategories($page, $pageLimit)
             );
         } catch (\PDOException $e) {
-            $app['session']->getFlashBag()->add(
-                'message',
-                array(
-                    'type' => 'error',
-                    'content' => $app['translator']
-                        ->trans('Error code: '.$e->getCode())
-                )
-            );
+            $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
         }
         return $app['twig']->render('categories/index.twig', $this->_view);
     }
@@ -146,8 +139,8 @@ class CategoriesController implements ControllerProviderInterface
                     )
                 );
             }
-        } catch (CategoriesException $e) {
-                echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
         } return $app->redirect(
             $app['url_generator']->generate('categories_index'), 301
             );
@@ -185,8 +178,8 @@ class CategoriesController implements ControllerProviderInterface
                 );
             }
             $this->_view['form'] = $form->createView();
-        } catch (CategoriesException $e) {
-            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
         } return $app['twig']->render('categories/add.twig', $this->_view);
     }
 
@@ -230,8 +223,8 @@ class CategoriesController implements ControllerProviderInterface
                     $app['url_generator']->generate('categories_add'), 301
                 );
             }
-        } catch (CategoriesException $e) {
-            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
         } return $app['twig']->render('categories/edit.twig', $this->_view);
     }
 
@@ -310,8 +303,8 @@ class CategoriesController implements ControllerProviderInterface
                     ), 301
                 );
             }
-        } catch (CategoriesException $e) {
-            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
         } return $app['twig']->render('categories/delete.twig', $this->_view);
     }
 }

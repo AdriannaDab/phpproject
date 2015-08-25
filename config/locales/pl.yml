@@ -172,3 +172,7 @@ Caught Comment Exeption: Błąd w CommentsController
 Caught Auth Exeption: Błąd w AuthController
 Caught Photos Exeption: Błąd w PhotosController
 Caught Users Exeption: Błąd w UsersController
+Form error: Błąd formularza
+Default error: Błąd
+Something went wrong: Coś poszło niezgodnie z planem
+Can not delete file: Plik nie został usunięty

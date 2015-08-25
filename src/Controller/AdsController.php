@@ -127,14 +127,7 @@ class AdsController implements ControllerProviderInterface
                 $this->_view, $adsModel->getPaginatedAds($page, $pageLimit)
             );
         } catch (\PDOException $e) {
-            $app['session']->getFlashBag()->add(
-                'message',
-                array(
-                    'type' => 'error',
-                    'content' => $app['translator']
-                        ->trans('Error code: '.$e->getCode())
-                )
-            );
+            $app->abort(404, $app['translator']->trans('Ads not found'));
         }
         return $app['twig']->render('ads/index.twig', $this->_view);
     }
@@ -165,8 +158,8 @@ class AdsController implements ControllerProviderInterface
             if (!($this->_view['ad'])) {
                 throw new NotFoundHttpException("Ad not found");
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Add Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Ads not found'));
         } return $app['twig']->render('ads/view.twig', array(
             'access' => $access,
             'moderator' => $moderator,
@@ -230,8 +223,8 @@ class AdsController implements ControllerProviderInterface
                         ), 301
                     );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Add Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Form error'));
         } return $app['twig']->render('ads/add.twig', $this->_view);
     }
 
@@ -275,8 +268,8 @@ class AdsController implements ControllerProviderInterface
                     $app['url_generator']->generate('ads_add'), 301
                 );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Add Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Ad Exeption'));
         } return $app['twig']->render('ads/edit.twig', $this->_view);
     }
 
@@ -334,8 +327,8 @@ class AdsController implements ControllerProviderInterface
                     $app['url_generator']->generate('ads_add'), 301
                     );
             }
-        } catch (AdException $e) {
-            echo $app['translator']->trans('Caught Add Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Ad Exeption'));
         } return $app['twig']->render('ads/delete.twig', $this->_view);
     }
 

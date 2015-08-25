@@ -141,9 +141,9 @@ class CommentsController implements ControllerProviderInterface
                     )
                 );
             }
-        } catch (CommentsException $e) {
-                echo $app['translator']->trans('Caught Comments Exception ') .  $e->getMessage() . "\n";
-        } return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
+        }  return $app->redirect(
             $app['url_generator']->generate('/ads/'), 301
         );
 
@@ -205,9 +205,9 @@ class CommentsController implements ControllerProviderInterface
                     )
                 );
             }
-        }catch (CommentsException $e) {
-                echo $app['translator']->trans('Caught Comments Exception ') .  $e->getMessage() . "\n";
-        } return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
+        }  return $app->redirect(
             $app['url_generator']->generate('/ads/'), 301
         );
     }
@@ -253,9 +253,9 @@ class CommentsController implements ControllerProviderInterface
                     $app['url_generator']->generate('comments_add', array('idad' => $id)), 301
                 );
             }
-        } catch (CommentsException $e) {
-            echo $app['translator']->trans('Caught Comments Exception ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('comments/edit.twig', $this->_view);
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
+        }  return $app['twig']->render('comments/edit.twig', $this->_view);
     }
 
     /**
@@ -299,8 +299,8 @@ class CommentsController implements ControllerProviderInterface
                     $app['url_generator']->generate('comments_add'), 301
                 );
             }
-        } catch (CommentsException $e) {
-            echo $app['translator']->trans('Caught Comments Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
         } return $app['twig']->render('comments/delete.twig', $this->_view);
     }
 }

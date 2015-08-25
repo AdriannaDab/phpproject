@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row">
             <div class="box">
-                <nav class="navbar navbar-inverse" role="navigation">
+                <nav class="navbar navbar-inverse">
 
                         {% include 'main_menu.twig' %}
 
@@ -30,16 +30,17 @@
                 {% endfor %}
             </div>
                 <div id="content">
-                    {% block content %}{% endblock %}</div>
+                    {% block content %}{% endblock %}
+                </div>
 
             </div>
-
         </div>
         <br><br><br>
-            <footer class="footer panel-footer">
-                {% include 'footer.twig' %}
-            </footer>
+        <footer class="footer panel-footer">
+            {% include 'footer.twig' %}
+        </footer>
 
     </div>
+</div>
 </body>
 </html>

@@ -88,8 +88,8 @@ class AboutsController implements ControllerProviderInterface
     {
         try {
             $about = $this->_model->getAbout();
-        } catch (AboutException $e) {
-            echo $app['translator']->trans('Caught About Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught About Exeption'));
         } return $app['twig']->render(
                 'about/view.twig', array(
                     'about' => $about
@@ -158,8 +158,8 @@ class AboutsController implements ControllerProviderInterface
                     $app['url_generator']->generate('abouts_view'), 301
                 );
             }
-        } catch (AboutException $e) {
-            echo $app['translator']->trans('Caught About Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught About Exeption'));
         } return $app->redirect(
                 $app['url_generator']->generate("abouts_edit"), 301
             );

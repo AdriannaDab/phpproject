@@ -312,6 +312,8 @@ class AdminsModel
                 *
               FROM
                 ad_users
+              NATURAL JOIN
+                ad_user_data
               WHERE
                 iduser=?
                 ";
@@ -400,7 +402,7 @@ class AdminsModel
                   DELETE FROM
                     ad_user_data
                   WHERE
-                    iduser_data = ?
+                    iduser = ?
                 ';
                 $successTwo = $this->_db->executeQuery($queryTwo, array($id));
                 if ($successTwo) {

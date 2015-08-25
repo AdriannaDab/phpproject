@@ -123,9 +123,9 @@ class UsersController implements ControllerProviderInterface
             if (!($this->_view['user'])) {
                 throw new NotFoundHttpException("User not found");
             }
-        }catch (UsersException $e) {
-            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
-        } return $app['twig']->render('users/index.twig', $this->_view);
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
+        }  return $app['twig']->render('users/index.twig', $this->_view);
     }
 
 
@@ -159,9 +159,9 @@ class UsersController implements ControllerProviderInterface
                     )
                 );
             }
-        }catch (UsersException $e) {
-            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
-        }return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
+        } return $app->redirect(
             $app['url_generator']->generate(
                 'users_data'
             ), 301
@@ -195,9 +195,9 @@ class UsersController implements ControllerProviderInterface
                     )
                 );
             }
-        }catch (UsersException $e) {
-            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
-        }return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
+        } return $app->redirect(
             $app['url_generator']->generate('users_view'), 301
         );
 
@@ -230,9 +230,9 @@ class UsersController implements ControllerProviderInterface
                     )
                 );
             }
-        }catch (UsersException $e) {
-            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
-        } return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
+        }  return $app->redirect(
             $app['url_generator']->generate('users_view'), 301
         );
     }
@@ -287,8 +287,8 @@ class UsersController implements ControllerProviderInterface
                             ), 301
                         );
                     } catch (\Exception $e) {
-                        $errors[] = 'Coś poszło niezgodnie z planem';
-                    }
+                        $app->abort(404, $app['translator']->trans('Someting went wrong'));
+                }
                 } else {
                     $app['session']->getFlashBag()->add(
                         'message', array(
@@ -374,7 +374,7 @@ class UsersController implements ControllerProviderInterface
                         ), 301
                     );
                 } catch (\Exception $e) {
-                    $errors[] = 'Coś poszło niezgodnie z planem';
+                    $app->abort(404, $app['translator']->trans('Someting went wrong'));
                 }
             }
         }
@@ -437,7 +437,7 @@ class UsersController implements ControllerProviderInterface
                         ), 301
                     );
                 } catch (\Exception $e) {
-                    $errors[] = 'Coś poszło niezgodnie z planem';
+                    $app->abort(404, $app['translator']->trans('Someting went wrong'));
                 }
             }
         }
@@ -501,7 +501,7 @@ class UsersController implements ControllerProviderInterface
                             ), 301
                         );
                     } catch (\Exception $e) {
-                        $errors[] = 'Coś poszło niezgodnie z planem';
+                        $app->abort(404, $app['translator']->trans('Someting went wrong'));
                     }
                 }
             }
@@ -566,8 +566,8 @@ class UsersController implements ControllerProviderInterface
                     $app['url_generator']->generate('users_view'), 301
                 );
             }
-        } catch (UsersException $e) {
-            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
         } return $app['twig']->render('users/delete.twig', $this->_view);
     }
 
@@ -624,7 +624,7 @@ class UsersController implements ControllerProviderInterface
                                 ), 301
                             );
                         } catch (\Exception $e) {
-                            $errors[] = 'Coś poszło niezgodnie z planem';
+                            $app->abort(404, $app['translator']->trans('Something went wrong'));
                         }
                     } else {
                         $app['session']->getFlashBag()->add(

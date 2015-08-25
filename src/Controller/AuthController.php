@@ -79,8 +79,8 @@ class AuthController implements ControllerProviderInterface
                 'form' => $form->createView(),
                 'error' => $app['security.last_error']($request)
             );
-        } catch (AuthException $e) {
-            echo $app['translator']->trans('Caught Auth Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Auth Exeption'));
         } return $app['twig']->render('auth/login.twig', $this->view);
     }
 

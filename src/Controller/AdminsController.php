@@ -100,14 +100,7 @@ class AdminsController implements ControllerProviderInterface
 
             );
         } catch (\PDOException $e) {
-            $app['session']->getFlashBag()->add(
-                'message',
-                array(
-                    'type' => 'error',
-                    'content' => $app['translator']
-                        ->trans('Error code: '.$e->getCode())
-                )
-            );
+            $app->abort(404, $app['translator']->trans('Caught Admin Exeption'));
         }
         return $app['twig']->render('admin/index.twig', $this->_view);
     }
@@ -207,8 +200,8 @@ class AdminsController implements ControllerProviderInterface
                     $app['url_generator']->generate('admins_index'), 301
                 );
             }
-        } catch (AdminException $e) {
-            echo $app['translator']->trans('Caught Admin Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Admin Exeption'));
         } return $app['twig']->render('admin/role.twig', array(
             'form' => $form->createView()));
     }
@@ -301,8 +294,8 @@ class AdminsController implements ControllerProviderInterface
                     ), 301
                 );
             }
-        } catch (AdminException $e) {
-            echo $app['translator']->trans('Caught Admin Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Admin Exeption'));
         } return $app['twig']->render('admin/delete.twig', $this->_view);
     }
 }

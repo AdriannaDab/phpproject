@@ -48,7 +48,7 @@
                     {% if paginator.page < paginator.pagesCount %}
                         {% set next = (paginator.page + 1) %}
                         <li class="next">
-                            <a href={{ url('/ads/', {'page': next}) }}" title="{{ 'Next page'|trans }}">
+                            <a href={{ url('/ads/', {'page': next}) }} title="{{ 'Next page'|trans }}">
                             {{ 'Next page'|trans }} <span aria-hidden="true">&rarr;</span> </a> </li>
                 {% endif  %}
             </ul>

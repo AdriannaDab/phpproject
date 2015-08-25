@@ -126,9 +126,9 @@ class PhotosController implements ControllerProviderInterface
                     )
                 );
             }
-        }catch (PhotosException $e) {
-            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
-        }return $app->redirect(
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Photos Exeption'));
+        } return $app->redirect(
             $app['url_generator']->generate(
                 '/ads/'
             ), 301
@@ -223,8 +223,8 @@ class PhotosController implements ControllerProviderInterface
                     )
                 );
             }
-        } catch (PhotosException $e) {
-            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Photos Exeption'));
         }return $app->redirect(
             $app['url_generator']->generate(
                 '/ads/'
@@ -279,10 +279,10 @@ class PhotosController implements ControllerProviderInterface
                                     ), 301
                                 );
                             } catch (\Exception $e) {
-                                $errors[] = 'Coś poszło niezgodnie z planem';
+                                $app->abort(404, $app['translator']->trans('Something went wrong'));
                             }
                         } catch (\Exception $e) {
-                            $errors[] = 'Plik nie został usuniety';
+                            $app->abort(404, $app['translator']->trans('Can not delete file'));
                         }
 
                     }
@@ -314,8 +314,8 @@ class PhotosController implements ControllerProviderInterface
                     )
                 );
             }
-        } catch (PhotosException $e) {
-            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Photos Exeption'));
         }return $app->redirect(
             $app['url_generator']->generate(
                 'photos_manager'
@@ -346,8 +346,8 @@ class PhotosController implements ControllerProviderInterface
                 $idModerator = $photosModel->getMod($iduser);
                 $photos = $photosModel->getPhotosMod($idModerator['iduser']);
             }
-        } catch (PhotosException $e) {
-            echo $app['translator']->trans('Caught Photos Exception ') . $e->getMessage() . "\n";
+        } catch (\PDOException $e) {
+            $app->abort(404, $app['translator']->trans('Caught Photos Exeption'));
         }
         return $app['twig']->render(
             'photos/manager.twig', array(
