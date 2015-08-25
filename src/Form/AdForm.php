@@ -109,7 +109,7 @@ class AdForm extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Length(array(
                             'min' => 2,
-                            'max' => 250,
+                            'max' => 10000,
                             'minMessage' =>
                                 'Minimalna ilość znaków to 2',
                             'maxMessage' =>

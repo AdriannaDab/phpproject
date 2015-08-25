@@ -19,7 +19,7 @@
             <hr>
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="list-group-item">
-                    {{ 'Email'|trans|upper }}:    <b>{{ user.email|capitalize }} </b>
+                    {{ 'Email'|trans|upper }}:    <b>{{ user.email|e }} </b>
                 </li>
                 <li class="list-group-item">
                     {{ 'Street'|trans|upper }}:    <b>{{ user.street|capitalize }} </b>

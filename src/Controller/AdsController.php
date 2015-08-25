@@ -190,7 +190,7 @@ class AdsController implements ControllerProviderInterface
                 $iduser = 0;
             }
         $data = array(
-            'ad_date' => date('Y-m-d'),
+            'ad_date' => date('Y-m-d\TH:i:sO'),
             'iduser'=>$iduser
         );
         $form = $app['form.factory']
