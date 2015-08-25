@@ -71,11 +71,8 @@ class CommentForm extends AbstractType
                         new Assert\Length(
                             array(
                                 'min' => 2,
-                                'max' => 150,
                                 'minMessage' =>
                                     'Minimalna ilość znaków to 2',
-                                'maxMessage' =>
-                                    'Maksymalna ilość znaków to {{ limit }}',
                             )
                         ),
                         new Assert\Type(
