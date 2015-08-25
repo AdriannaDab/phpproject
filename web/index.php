@@ -21,12 +21,13 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 // Translator
 $app->register(
-    new Silex\Provider\TranslationServiceProvider(), array(
+    new Silex\Provider\TranslationServiceProvider(),
+    array(
         'locale' => 'pl',
         'locale_fallbacks' => array('pl'),
     )
 );
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+$app['translator'] = $app->share($app->extend('translator', function ($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
     $translator->addResource('yaml', dirname(dirname(__FILE__)) . '/config/locales/pl.yml', 'pl');
     return $translator;
@@ -85,8 +86,7 @@ $app->register(
                     'default_target_path' => '/ads'
                 ),
                 'users' => $app->share(
-                    function() use ($app)
-                    {
+                    function () use ($app) {
                         return new Provider\UserProvider($app);
                     }
                 ),
@@ -94,8 +94,8 @@ $app->register(
         ),
         'security.access_rules' => array(
 
-            array('^/auth/.+$|^/users/register/.*$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|^/categories/view/.*$|
-                    ^/users/add|^/comments/view/.*$|^/about/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/auth/.+$|^/users/register/.*$|^/ads/?[1-9"\']*?$|^/ads/view/[1-9"\']*$|^/categories/?$|
+                ^/categories/view/.*$|^/users/add|^/comments/view/.*$|^/about/?$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*$|^/photos.*$', 'ROLE_USER'),
             array('/ads.*$|^/comments.*$|^/categories.*$|^/users.*$|^/photos.*$', 'ROLE_MODERATOR'),
             array('^/.+$', 'ROLE_ADMIN')
@@ -109,16 +109,17 @@ $app->register(
 
 $app->error(
     function (
-        \Exception $e, $code
+        \Exception $e,
+        $code
     ) use ($app) {
 
         if ($e instanceof Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
             $code = (string)$e->getStatusCode();
         }
 
-       if ($app['debug']) {
-          return;
-       }
+        if ($app['debug']) {
+            return;
+        }
 
         // 404.html, or 40x.html, or 4xx.html, or error.html
         $templates = array(

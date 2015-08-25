@@ -12,6 +12,7 @@
  **/
 
 namespace Controller;
+
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,7 +120,7 @@ class UsersController implements ControllerProviderInterface
         try {
             $id = (int)$request->get('id', 0);
             $usersModel = new UsersModel($app);
-            $this->_view['user'] = $usersModel->CheckUser($id);
+            $this->_view['user'] = $usersModel->checkUser($id);
             if (!($this->_view['user'])) {
                 throw new NotFoundHttpException("User not found");
             }
@@ -143,16 +144,18 @@ class UsersController implements ControllerProviderInterface
     {
         try {
             $id = $this->_model->getIdCurrentUser($app);
-            $user = $this->_model->CheckUser($id);
+            $user = $this->_model->checkUser($id);
             if (count($user)) {
                 return $app['twig']->render(
-                    'users/view.twig', array(
+                    'users/view.twig',
+                    array(
                         'user' => $user
                     )
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('User data not found')
@@ -164,7 +167,8 @@ class UsersController implements ControllerProviderInterface
         } return $app->redirect(
             $app['url_generator']->generate(
                 'users_data'
-            ), 301
+            ),
+            301
         );
     }
 
@@ -181,14 +185,15 @@ class UsersController implements ControllerProviderInterface
         try {
             $id = (int)$request->get('id', 0);
             $usersModel = new UsersModel($app);
-            $user = $this->_model->CheckUser($id);
+            $user = $this->_model->checkUser($id);
             if ($user) {
                 $this->_view = $usersModel->getAdsListByIduser($id);
                 return $app['twig']
                     ->render('users/show.twig', array('ads' => $this->_view));
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('User not found')
@@ -198,7 +203,11 @@ class UsersController implements ControllerProviderInterface
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
         } return $app->redirect(
-            $app['url_generator']->generate('users_view'), 301
+            $app['url_generator']->
+            generate(
+                'users_view'
+            ),
+            301
         );
 
     }
@@ -216,14 +225,15 @@ class UsersController implements ControllerProviderInterface
         try {
             $usersModel = new UsersModel($app);
             $id = $this->_model->getIdCurrentUser($app);
-            $user = $this->_model->CheckUser($id);
+            $user = $this->_model->checkUser($id);
             if ($user) {
                 $this->_view = $usersModel->getAdsListByIduser($id);
                 return $app['twig']
                     ->render('users/show.twig', array('ads' => $this->_view));
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('User data not found')
@@ -233,7 +243,11 @@ class UsersController implements ControllerProviderInterface
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Users Exeption'));
         }  return $app->redirect(
-            $app['url_generator']->generate('users_view'), 301
+            $app['url_generator']->
+            generate(
+                'users_view'
+            ),
+            301
         );
     }
 
@@ -256,7 +270,7 @@ class UsersController implements ControllerProviderInterface
         $form->remove('firstname');
         $form->remove('surname');
         $form->remove('street');
-        $form->remove('city_name');;
+        $form->remove('city_name');
         $form->remove('idrole');
         $form->remove('idcity');
         $form->remove('idprovince');
@@ -275,7 +289,8 @@ class UsersController implements ControllerProviderInterface
                         $usersModel = new UsersModel($app);
                         $usersModel->register($data);
                         $app['session']->getFlashBag()->add(
-                            'message', array(
+                            'message',
+                            array(
                                 'type' => 'success',
                                 'content' => $app['translator']
                                     ->trans('Account has been created')
@@ -284,42 +299,48 @@ class UsersController implements ControllerProviderInterface
                         return $app->redirect(
                             $app['url_generator']->generate(
                                 'users_data'
-                            ), 301
+                            ),
+                            301
                         );
                     } catch (\Exception $e) {
                         $app->abort(404, $app['translator']->trans('Someting went wrong'));
-                }
+                    }
                 } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Passwords are the same')
                         )
                     );
                     return $app['twig']->render(
-                        'users/register.twig', array(
+                        'users/register.twig',
+                        array(
                             'form' => $form->createView()
                         )
                     );
                 }
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('User with this login already exists')
                     )
                 );
                 return $app['twig']->render(
-                    'users/register.twig', array(
+                    'users/register.twig',
+                    array(
                         'form' => $form->createView()
                     )
                 );
             }
         }
         return $app['twig']->render(
-            'users/register.twig', array(
+            'users/register.twig',
+            array(
                 'form' => $form->createView()
             )
         );
@@ -337,7 +358,7 @@ class UsersController implements ControllerProviderInterface
     public function dataAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->CheckUser($id);
+        $user = $this->_model->checkUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -362,7 +383,8 @@ class UsersController implements ControllerProviderInterface
                     $usersModel = new UsersModel($app);
                     $usersModel->registerData($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Data saved')
@@ -371,7 +393,8 @@ class UsersController implements ControllerProviderInterface
                     return $app->redirect(
                         $app['url_generator']->generate(
                             '/ads/'
-                        ), 301
+                        ),
+                        301
                     );
                 } catch (\Exception $e) {
                     $app->abort(404, $app['translator']->trans('Someting went wrong'));
@@ -379,7 +402,8 @@ class UsersController implements ControllerProviderInterface
             }
         }
         return $app['twig']->render(
-            'users/registerdata.twig', array(
+            'users/registerdata.twig',
+            array(
                 'form' => $form->createView()
             )
         );
@@ -397,7 +421,7 @@ class UsersController implements ControllerProviderInterface
     public function newdataAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->CheckUser($id);
+        $user = $this->_model->checkUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -425,7 +449,8 @@ class UsersController implements ControllerProviderInterface
                     $usersModel = new UsersModel($app);
                     $usersModel->registerNewData($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Data saved')
@@ -434,7 +459,8 @@ class UsersController implements ControllerProviderInterface
                     return $app->redirect(
                         $app['url_generator']->generate(
                             'users_data'
-                        ), 301
+                        ),
+                        301
                     );
                 } catch (\Exception $e) {
                     $app->abort(404, $app['translator']->trans('Someting went wrong'));
@@ -442,7 +468,8 @@ class UsersController implements ControllerProviderInterface
             }
         }
         return $app['twig']->render(
-            'users/registernewdata.twig', array(
+            'users/registernewdata.twig',
+            array(
                 'form' => $form->createView()
             )
         );
@@ -461,7 +488,7 @@ class UsersController implements ControllerProviderInterface
     public function editAction(Application $app, Request $request)
     {
         $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->CheckUser($id);
+        $user = $this->_model->checkUser($id);
         if (count($user)) {
             $data = array(
                 'iduser' => $id,
@@ -485,31 +512,35 @@ class UsersController implements ControllerProviderInterface
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                    try {
-                        $usersModel = new UsersModel($app);
-                        $usersModel->editUser($data);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'success',
-                                'content' => $app['translator']
-                                    ->trans('Information changed')
-                            )
-                        );
-                        return $app->redirect(
-                            $app['url_generator']->generate(
-                                'users_view'
-                            ), 301
-                        );
-                    } catch (\Exception $e) {
-                        $app->abort(404, $app['translator']->trans('Someting went wrong'));
-                    }
+                try {
+                    $usersModel = new UsersModel($app);
+                    $usersModel->editUser($data);
+                    $app['session']->getFlashBag()->add(
+                        'message',
+                        array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Information changed')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->
+                        generate(
+                            'users_view'
+                        ),
+                        301
+                    );
+                } catch (\Exception $e) {
+                    $app->abort(404, $app['translator']->trans('Someting went wrong'));
                 }
             }
-            return $app['twig']->render(
-                'users/edit.twig', array(
-                    'form' => $form->createView()
-                )
-            );
+        }
+        return $app['twig']->render(
+            'users/edit.twig',
+            array(
+                'form' => $form->createView()
+            )
+        );
     }
 
     /**
@@ -521,7 +552,7 @@ class UsersController implements ControllerProviderInterface
      * @access public
      * @return mixed Generates page or redirect.
      */
-    public function deleteAction (Application $app, Request $request)
+    public function deleteAction(Application $app, Request $request)
     {
         try {
             $id = $this->_model->getIdCurrentUser($app);
@@ -550,20 +581,30 @@ class UsersController implements ControllerProviderInterface
                     $usersModel = new  UsersModel($app);
                     $usersModel->deleteUser($data['iduser']);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('User deleted')
                         )
                     );
-                    return $app->redirect(
-                        $app['url_generator']->generate('users_view'), 301
+                    return $app->
+                    redirect(
+                        $app['url_generator']->
+                        generate(
+                            'users_view'
+                        ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('users_view'), 301
+                    $app['url_generator']->
+                    generate(
+                        'users_view'
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
@@ -612,37 +653,44 @@ class UsersController implements ControllerProviderInterface
                         try {
                             $model = $this->_model->changePassword($data, $id);
                             $app['session']->getFlashBag()->add(
-                                'message', array(
+                                'message',
+                                array(
                                     'type' => 'success',
                                     'content' => $app['translator']
                                         ->trans('Password changed')
                                 )
                             );
-                            return $app->redirect(
-                                $app['url_generator']->generate(
+                            return $app->
+                            redirect(
+                                $app['url_generator']->
+                                generate(
                                     'auth_login'
-                                ), 301
+                                ),
+                                301
                             );
                         } catch (\Exception $e) {
                             $app->abort(404, $app['translator']->trans('Something went wrong'));
                         }
                     } else {
                         $app['session']->getFlashBag()->add(
-                            'message', array(
+                            'message',
+                            array(
                                 'type' => 'warning',
                                 'content' => $app['translator']
                                     ->trans('Passwords are different')
                             )
                         );
                         return $app['twig']->render(
-                            'users/edit.twig', array(
+                            'users/edit.twig',
+                            array(
                                 'form' => $form->createView()
                             )
                         );
                     }
                 } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Password is wrong')
@@ -652,24 +700,27 @@ class UsersController implements ControllerProviderInterface
             }
         } else {
             $app['session']->getFlashBag()->add(
-                'message', array(
+                'message',
+                array(
                     'type' => 'danger',
                     'content' => $app['translator']
                         ->trans('User not found')
                 )
             );
-            return $app->redirect(
-                $app['url_generator']->generate(
+            return $app->
+            redirect(
+                $app['url_generator']->
+                generate(
                     'auth_login'
-                ), 301
+                ),
+                301
             );
         }
         return $app['twig']->render(
-            'users/password.twig', array(
+            'users/password.twig',
+            array(
                 'form' => $form->createView()
             )
         );
     }
-
-
 }

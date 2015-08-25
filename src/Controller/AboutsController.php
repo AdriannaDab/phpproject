@@ -12,6 +12,7 @@
  **/
 
 namespace Controller;
+
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,10 +92,11 @@ class AboutsController implements ControllerProviderInterface
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught About Exeption'));
         } return $app['twig']->render(
-                'about/view.twig', array(
-                    'about' => $about
-                )
-            );
+            'about/view.twig',
+            array(
+                'about' => $about
+            )
+        );
 
     }
     /**
@@ -109,60 +111,72 @@ class AboutsController implements ControllerProviderInterface
     public function editAction(Application $app, Request $request)
     {
         try {
-        $aboutsModel = new AboutsModel($app);
-        $idabout = (int) $request->get('idabout', 0);
-        $about = $aboutsModel->getAbout();
-        $data = array(
-            'firstname' => $about['firstname'],
-            'surname' => $about['surname'],
-            'email' => $about['email'],
-            'content' => $about['content'],
-            'idabout' => $idabout
+            $aboutsModel = new AboutsModel($app);
+            $idabout = (int) $request->get('idabout', 0);
+            $about = $aboutsModel->getAbout();
+            $data = array(
+                'firstname' => $about['firstname'],
+                'surname' => $about['surname'],
+                'email' => $about['email'],
+                'content' => $about['content'],
+                'idabout' => $idabout
             );
-        if (count($about)) {
-            $form = $app['form.factory']
-                ->createBuilder(new AboutForm($app), $data)->getForm();
+            if (count($about)) {
+                $form = $app['form.factory']
+                    ->createBuilder(new AboutForm($app), $data)->getForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {
                     $data = $form->getData();
                     try {
                         $model = $this->_model->editAbout($data);
                         $app['session']->getFlashBag()->add(
-                            'message', array(
+                            'message',
+                            array(
                                 'type' => 'success',
                                 'content' => $app['translator']
                                     ->trans('About changed')
                             )
                         );
                         return $app->redirect(
-                            $app['url_generator']
-                                ->generate('abouts_view'), 301
+                            $app['url_generator']->
+                            generate(
+                                'abouts_view'
+                            ),
+                            301
                         );
                     } catch (\Exception $e) {
                         $errors[] = 'Coś poszło niezgodnie z planem';
                     }
                 }
                 return $app['twig']->render(
-                    'about/edit.twig', array('form' => $form->createView())
+                    'about/edit.twig',
+                    array('form' => $form->createView())
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('About not found')
-
                     )
                 );
                 return $app->redirect(
-                    $app['url_generator']->generate('abouts_view'), 301
+                    $app['url_generator']->
+                    generate(
+                        'abouts_view'
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught About Exeption'));
         } return $app->redirect(
-                $app['url_generator']->generate("abouts_edit"), 301
-            );
-        }
-
+            $app['url_generator']->
+            generate(
+                'abouts_edit'
+            ),
+            301
+        );
+    }
 }

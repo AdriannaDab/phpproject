@@ -140,7 +140,7 @@ class CommentsModel
     public function deleteComment($idcomment)
     {
         try {
-            if (($idcomment != '') && ctype_digit((string)$idcomment) ) {
+            if (($idcomment != '') && ctype_digit((string)$idcomment)) {
                 $query = '
                   DELETE
                     *
@@ -168,7 +168,7 @@ class CommentsModel
      * @param int $iduser User
      * @return array Result
      */
-    public function addComment($data )
+    public function addComment($data)
     {
         $query = 'INSERT INTO ad_comments
             (contence, comment_date, idad)
@@ -209,5 +209,4 @@ class CommentsModel
             return false;
         }
     }
-
 }

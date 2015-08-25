@@ -23,7 +23,6 @@ use Form\PhotoForm;
 use Model\PhotosModel;
 use Model\AdsModel;
 
-
 /**
  * Class PhotosController
  *
@@ -113,13 +112,15 @@ class PhotosController implements ControllerProviderInterface
                 $photosModel = new PhotosModel($app);
                 $photos = $this->_model = $photosModel->getPhotosByAd($idad);
                 return $app['twig']->render(
-                    'photos/index.twig', array(
+                    'photos/index.twig',
+                    array(
                         'photos' => $photos
                     )
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Ad not found')
@@ -131,7 +132,8 @@ class PhotosController implements ControllerProviderInterface
         } return $app->redirect(
             $app['url_generator']->generate(
                 '/ads/'
-            ), 301
+            ),
+            301
         );
 
     }
@@ -178,7 +180,8 @@ class PhotosController implements ControllerProviderInterface
                             $files['file']->move($path, $newFilename);
                             $this->_model->savePhoto($newFilename, $data);
                             $app['session']->getFlashBag()->add(
-                                'message', array(
+                                'message',
+                                array(
                                     'type' => 'success',
                                     'content' => $app['translator']
                                         ->trans('Photo uploaded')
@@ -187,11 +190,13 @@ class PhotosController implements ControllerProviderInterface
                             return $app->redirect(
                                 $app['url_generator']->generate(
                                     '/ads/'
-                                ), 301
+                                ),
+                                301
                             );
                         } catch (Exception $e) {
                             $app['session']->getFlashBag()->add(
-                                'message', array(
+                                'message',
+                                array(
                                     'type' => 'danger',
                                     'content' => $app['translator']
                                         ->trans('Can not upload photo')
@@ -200,7 +205,8 @@ class PhotosController implements ControllerProviderInterface
                         }
                     } else {
                         $app['session']->getFlashBag()->add(
-                            'message', array(
+                            'message',
+                            array(
                                 'type' => 'danger',
                                 'content' => $app['translator']
                                     ->trans('Wrong data')
@@ -209,14 +215,16 @@ class PhotosController implements ControllerProviderInterface
                     }
                 }
                 return $app['twig']->render(
-                    'photos/upload.twig', array(
+                    'photos/upload.twig',
+                    array(
                         'form' => $form->createView(),
                         'idad' => $idad
                     )
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Photo not found')
@@ -228,7 +236,8 @@ class PhotosController implements ControllerProviderInterface
         }return $app->redirect(
             $app['url_generator']->generate(
                 '/ads/'
-            ), 301
+            ),
+            301
         );
 
     }
@@ -267,7 +276,8 @@ class PhotosController implements ControllerProviderInterface
                             try {
                                 $link = $this->_model = $photosModel->removePhoto($name);
                                 $app['session']->getFlashBag()->add(
-                                    'message', array(
+                                    'message',
+                                    array(
                                         'type' => 'success',
                                         'content' => $app['translator']
                                             ->trans('Photo deleted')
@@ -276,7 +286,8 @@ class PhotosController implements ControllerProviderInterface
                                 return $app->redirect(
                                     $app['url_generator']->generate(
                                         'photos_manager'
-                                    ), 301
+                                    ),
+                                    301
                                 );
                             } catch (\Exception $e) {
                                 $app->abort(404, $app['translator']->trans('Something went wrong'));
@@ -287,13 +298,15 @@ class PhotosController implements ControllerProviderInterface
 
                     }
                     return $app['twig']->render(
-                        'photos/delete.twig', array(
+                        'photos/delete.twig',
+                        array(
                             'form' => $form->createView()
                         )
                     );
                 } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Photo not found')
@@ -302,12 +315,14 @@ class PhotosController implements ControllerProviderInterface
                     return $app->redirect(
                         $app['url_generator']->generate(
                             'photos_manager'
-                        ), 301
+                        ),
+                        301
                     );
                 }
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Photo not found')
@@ -319,7 +334,8 @@ class PhotosController implements ControllerProviderInterface
         }return $app->redirect(
             $app['url_generator']->generate(
                 'photos_manager'
-            ), 301
+            ),
+            301
         );
 
     }
@@ -350,7 +366,8 @@ class PhotosController implements ControllerProviderInterface
             $app->abort(404, $app['translator']->trans('Caught Photos Exeption'));
         }
         return $app['twig']->render(
-            'photos/manager.twig', array(
+            'photos/manager.twig',
+            array(
                 'photos' => $photos
             )
         );

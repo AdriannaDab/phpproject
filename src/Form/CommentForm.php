@@ -102,7 +102,4 @@ class CommentForm extends AbstractType
     {
         return 'commentForm';
     }
-
-
-
 }

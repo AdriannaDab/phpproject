@@ -74,7 +74,9 @@ class AboutForm extends AbstractType
             )
         )
             ->add(
-                'firstname', 'text', array(
+                'firstname',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -101,7 +103,9 @@ class AboutForm extends AbstractType
                 )
             )
             ->add(
-                'surname', 'text', array(
+                'surname',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -128,7 +132,9 @@ class AboutForm extends AbstractType
                 )
             )
             ->add(
-                'content', 'textarea', array(
+                'content',
+                'textarea',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -157,7 +163,9 @@ class AboutForm extends AbstractType
                 )
             )
             ->add(
-                'email', 'email', array(
+                'email',
+                'email',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -199,5 +207,4 @@ class AboutForm extends AbstractType
     {
         return 'about';
     }
-
 }

@@ -12,6 +12,7 @@
  **/
 
 namespace Controller;
+
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,8 +97,8 @@ class AdminsController implements ControllerProviderInterface
         try {
             $adminsModel = new AdminsModel($app);
             $this->_view = array_merge(
-                $this->_view, $adminsModel->getPaginatedUsers($page, $pageLimit)
-
+                $this->_view,
+                $adminsModel->getPaginatedUsers($page, $pageLimit)
             );
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Admin Exeption'));
@@ -122,13 +123,15 @@ class AdminsController implements ControllerProviderInterface
             $admin = $this->_view['admin'] = $adminsModel->getUser($id);
             if (count($admin)) {
                 return $app['twig']->render(
-                    'admin/view.twig', array(
+                    'admin/view.twig',
+                    array(
                         'admin' => $admin
                     )
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => 'User data not found'
                     )
@@ -139,7 +142,8 @@ class AdminsController implements ControllerProviderInterface
         } return $app->redirect(
             $app['url_generator']->generate(
                 'admins_index'
-            ), 301
+            ),
+            301
         );
 
     }
@@ -185,19 +189,31 @@ class AdminsController implements ControllerProviderInterface
                     $adminsModel = new AdminsModel($app);
                     $adminsModel->changeRole($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Role changed')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('admins_index', array('id' => $admin['iduser'])), 301
+                        $app['url_generator']->
+                        generate(
+                            'admins_index',
+                            array(
+                                'id' => $admin['iduser']
+                            )
+                        ),
+                        301
                     );
                 }
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('admins_index'), 301
+                    $app['url_generator']->
+                    generate(
+                        'admins_index'
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
@@ -217,7 +233,7 @@ class AdminsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        try{
+        try {
             $adminsModel = new AdminsModel($app);
             $id = (int) $request->get('id', 0);
             $this->_view['admin']= $adminsModel->getUserId($id);
@@ -250,25 +266,35 @@ class AdminsController implements ControllerProviderInterface
                             $adminsModel = new AdminsModel($app);
                             $adminsModel->deleteUser($data['iduser']);
                             $app['session']->getFlashBag()->add(
-                                'message', array(
+                                'message',
+                                array(
                                     'type' => 'danger',
                                     'content' => $app['translator']
                                         ->trans('User deleted')
                                 )
                             );
                             return $app->redirect(
-                                $app['url_generator']->generate('admins_index'), 301
+                                $app['url_generator']->
+                                generate(
+                                    'admins_index'
+                                ),
+                                301
                             );
                         }
                         $this->_view['form'] = $form->createView();
                     } else {
                         return $app->redirect(
-                            $app['url_generator']->generate('admins_index'), 301
+                            $app['url_generator']->
+                            generate(
+                                'admins_index'
+                            ),
+                            301
                         );
                     }
                 } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Can not delete user with ads')
@@ -277,12 +303,14 @@ class AdminsController implements ControllerProviderInterface
                     return $app->redirect(
                         $app['url_generator']->generate(
                             'admins_index'
-                        ), 301
+                        ),
+                        301
                     );
                 }
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Did not found user')
@@ -291,7 +319,8 @@ class AdminsController implements ControllerProviderInterface
                 return $app->redirect(
                     $app['url_generator']->generate(
                         'admins_index'
-                    ), 301
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {

@@ -13,6 +13,7 @@
  **/
 
 namespace Controller;
+
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -124,7 +125,8 @@ class AdsController implements ControllerProviderInterface
         try {
             $adsModel = new AdsModel($app);
             $this->_view = array_merge(
-                $this->_view, $adsModel->getPaginatedAds($page, $pageLimit)
+                $this->_view,
+                $adsModel->getPaginatedAds($page, $pageLimit)
             );
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Ads not found'));
@@ -142,7 +144,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        try{
+        try {
             $id = (int)$request->get('id', 0);
             $adsModel = new AdsModel($app);
             $category = $adsModel->getCategory($id);
@@ -177,7 +179,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        try{
+        try {
             $id = $this->_user->getIdCurrentUser($app);
             $user = $this->_user->CheckUser($id);
             if ($user) {
@@ -186,41 +188,49 @@ class AdsController implements ControllerProviderInterface
                 } else {
                     $iduser = 0;
                 }
-            $data = array(
-                'ad_date' => date('Y-m-d\TH:i:sO'),
-                'iduser'=>$iduser
-            );
-            $form = $app['form.factory']
-                ->createBuilder(new AdForm($app), $data)->getForm();
-            $form->remove('id');
-        $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $adsModel = new AdsModel($app);
-                $adsModel->saveAd($data);
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'success',
-                        'content' => $app['translator']
-                            ->trans('New ad added')
-                    )
+                $data = array(
+                    'ad_date' => date('Y-m-d\TH:i:sO'),
+                    'iduser'=>$iduser
                 );
-                return $app->redirect(
-                    $app['url_generator']->generate('/ads/'), 301
-                );
-            }
-            $this->_view['form'] = $form->createView();
+                $form = $app['form.factory']
+                    ->createBuilder(new AdForm($app), $data)->getForm();
+                $form->remove('id');
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $adsModel = new AdsModel($app);
+                    $adsModel->saveAd($data);
+                    $app['session']->getFlashBag()->add(
+                        'message',
+                        array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('New ad added')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']
+                            ->generate(
+                                '/ads/'
+                            ),
+                        301
+                    );
+                }
+                $this->_view['form'] = $form->createView();
             } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => 'User data not found'
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate(
-                            'users_data'
-                        ), 301
+                        $app['url_generator']
+                            ->generate(
+                                'users_data'
+                            ),
+                        301
                     );
             }
         } catch (\PDOException $e) {
@@ -238,7 +248,7 @@ class AdsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        try{
+        try {
             $adsModel = new AdsModel($app);
             $id = (int) $request->get('id', 0);
             $ad = $adsModel->getAd($id);
@@ -251,21 +261,33 @@ class AdsController implements ControllerProviderInterface
                     $adsModel = new AdsModel($app);
                     $adsModel->saveAd($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Ad edited')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id' => $ad['idad'])), 301
+                        $app['url_generator']
+                            ->generate(
+                                'ads_view',
+                                array(
+                                    'id' => $ad['idad']
+                                )
+                            ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
                 $this->_view['id'] = $id;
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_add'), 301
+                    $app['url_generator']
+                        ->generate(
+                            'ads_add'
+                        ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
@@ -311,25 +333,33 @@ class AdsController implements ControllerProviderInterface
                             ->removePhoto($photo['photo_name']);
                     }
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Ad deleted')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('/ads/'), 301
+                        $app['url_generator']
+                            ->generate(
+                                '/ads/'
+                            ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('ads_add'), 301
-                    );
+                    $app['url_generator']
+                        ->generate(
+                            'ads_add'
+                        ),
+                    301
+                );
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Ad Exeption'));
         } return $app['twig']->render('ads/delete.twig', $this->_view);
     }
-
 }

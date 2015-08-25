@@ -12,7 +12,9 @@
  */
 
 namespace Model;
+
 use Silex\Application;
+
 /**
  * Class PhotosModel
  *
@@ -53,7 +55,7 @@ class PhotosModel
      */
     public function getPhotos()
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -81,7 +83,7 @@ class PhotosModel
      */
     public function getPhotosByAd($idad)
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -106,7 +108,7 @@ class PhotosModel
      */
     public function getPhotoByName($name)
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -132,7 +134,7 @@ class PhotosModel
      */
     public function savePhoto($name, $data)
     {
-        try{
+        try {
             $query = '
               INSERT INTO
                 `ad_photos` (`photo_name`, `photo_alt`, `idad`, `iduser`)
@@ -140,7 +142,8 @@ class PhotosModel
                 (?,?,?,?)
             ';
             $this->_db->executeQuery(
-                $query, array(
+                $query,
+                array(
                     $name,
                     $data['photo_alt'],
                     $data['idad'],
@@ -162,7 +165,7 @@ class PhotosModel
      */
     public function removePhoto($name)
     {
-        try{
+        try {
             $query = '
               DELETE FROM
                 `ad_photos`
@@ -204,7 +207,7 @@ class PhotosModel
      */
     public function checkPhotoName($name)
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -234,7 +237,7 @@ class PhotosModel
      */
     protected function _isUniqueName($name)
     {
-        try{
+        try {
             $query = '
               SELECT COUNT(*)
               AS
@@ -254,11 +257,8 @@ class PhotosModel
 
     public function getPhotosMod($idModerator = null)
     {
-
         $select = 'SELECT * FROM ad_photos';
-
-        if($idModerator){
-
+        if ($idModerator) {
             $select .= ' LEFT JOIN
                             ads
                         ON
@@ -271,17 +271,17 @@ class PhotosModel
                             ad_moderator_category.iduser  = ? ';
             $result = $this->_db->fetchALl($select, array($idModerator));
 
-        }else{
+        } else {
             $result = $this->_db->fetchALl($select);
         }
-
         return $result;
-
     }
+
+
 
     public function getMod($iduser)
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -301,12 +301,8 @@ class PhotosModel
 
     public function getPhotosUser($iduser)
     {
-
         $query = 'SELECT * FROM ad_photos WHERE iduser=?';
-
-        return $this->_db->fetchAll ($query,array($iduser));
-
-
+        return $this->_db->fetchAll($query, array($iduser));
     }
 
 
@@ -327,6 +323,4 @@ class PhotosModel
         }
         return $string;
     }
-
-
 }

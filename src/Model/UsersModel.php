@@ -183,14 +183,11 @@ class UsersModel
                     `ad_users`.`iduser` = ?
                 ';
 
-             return $this->_db->fetchAssoc($query,array((int)$iduser));
+             return $this->_db->fetchAssoc($query, array((int)$iduser));
         } catch (Exception $e) {
             echo 'Caught exception: ' . $e->getMessage() . "\n";
         }
     }
-
-
-
 
 
 
@@ -383,7 +380,6 @@ class UsersModel
     {
 
         try {
-
             $query = "
               SELECT
                 *
@@ -416,16 +412,24 @@ class UsersModel
     }
 
 
-    public function CheckUser($id)
+    /**
+     * Check if user fill entire form.
+     *
+     * @param  $id
+     *
+     * @access public
+     * @return Void
+     */
+    public function checkUser($id)
     {
         $user = $this ->getUser($id);
-        if($user){
-            if($user['firstname'] && $user['surname']){
+        if ($user) {
+            if ($user['firstname'] && $user['surname']) {
                 return $user;
-        } else {
+            } else {
                 return false;
             }
-        return false;
+            return false;
         }
     }
 
@@ -527,7 +531,7 @@ class UsersModel
                             $data['idcountry'])
                     );
             }
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
 
@@ -591,7 +595,8 @@ class UsersModel
                 iduser = ?
             ';
             $this->_db->executeQuery(
-                $query, array(
+                $query,
+                array(
                     $data['login'],
                     $data['firstname'],
                     $data['surname'],
@@ -663,7 +668,7 @@ class UsersModel
 
     public function changePassword($data, $id)
     {
-        try{
+        try {
             $query = '
               UPDATE
                 `ad_users`
@@ -689,7 +694,7 @@ class UsersModel
      */
     public function getUserById($id)
     {
-        try{
+        try {
             $query = '
               SELECT
                 *
@@ -714,10 +719,9 @@ class UsersModel
      * @access public
      * @return Array Information about moderator.
      */
-    public function getModeratorById($id,$category)
+    public function getModeratorById($id, $category)
     {
-        try{
-
+        try {
             $query = '
               SELECT
                 *
@@ -731,9 +735,9 @@ class UsersModel
             ';
             $result=  $this->_db->fetchAssoc($query, array((int)$id,(int)$category));
             //var_dump($result);
-            if (!$result){
+            if (!$result) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
 
@@ -755,7 +759,7 @@ class UsersModel
      */
     public function confirmUser($id)
     {
-        try{
+        try {
             $query = '
               UPDATE
                 `ad_users`
@@ -819,5 +823,4 @@ class UsersModel
             return false;
         }
     }
-
 }

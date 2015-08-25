@@ -102,7 +102,8 @@ class CategoriesController implements ControllerProviderInterface
         try {
             $categoriesModel = new CategoriesModel($app);
             $this->_view = array_merge(
-                $this->_view, $categoriesModel->getPaginatedCategories($page, $pageLimit)
+                $this->_view,
+                $categoriesModel->getPaginatedCategories($page, $pageLimit)
             );
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
@@ -132,7 +133,8 @@ class CategoriesController implements ControllerProviderInterface
                         'ads' => $this->_view['category']));
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Category not found')
@@ -141,8 +143,13 @@ class CategoriesController implements ControllerProviderInterface
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Categories Exeption'));
-        } return $app->redirect(
-            $app['url_generator']->generate('categories_index'), 301
+        } return $app->
+            redirect(
+                $app['url_generator']->
+                generate(
+                    'categories_index'
+                ),
+                301
             );
     }
 
@@ -167,14 +174,20 @@ class CategoriesController implements ControllerProviderInterface
                 $categoriesModel = new CategoriesModel($app);
                 $categoriesModel->add($data);
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'success',
                         'content' => $app['translator']
                             ->trans('New category added')
                     )
                 );
-                return $app->redirect(
-                    $app['url_generator']->generate('categories_index'), 301
+                return $app->
+                redirect(
+                    $app['url_generator']->
+                    generate(
+                        'categories_index'
+                    ),
+                    301
                 );
             }
             $this->_view['form'] = $form->createView();
@@ -206,21 +219,30 @@ class CategoriesController implements ControllerProviderInterface
                     $categoriesModel = new CategoriesModel($app);
                     $categoriesModel->edit($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Category edited')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('categories_index'), 301
+                        $app['url_generator']->
+                        generate(
+                            'categories_index'
+                        ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
                 $this->_view['id'] = $id;
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('categories_add'), 301
+                    $app['url_generator']->
+                    generate(
+                        'categories_add'
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
@@ -259,25 +281,35 @@ class CategoriesController implements ControllerProviderInterface
                             $categoriesModel = new CategoriesModel($app);
                             $categoriesModel->deleteCategory($data['idcategory']);
                             $app['session']->getFlashBag()->add(
-                                'message', array(
+                                'message',
+                                array(
                                     'type' => 'danger',
                                     'content' => $app['translator']
                                         ->trans('Category deleted')
                                 )
                             );
                             return $app->redirect(
-                                $app['url_generator']->generate('categories_index'), 301
+                                $app['url_generator']->
+                                generate(
+                                    'categories_index'
+                                ),
+                                301
                             );
                         }
                         $this->_view['form'] = $form->createView();
                     } else {
                         return $app->redirect(
-                            $app['url_generator']->generate('categories_add'), 301
+                            $app['url_generator']->
+                            generate(
+                                'categories_add'
+                            ),
+                            301
                         );
                     }
                 } else {
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Can not delete category with ads')
@@ -286,12 +318,14 @@ class CategoriesController implements ControllerProviderInterface
                     return $app->redirect(
                         $app['url_generator']->generate(
                             'categories_index'
-                        ), 301
+                        ),
+                        301
                     );
                 }
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']
                             ->trans('Did not found category')
@@ -300,7 +334,8 @@ class CategoriesController implements ControllerProviderInterface
                 return $app->redirect(
                     $app['url_generator']->generate(
                         'categories_index'
-                    ), 301
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {

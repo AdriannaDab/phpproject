@@ -12,6 +12,7 @@
 namespace Model;
 
 use Silex\Application;
+
 /**
  * Class CategoriessModel
  *
@@ -121,14 +122,15 @@ class CategoriesModel
               WHERE
                 idcategory= ?;
               ';
-                $this->_db->executeQuery(
-                    $query, array(
-                    $data['category_name'],
-                    $data['iduser'],
-                    $data['idcategory']
-                )
-                );
-
+                $this->_db
+                    ->executeQuery(
+                        $query,
+                        array(
+                        $data['category_name'],
+                        $data['iduser'],
+                        $data['idcategory']
+                        )
+                    );
         } else {
             $query = '
               INSERT INTO

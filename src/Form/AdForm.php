@@ -169,9 +169,8 @@ class AdForm extends AbstractType
         $categoriesModel = new CategoriesModel($app);
         $categories = $categoriesModel ->getAll();
         $dict = array();
-        foreach ($categories as  $category){
+        foreach ($categories as $category) {
             $dict [ $category ['idcategory']] = $category['category_name'];
         }return $dict;
     }
-
 }

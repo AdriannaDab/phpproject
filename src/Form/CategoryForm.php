@@ -142,9 +142,8 @@ class CategoryForm extends AbstractType
         $usersModel = new InformationModel($app);
         $users = $usersModel ->getAllModerators();
         $dict = array();
-        foreach ($users as  $user){
+        foreach ($users as $user) {
             $dict [ $user ['iduser']] = $user['login'];
         }return $dict;
     }
-
 }

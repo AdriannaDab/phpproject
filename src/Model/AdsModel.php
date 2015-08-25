@@ -254,7 +254,7 @@ class AdsModel
     public function deleteAd($idad)
     {
         try {
-            if (($idad != '') && ctype_digit((string)$idad) ) {
+            if (($idad != '') && ctype_digit((string)$idad)) {
                 $query = '
                   DELETE
                     *
@@ -333,7 +333,7 @@ class AdsModel
      */
     public function getCategory($idcategory)
     {
-        try{
+        try {
             $query = '
               SELECT
                 idcategory
@@ -374,6 +374,4 @@ class AdsModel
             return false;
         }
     }
-
-
 }

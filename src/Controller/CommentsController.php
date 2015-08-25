@@ -13,6 +13,7 @@
  **/
 
 namespace Controller;
+
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -126,7 +127,9 @@ class CommentsController implements ControllerProviderInterface
                     $access = 0;
                     $moderator = false;
                 }
-                return $app['twig']->render('comments/index.twig', array(
+                return $app['twig']->render(
+                    'comments/index.twig',
+                    array(
                         'comments' => $comments,
                         'idad' => $idad,
                         'access' => $access,
@@ -135,7 +138,8 @@ class CommentsController implements ControllerProviderInterface
                 );
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']->trans('Comment not found')
                     )
@@ -144,7 +148,11 @@ class CommentsController implements ControllerProviderInterface
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
         }  return $app->redirect(
-            $app['url_generator']->generate('/ads/'), 301
+            $app['url_generator']->
+            generate(
+                '/ads/'
+            ),
+            301
         );
 
     }
@@ -183,13 +191,21 @@ class CommentsController implements ControllerProviderInterface
                     $commentsModel->saveComment($data);
                     try {
                         $app['session']->getFlashBag()->add(
-                            'message', array(
+                            'message',
+                            array(
                                 'type' => 'success',
                                 'content' => $app['translator']->trans('New comment added')
                             )
                         );
                         return $app->redirect(
-                            $app['url_generator']->generate('ads_view', array('id' => $data['idad'])), 301
+                            $app['url_generator']->
+                            generate(
+                                'ads_view',
+                                array(
+                                    'id' => $data['idad']
+                                )
+                            ),
+                            301
                         );
                     } catch (Exception $e) {
                         echo $app['translator']->trans('Caught Add Exception: ') . $e->getMessage() . "\n";
@@ -199,7 +215,8 @@ class CommentsController implements ControllerProviderInterface
                 return $app['twig']->render('comments/add.twig', $this->_view);
             } else {
                 $app['session']->getFlashBag()->add(
-                    'message', array(
+                    'message',
+                    array(
                         'type' => 'danger',
                         'content' => $app['translator']->trans('Comment not found')
                     )
@@ -208,7 +225,11 @@ class CommentsController implements ControllerProviderInterface
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
         }  return $app->redirect(
-            $app['url_generator']->generate('/ads/'), 301
+            $app['url_generator']->
+            generate(
+                '/ads/'
+            ),
+            301
         );
     }
 
@@ -222,7 +243,7 @@ class CommentsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        try{
+        try {
             $commentsModel = new CommentsModel($app);
             $id = (int)$request->get('id', 0);
             $comment = $commentsModel->getComment($id);
@@ -235,7 +256,8 @@ class CommentsController implements ControllerProviderInterface
                     $commentsModel = new CommentsModel($app);
                     $commentsModel->saveComment($data);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'success',
                             'content' => $app['translator']
                                 ->trans('Comment edited')
@@ -243,14 +265,28 @@ class CommentsController implements ControllerProviderInterface
                     );
                     $this->_view['id'] = $id;
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id' => $comment['idad'])), 301
+                        $app['url_generator']->
+                        generate(
+                            'ads_view',
+                            array(
+                                'id' => $comment['idad']
+                            )
+                        ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
                 $this->_view['id'] = $id;
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('comments_add', array('idad' => $id)), 301
+                    $app['url_generator']->
+                    generate(
+                        'comments_add',
+                        array(
+                            'idad' => $id
+                        )
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {
@@ -268,12 +304,12 @@ class CommentsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        try{
+        try {
             $commentsModel = new CommentsModel($app);
             $id = (int)$request->get('id', 0);
             $comment = $commentsModel->getComment($id);
             $this->_view['comment'] = $comment;
-                if (count($comment)) {
+            if (count($comment)) {
                 $form = $app['form.factory']
                     ->createBuilder(new CommentForm($app), $comment)->getForm();
                 $form->remove('contence');
@@ -283,20 +319,32 @@ class CommentsController implements ControllerProviderInterface
                     $commentsModel = new  CommentsModel($app);
                     $commentsModel->deleteComment($data['idcomment']);
                     $app['session']->getFlashBag()->add(
-                        'message', array(
+                        'message',
+                        array(
                             'type' => 'danger',
                             'content' => $app['translator']
                                 ->trans('Comment deleted')
                         )
                     );
                     return $app->redirect(
-                        $app['url_generator']->generate('ads_view', array('id' => $comment['idad'])), 301
+                        $app['url_generator']->
+                        generate(
+                            'ads_view',
+                            array(
+                                'id' => $comment['idad']
+                            )
+                        ),
+                        301
                     );
                 }
                 $this->_view['form'] = $form->createView();
             } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('comments_add'), 301
+                    $app['url_generator']->
+                    generate(
+                        'comments_add'
+                    ),
+                    301
                 );
             }
         } catch (\PDOException $e) {

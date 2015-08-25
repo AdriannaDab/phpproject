@@ -77,7 +77,9 @@ class UserForm extends AbstractType
             )
         )
             ->add(
-                'login', 'text', array(
+                'login',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -104,7 +106,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'firstname', 'text', array(
+                'firstname',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -131,7 +135,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'surname', 'text', array(
+                'surname',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -158,7 +164,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'email', 'email', array(
+                'email',
+                'email',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -183,7 +191,9 @@ class UserForm extends AbstractType
             )
 
             ->add(
-                'street', 'text', array(
+                'street',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -211,7 +221,9 @@ class UserForm extends AbstractType
             )
 
             ->add(
-                'password', 'password', array(
+                'password',
+                'password',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -238,7 +250,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'confirm_password', 'password', array(
+                'confirm_password',
+                'password',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -265,7 +279,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'new_password', 'password', array(
+                'new_password',
+                'password',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -292,7 +308,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'confirm_new_password', 'password', array(
+                'confirm_new_password',
+                'password',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -319,7 +337,9 @@ class UserForm extends AbstractType
                 )
             )
             ->add(
-                'city_name', 'text', array(
+                'city_name',
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(
@@ -425,7 +445,7 @@ class UserForm extends AbstractType
         $rolesModel = new InformationModel($app);
         $roles = $rolesModel ->getAllRoles();
         $dict = array();
-        foreach ($roles as  $role){
+        foreach ($roles as $role) {
             $dict [ $role ['idrole']] = $role['role_name'];
         }return $dict;
     }
@@ -443,7 +463,7 @@ class UserForm extends AbstractType
         $citiesModel = new InformationModel($app);
         $cities = $citiesModel ->getAllCities();
         $dict = array();
-        foreach ($cities as  $city){
+        foreach ($cities as $city) {
             $dict [ $city ['idcity']] = $city['city_name'];
         }return $dict;
     }
@@ -462,7 +482,7 @@ class UserForm extends AbstractType
         $provincesModel = new InformationModel($app);
         $provinces = $provincesModel ->getAllProvinces();
         $dict = array();
-        foreach ($provinces as  $province){
+        foreach ($provinces as $province) {
             $dict [ $province ['idprovince']] = $province['province_name'];
         }return $dict;
     }
@@ -481,9 +501,8 @@ class UserForm extends AbstractType
         $countriesModel = new InformationModel($app);
         $countries = $countriesModel ->getAllCountries();
         $dict = array();
-        foreach ($countries as  $country){
+        foreach ($countries as $country) {
             $dict [ $country ['idcountry']] = $country['country_name'];
         }return $dict;
     }
-
 }

@@ -63,7 +63,8 @@ class PhotoForm extends AbstractType
         )
             ->add(
                 'photo_name',
-                'hidden', array(
+                'hidden',
+                array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'digit'))
                     ),
@@ -74,7 +75,8 @@ class PhotoForm extends AbstractType
             )
             ->add(
                 'file',
-                'file', array(
+                'file',
+                array(
                     'label' => 'Choose file',
                     'constraints' => array(
                         new Assert\File(
@@ -96,7 +98,8 @@ class PhotoForm extends AbstractType
             )
             ->add(
                 'photo_alt',
-                'text', array(
+                'text',
+                array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(

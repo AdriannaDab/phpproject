@@ -12,6 +12,7 @@
 namespace Model;
 
 use Silex\Application;
+
 /**
  * Class InformationModel
  *
