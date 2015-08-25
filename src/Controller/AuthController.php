@@ -69,16 +69,19 @@ class AuthController implements ControllerProviderInterface
      */
     public function loginAction(Application $app, Request $request)
     {
-        $user = array(
-            'login' => $app['session']->get('_security.last_username')
-        );
-        $form = $app['form.factory']->createBuilder(new LoginForm(), $user)
-            ->getForm();
-        $this->view = array(
-            'form' => $form->createView(),
-            'error' => $app['security.last_error']($request)
-        );
-        return $app['twig']->render('auth/login.twig', $this->view);
+        try {
+            $user = array(
+                'login' => $app['session']->get('_security.last_username')
+            );
+            $form = $app['form.factory']->createBuilder(new LoginForm(), $user)
+                ->getForm();
+            $this->view = array(
+                'form' => $form->createView(),
+                'error' => $app['security.last_error']($request)
+            );
+        } catch (AuthException $e) {
+            echo $app['translator']->trans('Caught Auth Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('auth/login.twig', $this->view);
     }
 
     /**

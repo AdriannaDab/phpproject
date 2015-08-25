@@ -127,27 +127,30 @@ class CategoriesController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
-        $categoriesModel = new CategoriesModel($app);
-        $this->_view['category'] = $categoriesModel->getCategory($id);
-        $this->_view['category'] = $categoriesModel->checkCategoryId($id);
-        if ($this->_view['category']) {
-            $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
-            return $app['twig']
-                ->render('categories/view.twig', array(
-                    'ads' => $this->_view['category']));
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Category not found')
-                )
+        try {
+            $id = (int)$request->get('id', 0);
+            $categoriesModel = new CategoriesModel($app);
+            $this->_view['category'] = $categoriesModel->getCategory($id);
+            $this->_view['category'] = $categoriesModel->checkCategoryId($id);
+            if ($this->_view['category']) {
+                $this->_view['category'] = $categoriesModel->getAdsListByIdcategory($id);
+                return $app['twig']
+                    ->render('categories/view.twig', array(
+                        'ads' => $this->_view['category']));
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Category not found')
+                    )
+                );
+            }
+        } catch (CategoriesException $e) {
+                echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } return $app->redirect(
+            $app['url_generator']->generate('categories_index'), 301
             );
-            return $app->redirect(
-                $app['url_generator']->generate('categories_index'), 301
-            );
-        }
     }
 
     /**
@@ -160,28 +163,31 @@ class CategoriesController implements ControllerProviderInterface
      */
     public function addAction(Application $app, Request $request)
     {
-        $data = array();
-        $form = $app['form.factory']
-            ->createBuilder(new CategoryForm($app), $data)->getForm();
-        $form->remove('iduser');
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $data = $form->getData();
-            $categoriesModel = new CategoriesModel($app);
-            $categoriesModel->add($data);
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'success',
-                    'content' => $app['translator']
-                        ->trans('New category added')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate('categories_index'), 301
-            );
-        }
-        $this->_view['form'] = $form->createView();
-        return $app['twig']->render('categories/add.twig', $this->_view);
+        try {
+            $data = array();
+            $form = $app['form.factory']
+                ->createBuilder(new CategoryForm($app), $data)->getForm();
+            $form->remove('iduser');
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $categoriesModel = new CategoriesModel($app);
+                $categoriesModel->add($data);
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'success',
+                        'content' => $app['translator']
+                            ->trans('New category added')
+                    )
+                );
+                return $app->redirect(
+                    $app['url_generator']->generate('categories_index'), 301
+                );
+            }
+            $this->_view['form'] = $form->createView();
+        } catch (CategoriesException $e) {
+            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('categories/add.twig', $this->_view);
     }
 
     /**
@@ -194,36 +200,39 @@ class CategoriesController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
-        $categoriesModel = new CategoriesModel($app);
-        $id = (int) $request->get('id', 0);
-        $category = $categoriesModel->getCategory($id);
-        if (count($category)) {
-            $form = $app['form.factory']
-                ->createBuilder(new CategoryForm($app), $category)->getForm();
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $categoriesModel = new CategoriesModel($app);
-                $categoriesModel->edit($data);
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'success',
-                        'content' => $app['translator']
-                            ->trans('Category edited')
-                    )
-                );
+        try {
+            $categoriesModel = new CategoriesModel($app);
+            $id = (int) $request->get('id', 0);
+            $category = $categoriesModel->getCategory($id);
+            if (count($category)) {
+                $form = $app['form.factory']
+                    ->createBuilder(new CategoryForm($app), $category)->getForm();
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $categoriesModel = new CategoriesModel($app);
+                    $categoriesModel->edit($data);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Category edited')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate('categories_index'), 301
+                    );
+                }
+                $this->_view['form'] = $form->createView();
+                $this->_view['id'] = $id;
+            } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('categories_index'), 301
+                    $app['url_generator']->generate('categories_add'), 301
                 );
             }
-            $this->_view['form'] = $form->createView();
-            $this->_view['id'] = $id;
-        } else {
-            return $app->redirect(
-                $app['url_generator']->generate('categories_add'), 301
-            );
-        }
-        return $app['twig']->render('categories/edit.twig', $this->_view);
+        } catch (CategoriesException $e) {
+            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('categories/edit.twig', $this->_view);
     }
 
     /**
@@ -236,40 +245,55 @@ class CategoriesController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $categoriesModel = new CategoriesModel($app);
-        $id = (int) $request->get('id', 0);
-        $this->_view['category']= $categoriesModel->checkCategoryId($id);
-        if ($this->_view['category']) {
-            $this->_view['category']= $categoriesModel->getAdsListByIdcategory($id);
-            if (!$this->_view['category']) {
-                $this->_view['category']= $categoriesModel->getCategory($id);
-                $category = $categoriesModel->getCategory($id);
-                $this->_view['category'] = $category;
-                if (count($category)) {
-                    $form = $app['form.factory']
-                        ->createBuilder(new CategoryForm($app), $category)->getForm();
-                    $form->remove('category_name');
-                    $form->remove('iduser');
-                    $form->handleRequest($request);
-                    if ($form->isValid()) {
-                        $data = $form->getData();
-                        $categoriesModel = new CategoriesModel($app);
-                        $categoriesModel->deleteCategory($data['idcategory']);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'danger',
-                                'content' => $app['translator']
-                                    ->trans('Category deleted')
-                            )
-                        );
+        try {
+            $categoriesModel = new CategoriesModel($app);
+            $id = (int) $request->get('id', 0);
+            $this->_view['category']= $categoriesModel->checkCategoryId($id);
+            if ($this->_view['category']) {
+                $this->_view['category']= $categoriesModel->getAdsListByIdcategory($id);
+                if (!$this->_view['category']) {
+                    $this->_view['category']= $categoriesModel->getCategory($id);
+                    $category = $categoriesModel->getCategory($id);
+                    $this->_view['category'] = $category;
+                    if (count($category)) {
+                        $form = $app['form.factory']
+                            ->createBuilder(new CategoryForm($app), $category)->getForm();
+                        $form->remove('category_name');
+                        $form->remove('iduser');
+                        $form->handleRequest($request);
+                        if ($form->isValid()) {
+                            $data = $form->getData();
+                            $categoriesModel = new CategoriesModel($app);
+                            $categoriesModel->deleteCategory($data['idcategory']);
+                            $app['session']->getFlashBag()->add(
+                                'message', array(
+                                    'type' => 'danger',
+                                    'content' => $app['translator']
+                                        ->trans('Category deleted')
+                                )
+                            );
+                            return $app->redirect(
+                                $app['url_generator']->generate('categories_index'), 301
+                            );
+                        }
+                        $this->_view['form'] = $form->createView();
+                    } else {
                         return $app->redirect(
-                            $app['url_generator']->generate('categories_index'), 301
+                            $app['url_generator']->generate('categories_add'), 301
                         );
                     }
-                    $this->_view['form'] = $form->createView();
                 } else {
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'danger',
+                            'content' => $app['translator']
+                                ->trans('Can not delete category with ads')
+                        )
+                    );
                     return $app->redirect(
-                        $app['url_generator']->generate('categories_add'), 301
+                        $app['url_generator']->generate(
+                            'categories_index'
+                        ), 301
                     );
                 }
             } else {
@@ -277,7 +301,7 @@ class CategoriesController implements ControllerProviderInterface
                     'message', array(
                         'type' => 'danger',
                         'content' => $app['translator']
-                            ->trans('Can not delete category with ads')
+                            ->trans('Did not found category')
                     )
                 );
                 return $app->redirect(
@@ -286,20 +310,8 @@ class CategoriesController implements ControllerProviderInterface
                     ), 301
                 );
             }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Did not found category')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    'categories_index'
-                ), 301
-            );
-        }
-        return $app['twig']->render('categories/delete.twig', $this->_view);
+        } catch (CategoriesException $e) {
+            echo $app['translator']->trans('Caught Categories Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('categories/delete.twig', $this->_view);
     }
 }

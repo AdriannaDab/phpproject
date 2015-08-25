@@ -116,13 +116,16 @@ class UsersController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
-        $usersModel = new UsersModel($app);
-        $this->_view['user'] = $usersModel->CheckUser($id);
-        if (!($this->_view['user'])) {
-            throw new NotFoundHttpException("User not found");
-        }
-        return $app['twig']->render('users/index.twig', $this->_view);
+        try {
+            $id = (int)$request->get('id', 0);
+            $usersModel = new UsersModel($app);
+            $this->_view['user'] = $usersModel->CheckUser($id);
+            if (!($this->_view['user'])) {
+                throw new NotFoundHttpException("User not found");
+            }
+        }catch (UsersException $e) {
+            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('users/index.twig', $this->_view);
     }
 
 
@@ -138,28 +141,31 @@ class UsersController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->CheckUser($id);
-        if (count($user)) {
-            return $app['twig']->render(
-                'users/view.twig', array(
-                    'user' => $user
-                )
-            );
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('User data not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    'users_data'
-                ), 301
-            );
-        }
+        try {
+            $id = $this->_model->getIdCurrentUser($app);
+            $user = $this->_model->CheckUser($id);
+            if (count($user)) {
+                return $app['twig']->render(
+                    'users/view.twig', array(
+                        'user' => $user
+                    )
+                );
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('User data not found')
+                    )
+                );
+            }
+        }catch (UsersException $e) {
+            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
+        }return $app->redirect(
+            $app['url_generator']->generate(
+                'users_data'
+            ), 301
+        );
     }
 
     /**
@@ -172,25 +178,29 @@ class UsersController implements ControllerProviderInterface
      */
     public function moreAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
-        $usersModel = new UsersModel($app);
-        $user = $this->_model->CheckUser($id);
-        if ($user) {
-            $this->_view = $usersModel->getAdsListByIduser($id);
-            return $app['twig']
-                ->render('users/show.twig', array('ads' => $this->_view));
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('User not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate('users_view'), 301
-            );
-        }
+        try {
+            $id = (int)$request->get('id', 0);
+            $usersModel = new UsersModel($app);
+            $user = $this->_model->CheckUser($id);
+            if ($user) {
+                $this->_view = $usersModel->getAdsListByIduser($id);
+                return $app['twig']
+                    ->render('users/show.twig', array('ads' => $this->_view));
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('User not found')
+                    )
+                );
+            }
+        }catch (UsersException $e) {
+            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
+        }return $app->redirect(
+            $app['url_generator']->generate('users_view'), 301
+        );
+
     }
 
     /**
@@ -203,25 +213,28 @@ class UsersController implements ControllerProviderInterface
      */
     public function showAction(Application $app, Request $request)
     {
-        $usersModel = new UsersModel($app);
-        $id = $this->_model->getIdCurrentUser($app);
-        $user = $this->_model->CheckUser($id);
-        if ($user) {
-            $this->_view = $usersModel->getAdsListByIduser($id);
-            return $app['twig']
-                ->render('users/show.twig', array('ads' => $this->_view));
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('User data not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate('users_view'), 301
-            );
-        }
+        try {
+            $usersModel = new UsersModel($app);
+            $id = $this->_model->getIdCurrentUser($app);
+            $user = $this->_model->CheckUser($id);
+            if ($user) {
+                $this->_view = $usersModel->getAdsListByIduser($id);
+                return $app['twig']
+                    ->render('users/show.twig', array('ads' => $this->_view));
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('User data not found')
+                    )
+                );
+            }
+        }catch (UsersException $e) {
+            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
+        } return $app->redirect(
+            $app['url_generator']->generate('users_view'), 301
+        );
     }
 
     /**
@@ -553,8 +566,8 @@ class UsersController implements ControllerProviderInterface
                     $app['url_generator']->generate('users_view'), 301
                 );
             }
-        } catch (Exception $e) {
-            echo $app['translator']->trans('Caught Edit Exception: ') .  $e->getMessage() . "\n";
+        } catch (UsersException $e) {
+            echo $app['translator']->trans('Caught Users Exception ') .  $e->getMessage() . "\n";
         } return $app['twig']->render('users/delete.twig', $this->_view);
     }
 

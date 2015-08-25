@@ -86,13 +86,16 @@ class AboutsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
+        try {
+            $about = $this->_model->getAbout();
+        } catch (AboutException $e) {
+            echo $app['translator']->trans('Caught About Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render(
+                'about/view.twig', array(
+                    'about' => $about
+                )
+            );
 
-        $about = $this->_model->getAbout();
-        return $app['twig']->render(
-            'about/view.twig', array(
-                'about' => $about
-            )
-        );
     }
     /**
      * Edit about me
@@ -105,6 +108,7 @@ class AboutsController implements ControllerProviderInterface
      */
     public function editAction(Application $app, Request $request)
     {
+        try {
         $aboutsModel = new AboutsModel($app);
         $idabout = (int) $request->get('idabout', 0);
         $about = $aboutsModel->getAbout();
@@ -154,7 +158,9 @@ class AboutsController implements ControllerProviderInterface
                     $app['url_generator']->generate('abouts_view'), 301
                 );
             }
-            return $app->redirect(
+        } catch (AboutException $e) {
+            echo $app['translator']->trans('Caught About Exception ') .  $e->getMessage() . "\n";
+        } return $app->redirect(
                 $app['url_generator']->generate("abouts_edit"), 301
             );
         }

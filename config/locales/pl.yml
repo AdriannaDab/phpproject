@@ -165,3 +165,10 @@ User with this login already exists: Użytkownik o tym loginie już istnieje
 Password changed: Hasło zostało zmienione
 Passwords are different: Hasła nie są takie same
 Password is wrong: Hasło jest niepoprawne
+Caught About Exeption: Błąd w AboutsController
+Caught Ad Exeption: Błąd w AdsController
+Caught Category Exeption: Błąd w CategoriesController
+Caught Comment Exeption: Błąd w CommentsController
+Caught Auth Exeption: Błąd w AuthController
+Caught Photos Exeption: Błąd w PhotosController
+Caught Users Exeption: Błąd w UsersController

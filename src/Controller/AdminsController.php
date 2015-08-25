@@ -123,28 +123,31 @@ class AdminsController implements ControllerProviderInterface
      */
     public function viewAction(Application $app, Request $request)
     {
-        $id = (int)$request->get('id', 0);
-        $adminsModel = new AdminsModel($app);
-        $admin = $this->_view['admin'] = $adminsModel->getUser($id);
-        if (count($admin)) {
-            return $app['twig']->render(
-                'admin/view.twig', array(
-                    'admin' => $admin
-                )
-            );
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => 'User data not found'
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    'admins_index'
-                ), 301
-            );
-        }
+        try {
+            $id = (int)$request->get('id', 0);
+            $adminsModel = new AdminsModel($app);
+            $admin = $this->_view['admin'] = $adminsModel->getUser($id);
+            if (count($admin)) {
+                return $app['twig']->render(
+                    'admin/view.twig', array(
+                        'admin' => $admin
+                    )
+                );
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => 'User data not found'
+                    )
+                );
+            }
+        } catch (AdminException $e) {
+                echo $app['translator']->trans('Caught Admin Exception ') .  $e->getMessage() . "\n";
+        } return $app->redirect(
+            $app['url_generator']->generate(
+                'admins_index'
+            ), 301
+        );
 
     }
 
@@ -159,52 +162,54 @@ class AdminsController implements ControllerProviderInterface
      */
     public function roleAction(Application $app, Request $request)
     {
-
-        $adminsModel = new AdminsModel($app);
-        $id = (int) $request->get('id', 0);
-        $admin = $adminsModel->getUserId($id);
-        if (count($admin)) {
-            $data = array(
-                'iduser' => $id,
-                'idrole' => $admin['idrole'],
-            );
-            $form = $app['form.factory']
-                ->createBuilder(new UserForm($app), $data)->getForm();
-            $form->remove('login');
-            $form->remove('firstname');
-            $form->remove('surname');
-            $form->remove('email');
-            $form->remove('password');
-            $form->remove('confirm_password');
-            $form->remove('new_password');
-            $form->remove('confirm_new_password');
-            $form->remove('street');
-            $form->remove('city_name');
-            $form->remove('idcity');
-            $form->remove('idprovince');
-            $form->remove('idcountry');
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $adminsModel = new AdminsModel($app);
-                $adminsModel->changeRole($data);
-                $app['session']->getFlashBag()->add(
-                    'message', array(
-                        'type' => 'success',
-                        'content' => $app['translator']
-                            ->trans('Role changed')
-                    )
+        try {
+            $adminsModel = new AdminsModel($app);
+            $id = (int) $request->get('id', 0);
+            $admin = $adminsModel->getUserId($id);
+            if (count($admin)) {
+                $data = array(
+                    'iduser' => $id,
+                    'idrole' => $admin['idrole'],
                 );
+                $form = $app['form.factory']
+                    ->createBuilder(new UserForm($app), $data)->getForm();
+                $form->remove('login');
+                $form->remove('firstname');
+                $form->remove('surname');
+                $form->remove('email');
+                $form->remove('password');
+                $form->remove('confirm_password');
+                $form->remove('new_password');
+                $form->remove('confirm_new_password');
+                $form->remove('street');
+                $form->remove('city_name');
+                $form->remove('idcity');
+                $form->remove('idprovince');
+                $form->remove('idcountry');
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $adminsModel = new AdminsModel($app);
+                    $adminsModel->changeRole($data);
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'success',
+                            'content' => $app['translator']
+                                ->trans('Role changed')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate('admins_index', array('id' => $admin['iduser'])), 301
+                    );
+                }
+            } else {
                 return $app->redirect(
-                    $app['url_generator']->generate('admins_index', array('id' => $admin['iduser'])), 301
+                    $app['url_generator']->generate('admins_index'), 301
                 );
             }
-        } else {
-            return $app->redirect(
-                $app['url_generator']->generate('admins_index'), 301
-            );
-        }
-        return $app['twig']->render('admin/role.twig', array(
+        } catch (AdminException $e) {
+            echo $app['translator']->trans('Caught Admin Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('admin/role.twig', array(
             'form' => $form->createView()));
     }
 
@@ -219,52 +224,67 @@ class AdminsController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $adminsModel = new AdminsModel($app);
-        $id = (int) $request->get('id', 0);
-        $this->_view['admin']= $adminsModel->getUserId($id);
-        if ($this->_view['admin']) {
-            $this->_view['admin']= $adminsModel->getAdsListByIduser($id);
-            if (!$this->_view['admin']) {
-                $this->_view['admin']= $adminsModel->getDeleteUser($id);
-                $admin = $adminsModel->getDeleteUser($id);
-                $this->_view['admin'] = $admin;
-                if (count($admin)) {
-                    $form = $app['form.factory']
-                        ->createBuilder(new UserForm($app), $admin)->getForm();
-                    $form->remove('login');
-                    $form->remove('firstname');
-                    $form->remove('surname');
-                    $form->remove('email');
-                    $form->remove('password');
-                    $form->remove('confirm_password');
-                    $form->remove('new_password');
-                    $form->remove('confirm_new_password');
-                    $form->remove('street');
-                    $form->remove('city_name');
-                    $form->remove('idrole');
-                    $form->remove('idcity');
-                    $form->remove('idprovince');
-                    $form->remove('idcountry');
-                    $form->handleRequest($request);
-                    if ($form->isValid()) {
-                        $data = $form->getData();
-                        $adminsModel = new AdminsModel($app);
-                        $adminsModel->deleteUser($data['iduser']);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'danger',
-                                'content' => $app['translator']
-                                    ->trans('User deleted')
-                            )
-                        );
+        try{
+            $adminsModel = new AdminsModel($app);
+            $id = (int) $request->get('id', 0);
+            $this->_view['admin']= $adminsModel->getUserId($id);
+            if ($this->_view['admin']) {
+                $this->_view['admin']= $adminsModel->getAdsListByIduser($id);
+                if (!$this->_view['admin']) {
+                    $this->_view['admin']= $adminsModel->getDeleteUser($id);
+                    $admin = $adminsModel->getDeleteUser($id);
+                    $this->_view['admin'] = $admin;
+                    if (count($admin)) {
+                        $form = $app['form.factory']
+                            ->createBuilder(new UserForm($app), $admin)->getForm();
+                        $form->remove('login');
+                        $form->remove('firstname');
+                        $form->remove('surname');
+                        $form->remove('email');
+                        $form->remove('password');
+                        $form->remove('confirm_password');
+                        $form->remove('new_password');
+                        $form->remove('confirm_new_password');
+                        $form->remove('street');
+                        $form->remove('city_name');
+                        $form->remove('idrole');
+                        $form->remove('idcity');
+                        $form->remove('idprovince');
+                        $form->remove('idcountry');
+                        $form->handleRequest($request);
+                        if ($form->isValid()) {
+                            $data = $form->getData();
+                            $adminsModel = new AdminsModel($app);
+                            $adminsModel->deleteUser($data['iduser']);
+                            $app['session']->getFlashBag()->add(
+                                'message', array(
+                                    'type' => 'danger',
+                                    'content' => $app['translator']
+                                        ->trans('User deleted')
+                                )
+                            );
+                            return $app->redirect(
+                                $app['url_generator']->generate('admins_index'), 301
+                            );
+                        }
+                        $this->_view['form'] = $form->createView();
+                    } else {
                         return $app->redirect(
                             $app['url_generator']->generate('admins_index'), 301
                         );
                     }
-                    $this->_view['form'] = $form->createView();
                 } else {
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'danger',
+                            'content' => $app['translator']
+                                ->trans('Can not delete user with ads')
+                        )
+                    );
                     return $app->redirect(
-                        $app['url_generator']->generate('admins_index'), 301
+                        $app['url_generator']->generate(
+                            'admins_index'
+                        ), 301
                     );
                 }
             } else {
@@ -272,7 +292,7 @@ class AdminsController implements ControllerProviderInterface
                     'message', array(
                         'type' => 'danger',
                         'content' => $app['translator']
-                            ->trans('Can not delete user with ads')
+                            ->trans('Did not found user')
                     )
                 );
                 return $app->redirect(
@@ -281,20 +301,8 @@ class AdminsController implements ControllerProviderInterface
                     ), 301
                 );
             }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Did not found user')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    'admins_index'
-                ), 301
-            );
-        }
-        return $app['twig']->render('admin/delete.twig', $this->_view);
+        } catch (AdminException $e) {
+            echo $app['translator']->trans('Caught Admin Exception ') .  $e->getMessage() . "\n";
+        } return $app['twig']->render('admin/delete.twig', $this->_view);
     }
 }

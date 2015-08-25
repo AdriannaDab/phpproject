@@ -105,31 +105,35 @@ class PhotosController implements ControllerProviderInterface
      */
     public function indexAction(Application $app, Request $request)
     {
-        $idad = (int)$request->get('idad', 0);
-        $adsModel = new AdsModel($app);
-        $check = $this->_ads = $adsModel->checkAdsId($idad);
-        if ($check) {
-            $photosModel = new PhotosModel($app);
-            $photos = $this->_model=$photosModel->getPhotosByAd($idad);
-            return $app['twig']->render(
-                'photos/index.twig', array(
-                    'photos' => $photos
-                )
-            );
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Ad not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    '/ads/'
-                ), 301
-            );
-        }
+        try {
+            $idad = (int)$request->get('idad', 0);
+            $adsModel = new AdsModel($app);
+            $check = $this->_ads = $adsModel->checkAdsId($idad);
+            if ($check) {
+                $photosModel = new PhotosModel($app);
+                $photos = $this->_model = $photosModel->getPhotosByAd($idad);
+                return $app['twig']->render(
+                    'photos/index.twig', array(
+                        'photos' => $photos
+                    )
+                );
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Ad not found')
+                    )
+                );
+            }
+        }catch (PhotosException $e) {
+            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
+        }return $app->redirect(
+            $app['url_generator']->generate(
+                '/ads/'
+            ), 301
+        );
+
     }
 
     /**
@@ -143,86 +147,90 @@ class PhotosController implements ControllerProviderInterface
      */
     public function uploadAction(Application $app, Request $request)
     {
-        $idad = (int)$request->get('idad', 0);
-        $userModel = new UsersModel($app);
-        $iduser = $userModel->getIdCurrentUser($app);
-        $adsModel = new AdsModel($app);
-        $check = $this->_ads = $adsModel->checkAdsId($idad);
-        if ($check) {
-            $date = date('Y-m-d H:i:s');
-            $data = array(
-                'idad' => $idad,
-                'iduser' => $iduser,
-                'photo_date'=>$date
-            );
-            $form = $app['form.factory']
-                ->createBuilder(new PhotoForm($app), $data)->getForm();
-            if ($request->isMethod('POST')) {
-                $form->bind($request);
-                if ($form->isValid()) {
-                    try {
-                        $files = $request->files->get($form->getName());
-                        $data = $form->getData();
-                        $path
-                            = dirname(dirname(dirname(__FILE__))) .
-                            '/web/media';
-                        $originalFilename
-                            = $files['file']->getClientOriginalName();
-                        $newFilename
-                            = $this->_model->createName($originalFilename);
-                        $files['file']->move($path, $newFilename);
-                        $this->_model->savePhoto($newFilename, $data);
-                        $app['session']->getFlashBag()->add(
-                            'message', array(
-                                'type' => 'success',
-                                'content' => $app['translator']
-                                    ->trans('Photo uploaded')
-                            )
-                        );
-                        return $app->redirect(
-                            $app['url_generator']->generate(
-                                '/ads/'
-                            ), 301
-                        );
-                    } catch (Exception $e) {
+        try {
+            $idad = (int)$request->get('idad', 0);
+            $userModel = new UsersModel($app);
+            $iduser = $userModel->getIdCurrentUser($app);
+            $adsModel = new AdsModel($app);
+            $check = $this->_ads = $adsModel->checkAdsId($idad);
+            if ($check) {
+                $date = date('Y-m-d H:i:s');
+                $data = array(
+                    'idad' => $idad,
+                    'iduser' => $iduser,
+                    'photo_date' => $date
+                );
+                $form = $app['form.factory']
+                    ->createBuilder(new PhotoForm($app), $data)->getForm();
+                if ($request->isMethod('POST')) {
+                    $form->bind($request);
+                    if ($form->isValid()) {
+                        try {
+                            $files = $request->files->get($form->getName());
+                            $data = $form->getData();
+                            $path
+                                = dirname(dirname(dirname(__FILE__))) .
+                                '/web/media';
+                            $originalFilename
+                                = $files['file']->getClientOriginalName();
+                            $newFilename
+                                = $this->_model->createName($originalFilename);
+                            $files['file']->move($path, $newFilename);
+                            $this->_model->savePhoto($newFilename, $data);
+                            $app['session']->getFlashBag()->add(
+                                'message', array(
+                                    'type' => 'success',
+                                    'content' => $app['translator']
+                                        ->trans('Photo uploaded')
+                                )
+                            );
+                            return $app->redirect(
+                                $app['url_generator']->generate(
+                                    '/ads/'
+                                ), 301
+                            );
+                        } catch (Exception $e) {
+                            $app['session']->getFlashBag()->add(
+                                'message', array(
+                                    'type' => 'danger',
+                                    'content' => $app['translator']
+                                        ->trans('Can not upload photo')
+                                )
+                            );
+                        }
+                    } else {
                         $app['session']->getFlashBag()->add(
                             'message', array(
                                 'type' => 'danger',
                                 'content' => $app['translator']
-                                    ->trans('Can not upload photo')
+                                    ->trans('Wrong data')
                             )
                         );
                     }
-                } else {
-                    $app['session']->getFlashBag()->add(
-                        'message', array(
-                            'type' => 'danger',
-                            'content' => $app['translator']
-                                ->trans('Wrong data')
-                        )
-                    );
                 }
+                return $app['twig']->render(
+                    'photos/upload.twig', array(
+                        'form' => $form->createView(),
+                        'idad' => $idad
+                    )
+                );
+            } else {
+                $app['session']->getFlashBag()->add(
+                    'message', array(
+                        'type' => 'danger',
+                        'content' => $app['translator']
+                            ->trans('Photo not found')
+                    )
+                );
             }
-            return $app['twig']->render(
-                'photos/upload.twig', array(
-                    'form' => $form->createView(),
-                    'idad' => $idad
-                )
-            );
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Photo not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    '/ads/'
-                ), 301
-            );
-        }
+        } catch (PhotosException $e) {
+            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
+        }return $app->redirect(
+            $app['url_generator']->generate(
+                '/ads/'
+            ), 301
+        );
+
     }
 
     /**
@@ -237,21 +245,22 @@ class PhotosController implements ControllerProviderInterface
      */
     public function deleteAction(Application $app, Request $request)
     {
-        $name = (string)$request->get('photo_name', 0);
-        $photosModel = new PhotosModel($app);
-        $check = $this->_model = $photosModel->checkPhotoName($name);
-        if ($check) {
-            $photo = $this->_model= $photosModel->getPhotoByName($name);
-            $path = dirname(dirname(dirname(__FILE__))) . '/web/media/' . $name;
-            if (count($photo)) {
-                $data = array();
-                $form = $app['form.factory']
-                    ->createBuilder(new PhotoForm($app), $data)->getForm();
-                $form->remove('photo_name');
-                $form->remove('file');
-                $form->remove('photo_alt');
-                $form->handleRequest($request);
-                if ($form->isValid()) {
+        try {
+            $name = (string)$request->get('photo_name', 0);
+            $photosModel = new PhotosModel($app);
+            $check = $this->_model = $photosModel->checkPhotoName($name);
+            if ($check) {
+                $photo = $this->_model = $photosModel->getPhotoByName($name);
+                $path = dirname(dirname(dirname(__FILE__))) . '/web/media/' . $name;
+                if (count($photo)) {
+                    $data = array();
+                    $form = $app['form.factory']
+                        ->createBuilder(new PhotoForm($app), $data)->getForm();
+                    $form->remove('photo_name');
+                    $form->remove('file');
+                    $form->remove('photo_alt');
+                    $form->handleRequest($request);
+                    if ($form->isValid()) {
                         $data = $form->getData();
                         try {
                             $model = unlink($path);
@@ -276,12 +285,26 @@ class PhotosController implements ControllerProviderInterface
                             $errors[] = 'Plik nie został usuniety';
                         }
 
+                    }
+                    return $app['twig']->render(
+                        'photos/delete.twig', array(
+                            'form' => $form->createView()
+                        )
+                    );
+                } else {
+                    $app['session']->getFlashBag()->add(
+                        'message', array(
+                            'type' => 'danger',
+                            'content' => $app['translator']
+                                ->trans('Photo not found')
+                        )
+                    );
+                    return $app->redirect(
+                        $app['url_generator']->generate(
+                            'photos_manager'
+                        ), 301
+                    );
                 }
-                return $app['twig']->render(
-                    'photos/delete.twig', array(
-                        'form' => $form->createView()
-                    )
-                );
             } else {
                 $app['session']->getFlashBag()->add(
                     'message', array(
@@ -290,26 +313,15 @@ class PhotosController implements ControllerProviderInterface
                             ->trans('Photo not found')
                     )
                 );
-                return $app->redirect(
-                    $app['url_generator']->generate(
-                        'photos_manager'
-                    ), 301
-                );
             }
-        } else {
-            $app['session']->getFlashBag()->add(
-                'message', array(
-                    'type' => 'danger',
-                    'content' => $app['translator']
-                        ->trans('Photo not found')
-                )
-            );
-            return $app->redirect(
-                $app['url_generator']->generate(
-                    'photos_manager'
-                ), 301
-            );
-        }
+        } catch (PhotosException $e) {
+            echo $app['translator']->trans('Caught Photos Exception ') .  $e->getMessage() . "\n";
+        }return $app->redirect(
+            $app['url_generator']->generate(
+                'photos_manager'
+            ), 301
+        );
+
     }
 
     /**
@@ -323,25 +335,24 @@ class PhotosController implements ControllerProviderInterface
      */
     public function managerAction(Application $app, Request $request)
     {
-
-        $userModel = new UsersModel($app);
-        $iduser = $userModel->getIdCurrentUser($app);
-        $user = $userModel->getRole($iduser);
-        $photosModel = new PhotosModel($app);
-        if ($user['role']==1) {
-            $photos = $photosModel ->  getPhotosUser($iduser);
-        } else {
-            $idModerator = $photosModel->getMod($iduser);
-            $photos = $photosModel->getPhotosMod($idModerator['iduser']);
+        try {
+            $userModel = new UsersModel($app);
+            $iduser = $userModel->getIdCurrentUser($app);
+            $user = $userModel->getRole($iduser);
+            $photosModel = new PhotosModel($app);
+            if ($user['role'] == 1) {
+                $photos = $photosModel->getPhotosUser($iduser);
+            } else {
+                $idModerator = $photosModel->getMod($iduser);
+                $photos = $photosModel->getPhotosMod($idModerator['iduser']);
+            }
+        } catch (PhotosException $e) {
+            echo $app['translator']->trans('Caught Photos Exception ') . $e->getMessage() . "\n";
         }
-            return $app['twig']->render(
-                'photos/manager.twig', array(
-                    'photos' => $photos
-                )
-            );
-        }
-
-
-
-
+        return $app['twig']->render(
+            'photos/manager.twig', array(
+                'photos' => $photos
+            )
+        );
+    }
 }
