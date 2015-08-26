@@ -50,7 +50,7 @@ class CommentsModel
     /**
      * Get all comments for ad
      *
-     * @param $id ad id
+     * @param  integer $id id
      *
      * @access public
      *
@@ -79,7 +79,7 @@ class CommentsModel
     /**
      * Gets one comment.
      *
-     * @param Integer $idcomment
+     * @param Integer $idad
      *
      * @access public
      * @return array Associative array with comments
@@ -113,7 +113,7 @@ class CommentsModel
     /* Save comment.
      *
      * @access public
-     * @param array $ad Ad data
+     * @param array $comment Comment data
      * @retun mixed Result
      */
     public function saveComment($comment)
@@ -157,7 +157,6 @@ class CommentsModel
             echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
     }
-
     /**
      * Add single comment data.
      *
@@ -168,45 +167,4 @@ class CommentsModel
      * @param int $iduser User
      * @return array Result
      */
-    public function addComment($data)
-    {
-        $query = 'INSERT INTO ad_comments
-            (contence, comment_date, idad)
-            VALUES (?,?,?)';
-        $this->_db
-            ->executeQuery(
-                $query,
-                array(
-                    $data['contence'],
-                    $data['comment_date'],
-                    $data['idad'],
-                    // $data['iduser']
-                )
-            );
-    }
-
-    /**
-     * Check if comment id exists
-     *
-     * @param $idcomment id comment
-     *
-     * @access public
-     * @return bool true if exists.
-     */
-    public function checkCommentId($id)
-    {
-        $query = '
-          SELECT
-            *
-          FROM
-            ad_comments
-          WHERE
-            idcomment=?';
-        $result = $this->_db->fetchAll($query, array($id));
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

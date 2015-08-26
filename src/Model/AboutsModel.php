@@ -47,7 +47,6 @@ class AboutsModel
     /**
      * Get About
      *
-     * @param $name About name
      *
      * @access public
      * @return array Array with about attributes and values
@@ -91,25 +90,5 @@ class AboutsModel
 
                 )
             );
-    }
-
-    /* Save about.
-    *
-    * @access public
-    * @param array $ad About data
-    * @retun mixed Result
-    */
-    public function saveAbout($about)
-    {
-        if (isset($about['idabout'])
-            && ($about['idabout'] != '')
-            && ctype_digit((string)$about['idabout'])) {
-            $id = $about['idabout'];
-            unset($about['idabout']);
-            return $this->_db->update('about', $about, array('idabout' => $id));
-        } else {
-            return $this->_db->insert('about', $about);
-        }
-
     }
 }

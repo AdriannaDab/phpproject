@@ -14,7 +14,7 @@ namespace Model;
 use Silex\Application;
 
 /**
- * Class CategoriessModel
+ * Class CategoriesModel
  *
 * @category Model
 * @package  Model
@@ -42,27 +42,6 @@ class CategoriesModel
     public function __construct(Application $app)
     {
         $this->_db = $app['db'];
-    }
-
-    /**
-     * Gets all categories.
-     *
-     * @access public
-     * @return array Result
-     */
-    public function getAll()
-    {
-        try {
-            $query = '
-              SELECT
-                idcategory, category_name
-              FROM
-                ad_categories
-            ';
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
     }
 
     /**
@@ -103,7 +82,7 @@ class CategoriesModel
     /**
      * Edit category.
      *
-     * @param  Integer $iduser
+     * @param  $data
      *
      * @access public
      * @return Void
@@ -188,11 +167,7 @@ class CategoriesModel
                       VALUES
                         (?)';
             $this->_db->executeQuery($addid, array($category['idcategory']));
-
-
     }
-
-
 
     /**
      * Get all categories on page
@@ -332,7 +307,7 @@ class CategoriesModel
      * Gets ads from one category
      *
      * @access public
-     * @param array $ads ads data
+     * @param  integer $id category
      * @return array Result
      */
     public function getAdsListByIdcategory($id)
@@ -354,7 +329,7 @@ class CategoriesModel
     /**
      * Check if category id exists
      *
-     * @param $idcategory id category from request
+     * @param integer $idcategory id category from request
      *
      * @access public
      * @return bool True if exists.
@@ -374,6 +349,27 @@ class CategoriesModel
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Gets all categories.
+     *
+     * @access public
+     * @return array Result
+     */
+    public function getAll()
+    {
+        try {
+            $query = '
+              SELECT
+                idcategory, category_name
+              FROM
+                ad_categories
+            ';
+            return $this->_db->fetchAll($query);
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
         }
     }
 }

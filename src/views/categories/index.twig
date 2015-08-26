@@ -16,25 +16,23 @@
         <thead>
             <tr class="active">
                 <th></th>
-                <th class="text-center"><h4><b>{{ 'Name'|trans }}</b></h4></th>
+                <th class="text-center"><b>{{ 'Name'|trans }}</b></th>
                 {% if (is_granted('ROLE_MODERATOR')) or (is_granted('ROLE_ADMIN')) %}
-                    <th colspan="4" class="text-center"><h4><b>{{ 'Moderator login'|trans }}</b></h4></th>
+                <th colspan="4" class="text-center"><b>{{ 'Moderator login'|trans }}</b></th>
                 {% endif %}
-                <th colspan="4" class="text-center"></th>
+                <th colspan="4" class="text-center"> </th>
             </tr>
         </thead>
         <tbody>
             {% for category in categories %}
             <tr class="text-center bg-info">
-                <td></td>
-                <td >
-                    <h4>
+                <td>
+                    <td >
                         <a href="{{ url('categories_view', {'id': category.idcategory}) }}"
                        title="{{ 'View category'|trans }}"
                        class="btn btn-primary btn-lg">{{ category.category_name|e }}</a>
-                    </h4>
-                </td>
-                <td colspan="3" ></td>
+                    </td>
+                <td colspan="3" >
                 {% if (is_granted('ROLE_MODERATOR')) or (is_granted('ROLE_ADMIN'))%}
                 <td>
                     <b>{{ category.login|upper }}</b>
@@ -52,7 +50,7 @@
                            class="btn btn-danger">{{ 'Delete category'|trans }}</a>
                 {% endif %}
                 </td>
-                <td></td>
+                <td>
             </tr>
             {% endfor %}
         </tbody>
@@ -74,6 +72,7 @@
             {% endif  %}
         </ul>
         </div>
+    </div>
     </div>
     {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ url('categories_add') }}" class="btn btn-default" title="{{ 'Add category'|trans }}">

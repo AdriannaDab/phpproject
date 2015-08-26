@@ -84,7 +84,7 @@ class AdminsModel
     /**
      * Connected user with his role.
      *
-     * @param  Integer $iduser
+     * @param  $data
      *
      * @access public
      * @return Void
@@ -334,7 +334,7 @@ class AdminsModel
     /**
      * Check if users id exists
      *
-     * @param $idcategory id category from request
+     * @param $iduser Check id user from request
      *
      * @access public
      * @return bool True if exists.
@@ -358,10 +358,10 @@ class AdminsModel
     }
 
     /**
-     * Gets ads from one user
+     * Gets ad list from one user
      *
      * @access public
-     * @param array $ads ads data
+     * @param $id users ads data
      * @return array Result
      */
     public function getAdsListByIduser($id)

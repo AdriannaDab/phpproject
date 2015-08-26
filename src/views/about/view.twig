@@ -25,7 +25,7 @@
             <h4 class="text-center">
                 {{ 'Contact'|trans }}:<b> {{ about.email|raw}}</b>
             </h4>
-        </p>
+
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ url('abouts_edit') }}" class="btn btn btn-default">
             {{ 'Edit'|trans }}

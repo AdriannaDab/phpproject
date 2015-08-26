@@ -47,31 +47,6 @@ class PhotosModel
         $this->_db = $app['db'];
     }
 
-    /**
-     * Get all photos
-     *
-     * @access public
-     * @return Array array with information about photo
-     */
-    public function getPhotos()
-    {
-        try {
-            $query = '
-              SELECT
-                *
-              FROM
-                ad_photos
-              LEFT JOIN
-                ads
-              ON
-              ad_photos.idad = ads.idad
-            ';
-
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
 
     /**
      * Get photo by Ad id
@@ -254,7 +229,14 @@ class PhotosModel
         }
     }
 
-
+    /**
+     * Gets photos for moderator.
+     *
+     * @param Integer $idModerator
+     *
+     * @access public
+     * @return array Associative array with photos
+     */
     public function getPhotosMod($idModerator = null)
     {
         $select = 'SELECT * FROM ad_photos';
@@ -278,7 +260,14 @@ class PhotosModel
     }
 
 
-
+    /**
+     * Gets moderators list.
+     *
+     * @param Integer $iduser
+     *
+     * @access public
+     * @return array Associative array with moderators
+     */
     public function getMod($iduser)
     {
         try {
@@ -298,7 +287,14 @@ class PhotosModel
     }
 
 
-
+    /**
+     * Gets photos author.
+     *
+     * @param Integer $iduser
+     *
+     * @access public
+     * @return array Array with photos
+     */
     public function getPhotosUser($iduser)
     {
         $query = 'SELECT * FROM ad_photos WHERE iduser=?';

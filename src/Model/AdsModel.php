@@ -47,30 +47,6 @@ class AdsModel
     }
 
     /**
-     * Gets all ads.
-     *
-     * @access public
-     * @return array Ads Array
-     */
-    public function getAll()
-    {
-        try {
-            $query = '
-              SELECT
-                *
-              FROM
-                ads
-              ORDER BY
-                ad_date
-              DESC
-            ';
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
-    /**
      * Gets single ad data.
      *
      * @access public
@@ -273,60 +249,9 @@ class AdsModel
     }
 
     /**
-     * Add single ad data.
-     *
-     * @access public
-     * @param integer $idad Record Id
-     * @param string $ad_name Title of an ad
-     * @param string $ad_contence Contence of an ad
-     * @return array Result
-     */
-    public function addAd($idad, $ad_name, $ad_contence)
-    {
-        try {
-            if (($idad != '') && ctype_digit((string)$idad)
-                && ($$ad_name != '') && ctype_digit((string)$$ad_name)
-                && ($ad_contence != '') && ctype_digit((string)$ad_contence)) {
-                $query = '
-                  INSERT INTO
-                    `ads` (`idad`, `ad_name`, `ad_contence`)
-                  VALUES
-                    (' . $idad . ', ' . $ad_name . ', ' . $ad_contence . ');
-                ';
-                return $this->_db->fetchAssoc($query, array((int)$idad));
-            } else {
-                return array();
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ' . $e->getMessage() . "\n";
-        }
-    }
-
-    /**
-     * Gets all categories.
-     *
-     * @access public
-     * @return array Result
-     */
-    public function getAllCategories()
-    {
-        try {
-            $query = '
-              SELECT
-                idcategory, category_name
-              FROM
-                ads_categories
-            ';
-            return $this->_db->fetchAll($query);
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
-    /**
      * Gets category .
      *
-     * @param Integer $id
+     * @param Integer $idcategory
      *
      * @access public
      * @return Array Information about searching user.

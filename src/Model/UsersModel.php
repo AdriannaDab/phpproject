@@ -434,7 +434,6 @@ class UsersModel
     }
 
 
-
     /**
      * Puts one user to database.
      *
@@ -539,9 +538,9 @@ class UsersModel
     }
 
     /**
-     * Puts one user data to database.
+     * Puts one city data to database.
      *
-     * @param  Array $data Associative array contains all necessary information
+     * @param  Array $data Associative array contains city name
      *
      * @access public
      * @return Void
@@ -562,8 +561,6 @@ class UsersModel
                     $data['city_name'],
                     )
             );
-
-
     }
 
     /**
@@ -666,6 +663,15 @@ class UsersModel
         }
     }
 
+    /**
+     * Change users password.
+     *
+     * @param Array $data Associative array contains password
+     * @param Integer $id users id
+     *
+     * @access public
+     * @return Void
+     */
     public function changePassword($data, $id)
     {
         try {
@@ -710,7 +716,6 @@ class UsersModel
     }
 
 
-
     /**
      * Gets moderator by id.
      *
@@ -747,32 +752,6 @@ class UsersModel
     }
 
 
-
-
-    /**
-     * Confirm user. Change his role
-     *
-     * @param  Integer $id
-     *
-     * @access public
-     * @return Void
-     */
-    public function confirmUser($id)
-    {
-        try {
-            $query = '
-              UPDATE
-                `ad_users`
-              SET
-                `idrole`="2"
-              WHERE `iduser`= ?;
-            ';
-            $this->_db->executeQuery($query, array($id));
-        } catch (Exception $e) {
-            echo 'Caught exception: ' .  $e->getMessage() . "\n";
-        }
-    }
-
     /**
      * Get current logged user id
      *
@@ -787,7 +766,6 @@ class UsersModel
         $iduser = $this->getUserByLogin($login);
         return $iduser['iduser'];
     }
-
 
 
     /**
@@ -810,7 +788,7 @@ class UsersModel
     /**
      * Check if user is logged
      *
-     * @param Application $app
+     * @param  $app
      *
      * @access public
      * @return bool
