@@ -36,7 +36,7 @@ use Model\CategoriesModel;
 class AdForm extends AbstractType
 {
     /**
-     * AdsForm object.
+     * AdForm object.
      *
      * @var $app
      * @access protected

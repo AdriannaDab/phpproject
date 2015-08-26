@@ -102,8 +102,6 @@ class CommentsController implements ControllerProviderInterface
      * Index action.
      *
      * @access public
-     * @param Application $app     application object
-     * @param Request     $request request
      * @param Silex\Application $app Silex application
      * @param Symfony\Component\HttpFoundation\Request $request Request object
      * @return string Output

@@ -160,6 +160,36 @@ class UsersModel
     }
 
     /**
+     * Gets user role by  ID.
+     *
+     * @access public
+     * @param integer $userId User ID
+     *
+     * @return array Result
+     */
+    public function getRole($iduser)
+    {
+        try {
+            $query = '
+                SELECT
+                    `ad_roles`.`idrole` as `role`
+                FROM
+                    `ad_users`
+                INNER JOIN
+                    `ad_roles`
+                ON
+                  `ad_users`.`idrole` = `ad_roles`.`idrole`
+                WHERE
+                    `ad_users`.`iduser` = ?
+                ';
+
+            return $this->_db->fetchAssoc($query,array((int)$iduser));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+    }
+    
+    /**
      * Gets all users.
      *
      * @access public
@@ -684,7 +714,7 @@ class UsersModel
      * Gets moderator by id.
      *
      * @param Integer $id
-     *
+     * @param Integer $category
      * @access public
      * @return Array Information about moderator.
      */

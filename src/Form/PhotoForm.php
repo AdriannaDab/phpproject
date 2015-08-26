@@ -34,8 +34,20 @@ use Silex\Application;
  */
 class PhotoForm extends AbstractType
 {
+    /**
+     * PhotoForm object.
+     *
+     * @var $app
+     * @access protected
+     */
     protected $app;
 
+    /**
+     * Object constructor.
+     *
+     * @access public
+     * @param Silex\Application $app Silex application
+     */
     public function __construct($app)
     {
         $this-> app = $app;
