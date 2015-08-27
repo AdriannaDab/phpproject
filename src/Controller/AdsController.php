@@ -250,43 +250,48 @@ class AdsController implements ControllerProviderInterface
             $adsModel = new AdsModel($app);
             $id = (int) $request->get('id', 0);
             $ad = $adsModel->getAd($id);
-            if (count($ad)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new AdForm($app), $ad)->getForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $adsModel = new AdsModel($app);
-                    $adsModel->saveAd($data);
-                    $app['session']->getFlashBag()->add(
-                        'message',
-                        array(
-                            'type' => 'success',
-                            'content' => $app['translator']
-                                ->trans('Ad edited')
-                        )
-                    );
+            $idcurrentuser = $this->_user->getIdCurrentUser($app);
+            if ($ad['iduser']==$idcurrentuser) {
+                if (count($ad)) {
+                    $form = $app['form.factory']
+                        ->createBuilder(new AdForm($app), $ad)->getForm();
+                    $form->handleRequest($request);
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $adsModel = new AdsModel($app);
+                        $adsModel->saveAd($data);
+                        $app['session']->getFlashBag()->add(
+                            'message',
+                            array(
+                                'type' => 'success',
+                                'content' => $app['translator']
+                                    ->trans('Ad edited')
+                            )
+                        );
+                        return $app->redirect(
+                            $app['url_generator']
+                                ->generate(
+                                    'ads_view',
+                                    array(
+                                        'id' => $ad['idad']
+                                    )
+                                ),
+                            301
+                        );
+                    }
+                    $this->_view['form'] = $form->createView();
+                    $this->_view['id'] = $id;
+                } else {
                     return $app->redirect(
                         $app['url_generator']
                             ->generate(
-                                'ads_view',
-                                array(
-                                    'id' => $ad['idad']
-                                )
+                                'ads_add'
                             ),
                         301
                     );
                 }
-                $this->_view['form'] = $form->createView();
-                $this->_view['id'] = $id;
             } else {
-                return $app->redirect(
-                    $app['url_generator']
-                        ->generate(
-                            'ads_add'
-                        ),
-                    301
-                );
+                $app->abort(403, $app['translator']->trans('Forbidden'));
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Ad Exeption'));
@@ -305,56 +310,64 @@ class AdsController implements ControllerProviderInterface
     {
         try {
             $adsModel = new AdsModel($app);
-            $id = (int) $request->get('id', 0);
+            $id = (int)$request->get('id', 0);
             $ad = $adsModel->getAd($id);
+            $category = $adsModel->getCategory($id);
             $this->_view['ad'] = $ad;
-            if (count($ad)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new AdForm($app), $ad)->getForm();
-                $form->remove('ad_name');
-                $form->remove('ad_contence');
-                $form->remove('idcategory');
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $adsModel = new AdsModel($app);
-                    $adsModel->deleteAd($data['idad']);
-                    $photosModel = new PhotosModel($app);
-                    $photos = $this->_photos = $photosModel
-                        ->getPhotosByAd($data['idad']);
-                    foreach ($photos as $photo) {
-                        $path
-                            = dirname(dirname(dirname(__FILE__))).
-                            '/web/media/'.$photo['photo_name'];
-                        unlink($path);
-                        $this->_photos = $photosModel
-                            ->removePhoto($photo['photo_name']);
+            $idcurrentuser = $this->_user->getIdCurrentUser($app);
+            $moderator = $this->_user->getModeratorById($idcurrentuser, $category['idcategory']);
+            $admin = $this->_user->getAdmin($idcurrentuser);
+            if ($ad['iduser'] == $idcurrentuser or $moderator or $admin['idrole']==3) {
+                if (count($ad)) {
+                    $form = $app['form.factory']
+                        ->createBuilder(new AdForm($app), $ad)->getForm();
+                    $form->remove('ad_name');
+                    $form->remove('ad_contence');
+                    $form->remove('idcategory');
+                    $form->handleRequest($request);
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $adsModel = new AdsModel($app);
+                        $adsModel->deleteAd($data['idad']);
+                        $photosModel = new PhotosModel($app);
+                        $photos = $this->_photos = $photosModel
+                            ->getPhotosByAd($data['idad']);
+                        foreach ($photos as $photo) {
+                            $path
+                                = dirname(dirname(dirname(__FILE__))) .
+                                '/web/media/' . $photo['photo_name'];
+                            unlink($path);
+                            $this->_photos = $photosModel
+                                ->removePhoto($photo['photo_name']);
+                        }
+                        $app['session']->getFlashBag()->add(
+                            'message',
+                            array(
+                                'type' => 'danger',
+                                'content' => $app['translator']
+                                    ->trans('Ad deleted')
+                            )
+                        );
+                        return $app->redirect(
+                            $app['url_generator']
+                                ->generate(
+                                    '/ads/'
+                                ),
+                            301
+                        );
                     }
-                    $app['session']->getFlashBag()->add(
-                        'message',
-                        array(
-                            'type' => 'danger',
-                            'content' => $app['translator']
-                                ->trans('Ad deleted')
-                        )
-                    );
+                    $this->_view['form'] = $form->createView();
+                } else {
                     return $app->redirect(
                         $app['url_generator']
                             ->generate(
-                                '/ads/'
+                                'ads_add'
                             ),
                         301
                     );
                 }
-                $this->_view['form'] = $form->createView();
             } else {
-                return $app->redirect(
-                    $app['url_generator']
-                        ->generate(
-                            'ads_add'
-                        ),
-                    301
-                );
+                $app->abort(403, $app['translator']->trans('Forbidden'));
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Ad Exeption'));

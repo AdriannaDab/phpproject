@@ -183,12 +183,12 @@ class UsersModel
                     `ad_users`.`iduser` = ?
                 ';
 
-            return $this->_db->fetchAssoc($query,array((int)$iduser));
+            return $this->_db->fetchAssoc($query, array((int)$iduser));
         } catch (Exception $e) {
             echo 'Caught exception: ' . $e->getMessage() . "\n";
         }
     }
-    
+
     /**
      * Gets all users.
      *
@@ -745,6 +745,30 @@ class UsersModel
         }
     }
 
+    /**
+     * Gets admin by id.
+     *
+     * @param Integer $id
+     * @access public
+     * @return Array Information about searching admin.
+     */
+    public function getAdmin($id)
+    {
+        try {
+            $query = '
+              SELECT
+                idrole
+              FROM
+                ad_users
+              WHERE
+                `iduser` = ?
+                Limit 1
+            ';
+            return $this->_db->fetchAssoc($query, array((int)$id));
+        } catch (Exception $e) {
+            echo 'Caught exception: ' .  $e->getMessage() . "\n";
+        }
+    }
 
     /**
      * Get current logged user id

@@ -251,10 +251,10 @@ class AdsModel
     /**
      * Gets category .
      *
-     * @param Integer $idcategory
+     * @param Integer $idc
      *
      * @access public
-     * @return Array Information about searching user.
+     * @return Array Information about searching category.
      */
     public function getCategory($idcategory)
     {

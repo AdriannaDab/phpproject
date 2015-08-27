@@ -245,47 +245,52 @@ class CommentsController implements ControllerProviderInterface
             $commentsModel = new CommentsModel($app);
             $id = (int)$request->get('id', 0);
             $comment = $commentsModel->getComment($id);
-            if (count($comment)) {
-                $form = $app['form.factory']
-                    ->createBuilder(new CommentForm($app), $comment)->getForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $commentsModel = new CommentsModel($app);
-                    $commentsModel->saveComment($data);
-                    $app['session']->getFlashBag()->add(
-                        'message',
-                        array(
-                            'type' => 'success',
-                            'content' => $app['translator']
-                                ->trans('Comment edited')
-                        )
-                    );
+            $idcurrentuser = $this->_user->getIdCurrentUser($app);
+            if ($comment['iduser']==$idcurrentuser) {
+                if (count($comment)) {
+                    $form = $app['form.factory']
+                        ->createBuilder(new CommentForm($app), $comment)->getForm();
+                    $form->handleRequest($request);
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $commentsModel = new CommentsModel($app);
+                        $commentsModel->saveComment($data);
+                        $app['session']->getFlashBag()->add(
+                            'message',
+                            array(
+                                'type' => 'success',
+                                'content' => $app['translator']
+                                    ->trans('Comment edited')
+                            )
+                        );
+                        $this->_view['id'] = $id;
+                        return $app->redirect(
+                            $app['url_generator']->
+                            generate(
+                                'ads_view',
+                                array(
+                                    'id' => $comment['idad']
+                                )
+                            ),
+                            301
+                        );
+                    }
+                    $this->_view['form'] = $form->createView();
                     $this->_view['id'] = $id;
+                } else {
                     return $app->redirect(
                         $app['url_generator']->
                         generate(
-                            'ads_view',
+                            'comments_add',
                             array(
-                                'id' => $comment['idad']
+                                'idad' => $id
                             )
                         ),
                         301
                     );
                 }
-                $this->_view['form'] = $form->createView();
-                $this->_view['id'] = $id;
             } else {
-                return $app->redirect(
-                    $app['url_generator']->
-                    generate(
-                        'comments_add',
-                        array(
-                            'idad' => $id
-                        )
-                    ),
-                    301
-                );
+                $app->abort(403, $app['translator']->trans('Forbidden'));
             }
         } catch (\PDOException $e) {
             $app->abort(404, $app['translator']->trans('Caught Comments Exeption'));
